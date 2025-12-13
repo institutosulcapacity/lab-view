@@ -1,0 +1,47 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #f3f4f6;
+}
+
+.painel {
+  padding: 15px;
+}
+
+.componente {
+  background: white;
+  border: 2px solid #111827;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+.botao {
+  width: 100%;
+  padding: 15px;
+  font-size: 20px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: none;
+}
+
+.liga {
+  background: #22c55e;
+  color: white;
+}
+
+.desliga {
+  background: #ef4444;
+  color: white;
+}
+
+.motor.ligado {
+  background: #16a34a;
+  color: white;
+}
+
+.aviso {
+  font-size: 14px;
+  color: #374151;
+}
