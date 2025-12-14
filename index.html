@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Laboratório Virtual – Conexões</title>
+<title>Laboratório Virtual – Montagem de Circuitos</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -44,19 +44,31 @@ svg{
 
 <body>
 
-<h1>Laboratório Virtual – Conexões</h1>
+<h1>Laboratório Virtual – Montagem de Circuitos</h1>
 
-<svg id="painel" width="400" height="250">
+<svg id="painel" width="420" height="520">
 
-  <!-- COMPONENTE A -->
-  <rect x="40" y="90" width="120" height="60" rx="10" class="componente"/>
-  <text x="100" y="125" text-anchor="middle">FONTE</text>
-  <circle cx="160" cy="120" r="6" class="borne"/>
+  <!-- DISJUNTOR -->
+  <rect x="120" y="30" width="180" height="60" rx="10" class="componente"/>
+  <text x="210" y="65" text-anchor="middle">DISJUNTOR</text>
+  <circle cx="210" cy="90" r="6" class="borne"/>
 
-  <!-- COMPONENTE B -->
-  <rect x="240" y="90" width="120" height="60" rx="10" class="componente"/>
-  <text x="300" y="125" text-anchor="middle">CARGA</text>
-  <circle cx="240" cy="120" r="6" class="borne"/>
+  <!-- CONTATOR -->
+  <rect x="120" y="130" width="180" height="60" rx="10" class="componente"/>
+  <text x="210" y="165" text-anchor="middle">CONTATOR</text>
+  <circle cx="210" cy="130" r="6" class="borne"/>
+  <circle cx="210" cy="190" r="6" class="borne"/>
+
+  <!-- TEMPORIZADOR -->
+  <rect x="120" y="250" width="180" height="60" rx="10" class="componente"/>
+  <text x="210" y="285" text-anchor="middle">TEMPORIZADOR</text>
+  <circle cx="210" cy="250" r="6" class="borne"/>
+  <circle cx="210" cy="310" r="6" class="borne"/>
+
+  <!-- MOTOR -->
+  <rect x="120" y="370" width="180" height="60" rx="10" class="componente"/>
+  <text x="210" y="405" text-anchor="middle">MOTOR</text>
+  <circle cx="210" cy="370" r="6" class="borne"/>
 
 </svg>
 
