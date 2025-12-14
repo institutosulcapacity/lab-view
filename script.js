@@ -1,13 +1,13 @@
 function ligar() {
-  document.getElementById("contator").innerText = "⚙️ Contator ENERGIZADO";
   const motor = document.getElementById("motor");
-  motor.innerText = "🌀 Motor LIGADO";
+  motor.classList.remove("desligado");
   motor.classList.add("ligado");
+  motor.innerText = "MOTOR LIGADO";
 }
 
 function desligar() {
-  document.getElementById("contator").innerText = "⚙️ Contator DESLIGADO";
   const motor = document.getElementById("motor");
-  motor.innerText = "🌀 Motor DESLIGADO";
   motor.classList.remove("ligado");
+  motor.classList.add("desligado");
+  motor.innerText = "MOTOR DESLIGADO";
 }
