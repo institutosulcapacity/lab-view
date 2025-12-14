@@ -5,11 +5,13 @@
   <title>Laboratório Virtual – Comandos Elétricos</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div id="container">
+<div class="app">
 
-  <aside id="sidebar">
+  <!-- MENU LATERAL -->
+  <div class="sidebar">
     <h2>Componentes</h2>
 
     <button class="tool" data-type="disjuntor_motor">Disjuntor Motor</button>
@@ -19,17 +21,17 @@
     <button class="tool" data-type="botao_liga">Botão Liga</button>
     <button class="tool" data-type="botao_desliga">Botão Desliga</button>
     <button class="tool" data-type="emergencia">Emergência</button>
-  </aside>
+  </div>
 
-  <main id="main">
+  <!-- ÁREA PRINCIPAL -->
+  <div class="main">
     <h1>Montagem de Comandos Elétricos</h1>
     <p>Selecione um componente à esquerda e ele será encaixado no trilho DIN</p>
 
-    <!-- TRILHO DIN -->
     <div id="workspace">
       <div id="din-rail"></div>
     </div>
-  </main>
+  </div>
 
 </div>
 
