@@ -1,40 +1,62 @@
-body {
+* {
   margin: 0;
-  background: #1e1e1e;
-  color: #fff;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #1b1b1b;
   font-family: Arial, sans-serif;
-  text-align: center;
+  color: #fff;
 }
 
-h1 {
-  margin: 20px 0;
-}
-
-#painel {
-  width: 420px;
-  margin: 0 auto 40px;
-  padding: 20px;
-  background: #2b2b2b;
-  border-radius: 16px;
+#app {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  height: 100vh;
 }
 
-.componente-box {
+/* PAINEL LATERAL */
+#toolbox {
+  width: 260px;
+  background: #2c2c2c;
+  padding: 15px;
+  border-right: 2px solid #444;
+}
+
+#toolbox h3 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+#toolbox button {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 6px;
   background: #3a3a3a;
-  padding: 12px;
-  border-radius: 12px;
-}
-.componente-box img {
-  height: 140px;          /* altura padrão */
-  width: auto;            /* mantém proporção real */
-  display: block;
-  margin: 0 auto;         /* centraliza */
+  color: white;
+  border: 1px solid #555;
+  cursor: pointer;
 }
 
-.componente-box span {
-  display: block;
-  margin-top: 8px;
-  font-size: 14px;
+#toolbox button:hover {
+  background: #555;
+}
+
+/* ÁREA DE MONTAGEM */
+#workspace {
+  flex: 1;
+  position: relative;
+  padding: 20px;
+  background: #111;
+}
+
+/* COMPONENTES */
+.component {
+  position: absolute;
+  cursor: move;
+}
+
+.component img {
+  width: 180px;
+  height: auto;
 }
