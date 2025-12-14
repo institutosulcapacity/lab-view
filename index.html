@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Laboratório Virtual – Comandos Elétricos</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+  <div id="app">
 
-<div class="app">
+    <aside id="sidebar">
+      <h2>Componentes</h2>
+      <button class="tool" data-type="disjuntor_motor">Disjuntor Motor</button>
+      <button class="tool" data-type="contator">Contator</button>
+      <button class="tool" data-type="rele_termico">Relé Térmico</button>
+      <button class="tool" data-type="motor">Motor</button>
+      <button class="tool" data-type="botao_liga">Botão Liga</button>
+      <button class="tool" data-type="botao_desliga">Botão Desliga</button>
+      <button class="tool" data-type="emergencia">Emergência</button>
+    </aside>
 
-  <!-- MENU LATERAL -->
-  <div class="sidebar">
-    <h2>Componentes</h2>
+    <main>
+      <h1>Montagem de Comandos Elétricos</h1>
+      <p>Selecione um componente à esquerda e posicione livremente no painel</p>
 
-    <button class="tool" data-type="disjuntor_motor">Disjuntor Motor</button>
-    <button class="tool" data-type="contator">Contator</button>
-    <button class="tool" data-type="rele_termico">Relé Térmico</button>
-    <button class="tool" data-type="motor">Motor</button>
-    <button class="tool" data-type="botao_liga">Botão Liga</button>
-    <button class="tool" data-type="botao_desliga">Botão Desliga</button>
-    <button class="tool" data-type="emergencia">Emergência</button>
+      <!-- PAINEL -->
+      <div id="workspace"></div>
+    </main>
+
   </div>
 
-  <!-- ÁREA PRINCIPAL -->
-  <div class="main">
-    <h1>Montagem de Comandos Elétricos</h1>
-    <p>Selecione um componente à esquerda e ele será encaixado no trilho DIN</p>
-
-    <div id="workspace"></div>
-      <div id="din-rail"></div>
-    </div>
-  </div>
-
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
