@@ -1,39 +1,59 @@
-function ligar() {
-  document.getElementById("motor").classList.remove("desligado");
-  document.getElementById("motor").classList.add("ligado");
-  document.getElementById("motor").innerText = "MOTOR LIGADO";
+let disjuntorLigado = false;
+let contatorLigado = false;
 
-  document.getElementById("contator").classList.remove("desligado");
+function toggleDisjuntor() {
+  disjuntorLigado = !disjuntorLigado;
+  const disjuntor = document.getElementById("disjuntor");
+  disjuntor.classList.toggle("ligado", disjuntorLigado);
+  disjuntor.innerText = disjuntorLigado ? "DISJUNTOR LIGADO" : "DISJUNTOR DESLIGADO";
+  atualizarMotor();
+}
+
+function toggleContator() {
+  contatorLigado = !contatorLigado;
+  const contator = document.getElementById("contator");
+  contator.classList.toggle("ligado", contatorLigado);
+  contator.innerText = contatorLigado ? "CONTATOR LIGADO" : "CONTATOR DESLIGADO";
+  atualizarMotor();
+}
+
+function atualizarMotor() {
+  const motor = document.getElementById("motor");
+  if(disjuntorLigado && contatorLigado){
+    motor.classList.add("ligado");
+    motor.innerText = "MOTOR LIGADO";
+  } else {
+    motor.classList.remove("ligado");
+    motor.innerText = "MOTOR DESLIGADO";
+  }
+}
+
+function ligar() {
+  disjuntorLigado = true;
+  contatorLigado = true;
+  document.getElementById("disjuntor").classList.add("ligado");
+  document.getElementById("disjuntor").innerText = "DISJUNTOR LIGADO";
   document.getElementById("contator").classList.add("ligado");
-  document.getElementById("contator").innerText = "CONTATOR ENERGIZADO";
+  document.getElementById("contator").innerText = "CONTATOR LIGADO";
+  atualizarMotor();
 }
 
 function desligar() {
-  document.getElementById("motor").classList.remove("ligado");
-  document.getElementById("motor").classList.add("desligado");
-  document.getElementById("motor").innerText = "MOTOR DESLIGADO";
-
+  disjuntorLigado = false;
+  contatorLigado = false;
+  document.getElementById("disjuntor").classList.remove("ligado");
+  document.getElementById("disjuntor").innerText = "DISJUNTOR DESLIGADO";
   document.getElementById("contator").classList.remove("ligado");
-  document.getElementById("contator").classList.add("desligado");
   document.getElementById("contator").innerText = "CONTATOR DESLIGADO";
-}
-
-function emergencia() {
-  document.getElementById("motor").classList.remove("ligado");
-  document.getElementById("motor").classList.add("desligado");
-  document.getElementById("motor").innerText = "PARADA DE EMERGÊNCIA";
-
-  document.getElementById("contator").classList.remove("ligado");
-  document.getElementById("contator").classList.add("desligado");
-  document.getElementById("contator").innerText = "CONTATOR DESLIGADO";
+  atualizarMotor();
 }
 
 function resetar() {
-  document.getElementById("motor").classList.remove("ligado");
-  document.getElementById("motor").classList.add("desligado");
-  document.getElementById("motor").innerText = "MOTOR DESLIGADO";
-
+  disjuntorLigado = false;
+  contatorLigado = false;
+  document.getElementById("disjuntor").classList.remove("ligado");
+  document.getElementById("disjuntor").innerText = "DISJUNTOR DESLIGADO";
   document.getElementById("contator").classList.remove("ligado");
-  document.getElementById("contator").classList.add("desligado");
   document.getElementById("contator").innerText = "CONTATOR DESLIGADO";
+  atualizarMotor();
 }
