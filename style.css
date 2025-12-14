@@ -48,24 +48,38 @@ h1 { margin:20px 0; }
   font-weight:bold;
 }
 
-.cabos line {
-  stroke:#555;
-  stroke-width:6;
-}
-
-.cabos line.ativo {
-  stroke:#2ecc71;
-}
-
 .botoes {
   margin-top:15px;
 }
 
-button {
+.botoes button {
   padding:10px 25px;
   font-size:16px;
   border:none;
   border-radius:6px;
   background:#3498db;
   color:#fff;
+}
+
+input {
+  margin-top: 5px;
+  padding: 5px;
+  width: 50px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+@media (max-width: 500px) {
+  .componente {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .botoes {
+    flex-direction: column;
+  }
+
+  .botoes button {
+    width: 100%;
+  }
 }
