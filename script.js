@@ -1,11 +1,14 @@
+/* Posição inicial automática */
 let posX = 200;
-let posY = 100;
-const espacamentoY = 180;
+let posY = 80;
+const espacamentoY = 130;
 
+/* Mapa de componentes (MAPA = lista chave → imagem) */
 const componentes = {
   disjuntor_motor: "disjuntor_motor.png",
   contator: "contator_weg.png",
   rele_termico: "rele_termico_weg.png",
+  temporizador: "temporizador.png", // se não existir, pode remover
   motor: "motor_weg.png",
   botao_liga: "botao_liga.png",
   botao_desliga: "botao_desliga.png",
@@ -14,6 +17,7 @@ const componentes = {
 
 const workspace = document.getElementById("workspace");
 
+/* Clique nos botões da esquerda */
 document.querySelectorAll(".tool").forEach(btn => {
   btn.addEventListener("click", () => {
     const tipo = btn.dataset.type;
@@ -22,9 +26,10 @@ document.querySelectorAll(".tool").forEach(btn => {
 });
 
 function adicionarComponente(tipo) {
+  if (!componentes[tipo]) return;
+
   const div = document.createElement("div");
   div.classList.add("componente");
-  div.style.position = "absolute";
   div.style.left = posX + "px";
   div.style.top = posY + "px";
 
@@ -35,16 +40,17 @@ function adicionarComponente(tipo) {
   div.appendChild(img);
   workspace.appendChild(div);
 
-  tornarArrastavel(div); // 🔑 ESSENCIAL
+  tornarArrastavel(div);
 
+  /* Posicionamento automático em grade */
   posY += espacamentoY;
-
-  if (posY > 700) {
-    posY = 100;
-    posX += 220;
+  if (posY > window.innerHeight - 150) {
+    posY = 80;
+    posX += 160;
   }
 }
 
+/* Arrastar componentes */
 function tornarArrastavel(el) {
   let offsetX = 0;
   let offsetY = 0;
@@ -58,8 +64,8 @@ function tornarArrastavel(el) {
 
   document.addEventListener("mousemove", e => {
     if (!arrastando) return;
-    el.style.left = `${e.pageX - offsetX}px`;
-    el.style.top = `${e.pageY - offsetY}px`;
+    el.style.left = (e.pageX - offsetX) + "px";
+    el.style.top = (e.pageY - offsetY) + "px";
   });
 
   document.addEventListener("mouseup", () => {
