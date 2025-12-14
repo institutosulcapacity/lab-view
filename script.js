@@ -2,6 +2,10 @@ let posX = 200;
 let posY = 100;
 const espacamentoY = 180;
 
+let posX = 200;
+let posY = 100;
+const espacamentoY = 180;
+
 const componentes = {
   disjuntor_motor: "disjuntor_motor.png",
   contator: "contator_weg.png",
