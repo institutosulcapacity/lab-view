@@ -10,7 +10,6 @@ const componentes = {
 
 const workspace = document.getElementById("workspace");
 
-/* Clique nos botões da esquerda */
 document.querySelectorAll(".tool").forEach(btn => {
   btn.addEventListener("click", () => {
     criarComponente(btn.dataset.type);
@@ -20,18 +19,12 @@ document.querySelectorAll(".tool").forEach(btn => {
 function criarComponente(tipo) {
   const div = document.createElement("div");
   div.className = "component";
-  div.style.position = "absolute";
-  div.style.left = "300px";
-  div.style.top = "150px";
-  div.style.cursor = "grab";
+  div.style.left = "50px";
+  div.style.top = "50px";
 
   const img = document.createElement("img");
   img.src = "assets/" + componentes[tipo];
   img.alt = tipo;
-
-  /* 🔽 tamanho reduzido (80%) */
-  img.style.width = "120px";
-  img.style.height = "auto";
 
   div.appendChild(img);
   workspace.appendChild(div);
@@ -39,27 +32,30 @@ function criarComponente(tipo) {
   tornarArrastavel(div);
 }
 
-/* ===== ARRASTAR LIVRE ===== */
 function tornarArrastavel(el) {
   let offsetX = 0;
   let offsetY = 0;
-  let arrastando = false;
+  let dragging = false;
 
   el.addEventListener("mousedown", e => {
-    arrastando = true;
-    offsetX = e.offsetX;
-    offsetY = e.offsetY;
+    dragging = true;
+    const rect = el.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
     el.style.cursor = "grabbing";
   });
 
   document.addEventListener("mousemove", e => {
-    if (!arrastando) return;
-    el.style.left = e.pageX - offsetX + "px";
-    el.style.top = e.pageY - offsetY + "px";
+    if (!dragging) return;
+
+    const workspaceRect = workspace.getBoundingClientRect();
+
+    el.style.left = (e.clientX - workspaceRect.left - offsetX) + "px";
+    el.style.top  = (e.clientY - workspaceRect.top  - offsetY) + "px";
   });
 
   document.addEventListener("mouseup", () => {
-    arrastando = false;
+    dragging = false;
     el.style.cursor = "grab";
   });
 }
