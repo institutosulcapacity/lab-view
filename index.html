@@ -1,80 +1,23 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<title>Laboratório Virtual – Conexões Elétricas</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body{
-  background:#1e1e1e;
-  color:#fff;
-  font-family:Arial, sans-serif;
-  text-align:center;
-}
-
-h1{margin:20px}
-
-svg{
-  background:#2b2b2b;
-  border-radius:12px;
-}
-
-.componente{
-  fill:#555;
-  stroke:#aaa;
-  stroke-width:2;
-}
-
-.borne{
-  fill:#111;
-  stroke:#fff;
-  stroke-width:2;
-  cursor:pointer;
-}
-
-.borne:hover{
-  fill:#3498db;
-}
-
-.fio{
-  stroke:#f1c40f;
-  stroke-width:5;
-}
-</style>
-</head>
-
-<body>
-
-<h1>Laboratório Virtual – Conexões</h1>
-
-<svg id="painel" width="400" height="300">
-
-  <!-- COMPONENTE A -->
-  <rect x="40" y="80" width="120" height="60" rx="10" class="componente"/>
-  <text x="100" y="115" text-anchor="middle">FONTE</text>
-  <circle cx="160" cy="110" r="6" class="borne" data-id="A"/>
-
-  <!-- COMPONENTE B -->
-  <rect x="240" y="80" width="120" height="60" rx="10" class="componente"/>
-  <text x="300" y="115" text-anchor="middle">CARGA</text>
-  <circle cx="240" cy="110" r="6" class="borne" data-id="B"/>
-
-</svg>
-
 <script>
+let conexoes = {};
+let selecionado = null;
+
+let circuitoOk = false;
+let comandoLigado = false;
+let temporizadorAtivo = false;
+let timeoutMotor = null;
+
+// --- arrastar fio (mantém igual ao núcleo) ---
 const svg = document.getElementById("painel");
-let fioAtual = null;
-let origem = null;
 
 svg.addEventListener("mousedown", e => {
   if(e.target.classList.contains("borne")){
-    origem = e.target;
+    selecionado = e.target;
     fioAtual = document.createElementNS("http://www.w3.org/2000/svg","line");
-    fioAtual.setAttribute("x1", origem.cx.baseVal.value);
-    fioAtual.setAttribute("y1", origem.cy.baseVal.value);
-    fioAtual.setAttribute("x2", origem.cx.baseVal.value);
-    fioAtual.setAttribute("y2", origem.cy.baseVal.value);
+    fioAtual.setAttribute("x1", selecionado.cx.baseVal.value);
+    fioAtual.setAttribute("y1", selecionado.cy.baseVal.value);
+    fioAtual.setAttribute("x2", selecionado.cx.baseVal.value);
+    fioAtual.setAttribute("y2", selecionado.cy.baseVal.value);
     fioAtual.setAttribute("class","fio");
     svg.appendChild(fioAtual);
   }
@@ -85,25 +28,74 @@ svg.addEventListener("mousemove", e => {
     const pt = svg.createSVGPoint();
     pt.x = e.clientX;
     pt.y = e.clientY;
-    const cursor = pt.matrixTransform(svg.getScreenCTM().inverse());
-    fioAtual.setAttribute("x2", cursor.x);
-    fioAtual.setAttribute("y2", cursor.y);
+    const pos = pt.matrixTransform(svg.getScreenCTM().inverse());
+    fioAtual.setAttribute("x2", pos.x);
+    fioAtual.setAttribute("y2", pos.y);
   }
 });
 
 svg.addEventListener("mouseup", e => {
   if(fioAtual){
-    if(e.target.classList.contains("borne") && e.target !== origem){
+    if(e.target.classList.contains("borne") && e.target !== selecionado){
+      conexoes[selecionado.dataset.id] = e.target.dataset.id;
       fioAtual.setAttribute("x2", e.target.cx.baseVal.value);
       fioAtual.setAttribute("y2", e.target.cy.baseVal.value);
+      validarCircuito();
     } else {
       fioAtual.remove();
     }
     fioAtual = null;
-    origem = null;
+    selecionado = null;
   }
 });
-</script>
 
-</body>
-</html>
+// --- validação do circuito ---
+function validarCircuito(){
+  circuitoOk =
+    conexoes.disjuntor === "contator_in" &&
+    conexoes.contator_out === "temporizador_in" &&
+    conexoes.temporizador_out === "motor";
+}
+
+// --- botão LIGA ---
+function ligar(){
+  if(!circuitoOk){
+    alert("Circuito incorreto");
+    return;
+  }
+  if(comandoLigado) return;
+
+  comandoLigado = true;
+  temporizadorAtivo = true;
+
+  const tempo = parseInt(document.getElementById("tempo").value);
+
+  timeoutMotor = setTimeout(()=>{
+    if(comandoLigado){
+      document.getElementById("motor").classList.add("ligado");
+    }
+  }, tempo * 1000);
+}
+
+// --- botão DESLIGA ---
+function desligar(){
+  comandoLigado = false;
+  temporizadorAtivo = false;
+
+  if(timeoutMotor){
+    clearTimeout(timeoutMotor);
+    timeoutMotor = null;
+  }
+
+  document.getElementById("motor").classList.remove("ligado");
+}
+
+// --- reset geral ---
+function resetar(){
+  desligar();
+  conexoes = {};
+  circuitoOk = false;
+
+  document.querySelectorAll(".fio").forEach(f=>f.remove());
+}
+</script>
