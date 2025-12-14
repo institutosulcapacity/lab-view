@@ -1,44 +1,39 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Laboratório Virtual – Comandos Elétricos WEG</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratório Virtual – Comandos Elétricos (WEG)</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<h1>Laboratório Virtual – Comandos Elétricos (WEG)</h1>
+<div id="app">
 
-<!-- PAINEL PRINCIPAL -->
-<div id="painel">
+  <!-- PAINEL LATERAL DE COMPONENTES -->
+  <aside id="toolbox">
+    <h3>Componentes</h3>
 
-  <!-- DISJUNTOR MOTOR -->
-  <div class="componente-box" id="disjuntor-motor">
-    <img src="assets/disjuntor_motor.png" alt="Disjuntor Motor WEG">
-    <span>Disjuntor Motor WEG</span>
-  </div>
+    <button class="tool" data-type="disjuntor_motor">Disjuntor Motor</button>
+    <button class="tool" data-type="contator">Contator</button>
+    <button class="tool" data-type="rele_termico">Relé Térmico</button>
+    <button class="tool" data-type="temporizador">Temporizador</button>
+    <button class="tool" data-type="motor">Motor</button>
 
-  <!-- CONTATOR -->
-  <div class="componente-box" id="contator">
-    <img src="assets/contator_weg.png" alt="Contator WEG">
-    <span>Contator WEG</span>
-  </div>
+    <hr>
 
-  <!-- RELÉ TÉRMICO (VISUAL / FUTURO EXERCÍCIO) -->
-  <div class="componente-box" id="rele-termico">
-    <img src="assets/rele_termico_weg.png" alt="Relé Térmico WEG">
-    <span>Relé Térmico WEG</span>
-  </div>
+    <button class="tool" data-type="botao_liga">Botão Liga</button>
+    <button class="tool" data-type="botao_desliga">Botão Desliga</button>
+    <button class="tool" data-type="emergencia">Emergência</button>
+  </aside>
 
-  <!-- MOTOR -->
-  <div class="componente-box" id="motor">
-    <img src="assets/motor_weg.png" alt="Motor WEG">
-    <span>Motor WEG</span>
-  </div>
+  <!-- ÁREA DE MONTAGEM -->
+  <main id="workspace">
+    <h1>Montagem de Comandos Elétricos</h1>
+    <p>Selecione um componente à esquerda e posicione no painel</p>
+  </main>
 
 </div>
 
+<script src="script.js"></script>
 </body>
 </html>
