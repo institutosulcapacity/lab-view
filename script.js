@@ -1,3 +1,13 @@
+const componentes = {
+  disjuntor_motor: "disjuntor_motor.png",
+  contator: "contator_weg.png",
+  rele_termico: "rele_termico_weg.png",
+  motor: "motor_weg.png",
+  botao_liga: "botao_liga.png",
+  botao_desliga: "botao_desliga.png",
+  emergencia: "emergencia.png"
+};
+
 const workspace = document.getElementById("workspace");
 
 document.querySelectorAll(".tool").forEach(btn => {
@@ -14,7 +24,6 @@ function adicionarComponente(tipo) {
   div.style.top = "100px";
 
   const img = document.createElement("img");
-  img.src = `assets/${tipo}.png`;
   img.alt = tipo;
 
   div.appendChild(img);
