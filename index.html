@@ -12,42 +12,36 @@
 
 <div class="painel">
 
-  <!-- Disjuntor -->
-  <div class="componente" id="disjuntor" onclick="toggleConexao('disjuntor')">
-    <img src="https://img.icons8.com/color/48/000000/circuit-breaker.png" alt="Disjuntor">
-    <p>DISJUNTOR</p>
+  <svg width="300" height="420" class="cabos">
+    <line id="c1" x1="150" y1="70"  x2="150" y2="140"/>
+    <line id="c2" x1="150" y1="190" x2="150" y2="260"/>
+    <line id="c3" x1="150" y1="310" x2="150" y2="380"/>
+  </svg>
+
+  <div class="componente" id="disjuntor" onclick="toggle('disjuntor')" style="top:40px">
+    <div class="icone">DJ</div>
+    <span>DISJUNTOR</span>
   </div>
 
-  <!-- Contator -->
-  <div class="componente" id="contator" onclick="toggleConexao('contator')">
-    <img src="https://img.icons8.com/color/48/000000/contact.png" alt="Contator">
-    <p>CONTATOR</p>
+  <div class="componente" id="contator" onclick="toggle('contator')" style="top:160px">
+    <div class="icone">CT</div>
+    <span>CONTATOR</span>
   </div>
 
-  <!-- Temporizador -->
-  <div class="componente" id="temporizador" onclick="toggleConexao('temporizador')">
-    <img src="https://img.icons8.com/color/48/000000/timer.png" alt="Temporizador">
-    <p>TEMPORIZADOR</p>
+  <div class="componente" id="temporizador" onclick="toggle('temporizador')" style="top:280px">
+    <div class="icone">TR</div>
+    <span>TEMPORIZADOR</span>
   </div>
 
-  <!-- Motor -->
-  <div class="componente" id="motor">
-    <img src="https://img.icons8.com/color/48/000000/electric-motor.png" alt="Motor">
-    <p>MOTOR</p>
+  <div class="componente motor" id="motor" style="top:400px">
+    <div class="icone">MT</div>
+    <span>MOTOR</span>
   </div>
 
-  <!-- Cabos -->
-  <div class="cabos">
-    <div id="cabo1" class="cabo"></div>
-    <div id="cabo2" class="cabo"></div>
-    <div id="cabo3" class="cabo"></div>
-  </div>
+</div>
 
-  <div class="botoes">
-    <button onclick="ligar()">LIGA</button>
-    <button onclick="desligar()">DESLIGA</button>
-    <button onclick="resetar()">RESET</button>
-  </div>
+<div class="botoes">
+  <button onclick="resetar()">RESET</button>
 </div>
 
 <script src="script.js"></script>
