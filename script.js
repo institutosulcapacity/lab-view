@@ -1,14 +1,14 @@
 /* Posição inicial automática */
-let posX = 200;
-let posY = 80;
-const espacamentoY = 130;
+let posX = 260;
+let posY = 120;
+const espacamentoY = 140;
 
-/* Mapa de componentes (MAPA = lista chave → imagem) */
+/* MAPA DE COMPONENTES
+   (mapa = relação nome → imagem) */
 const componentes = {
   disjuntor_motor: "disjuntor_motor.png",
   contator: "contator_weg.png",
   rele_termico: "rele_termico_weg.png",
-  temporizador: "temporizador.png", // se não existir, pode remover
   motor: "motor_weg.png",
   botao_liga: "botao_liga.png",
   botao_desliga: "botao_desliga.png",
@@ -17,10 +17,10 @@ const componentes = {
 
 const workspace = document.getElementById("workspace");
 
-/* Clique nos botões da esquerda */
-document.querySelectorAll(".tool").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const tipo = btn.dataset.type;
+/* Clique nos botões da barra lateral */
+document.querySelectorAll(".tool").forEach(botao => {
+  botao.addEventListener("click", () => {
+    const tipo = botao.dataset.type;
     adicionarComponente(tipo);
   });
 });
@@ -42,15 +42,15 @@ function adicionarComponente(tipo) {
 
   tornarArrastavel(div);
 
-  /* Posicionamento automático em grade */
+  /* Organização automática em grade */
   posY += espacamentoY;
-  if (posY > window.innerHeight - 150) {
-    posY = 80;
+  if (posY > window.innerHeight - 180) {
+    posY = 120;
     posX += 160;
   }
 }
 
-/* Arrastar componentes */
+/* Arrastar com o mouse */
 function tornarArrastavel(el) {
   let offsetX = 0;
   let offsetY = 0;
