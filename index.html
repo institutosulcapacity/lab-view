@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Laboratório Virtual – Partida Direta com Temporizador</title>
+<title>Laboratório Virtual – Conexões Elétricas</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -12,7 +12,8 @@ body{
   font-family:Arial, sans-serif;
   text-align:center;
 }
-h1{margin:20px 0}
+
+h1{margin:20px}
 
 svg{
   background:#2b2b2b;
@@ -21,131 +22,87 @@ svg{
 
 .componente{
   fill:#555;
-  stroke:#999;
+  stroke:#aaa;
   stroke-width:2;
 }
 
-.componente.ligado{ fill:#2ecc71 }
-
 .borne{
   fill:#111;
-  stroke:#aaa;
-  stroke-width:1;
+  stroke:#fff;
+  stroke-width:2;
   cursor:pointer;
 }
 
-.borne.selecionado{ fill:#3498db }
-
-.cabo{
-  stroke:#555;
-  stroke-width:6;
+.borne:hover{
+  fill:#3498db;
 }
 
-.cabo.energizado{ stroke:#2ecc71 }
-
-button{
-  margin-top:15px;
-  padding:10px 25px;
-  font-size:16px;
-  background:#3498db;
-  color:#fff;
-  border:none;
-  border-radius:6px;
+.fio{
+  stroke:#f1c40f;
+  stroke-width:5;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Partida Direta com Temporizador (TON)</h1>
+<h1>Laboratório Virtual – Conexões</h1>
 
-<svg width="360" height="520" id="painel">
+<svg id="painel" width="400" height="300">
 
-  <!-- CABOS -->
-  <line id="c1" class="cabo" x1="180" y1="110" x2="180" y2="180"/>
-  <line id="c2" class="cabo" x1="180" y1="230" x2="180" y2="300"/>
-  <line id="c3" class="cabo" x1="180" y1="350" x2="180" y2="420"/>
+  <!-- COMPONENTE A -->
+  <rect x="40" y="80" width="120" height="60" rx="10" class="componente"/>
+  <text x="100" y="115" text-anchor="middle">FONTE</text>
+  <circle cx="160" cy="110" r="6" class="borne" data-id="A"/>
 
-  <!-- DISJUNTOR -->
-  <rect x="90" y="40" width="180" height="70" rx="10"
-        class="componente" id="disjuntor"/>
-  <text x="180" y="80" text-anchor="middle">DISJUNTOR</text>
-  <circle cx="180" cy="110" r="6" class="borne" data-borne="dj_out"/>
-
-  <!-- CONTATOR -->
-  <rect x="90" y="180" width="180" height="70" rx="10"
-        class="componente" id="contator"/>
-  <text x="180" y="220" text-anchor="middle">CONTATOR</text>
-  <circle cx="180" cy="180" r="6" class="borne" data-borne="ct_in"/>
-  <circle cx="180" cy="250" r="6" class="borne" data-borne="ct_out"/>
-
-  <!-- TEMPORIZADOR -->
-  <rect x="90" y="300" width="180" height="70" rx="10"
-        class="componente" id="temporizador"/>
-  <text x="180" y="340" text-anchor="middle">TEMPORIZADOR</text>
-  <circle cx="180" cy="300" r="6" class="borne" data-borne="tr_in"/>
-  <circle cx="180" cy="370" r="6" class="borne" data-borne="tr_out"/>
-
-  <!-- MOTOR -->
-  <rect x="90" y="420" width="180" height="70" rx="10"
-        class="componente" id="motor"/>
-  <text x="180" y="460" text-anchor="middle">MOTOR</text>
-  <circle cx="180" cy="420" r="6" class="borne" data-borne="mt_in"/>
+  <!-- COMPONENTE B -->
+  <rect x="240" y="80" width="120" height="60" rx="10" class="componente"/>
+  <text x="300" y="115" text-anchor="middle">CARGA</text>
+  <circle cx="240" cy="110" r="6" class="borne" data-id="B"/>
 
 </svg>
 
-<br>
-<label>Tempo (s):</label>
-<input type="number" id="tempo" value="5" min="1" max="30">
-<br>
-<button onclick="resetar()">RESET</button>
-
 <script>
-let selecionado = null;
-let conexoes = {};
-let timerAtivo = false;
+const svg = document.getElementById("painel");
+let fioAtual = null;
+let origem = null;
 
-document.querySelectorAll(".borne").forEach(b=>{
-  b.addEventListener("click",()=>{
-    if(!selecionado){
-      selecionado = b;
-      b.classList.add("selecionado");
-    }else{
-      conexoes[selecionado.dataset.borne] = b.dataset.borne;
-      selecionado.classList.remove("selecionado");
-      selecionado = null;
-      atualizar();
-    }
-  });
+svg.addEventListener("mousedown", e => {
+  if(e.target.classList.contains("borne")){
+    origem = e.target;
+    fioAtual = document.createElementNS("http://www.w3.org/2000/svg","line");
+    fioAtual.setAttribute("x1", origem.cx.baseVal.value);
+    fioAtual.setAttribute("y1", origem.cy.baseVal.value);
+    fioAtual.setAttribute("x2", origem.cx.baseVal.value);
+    fioAtual.setAttribute("y2", origem.cy.baseVal.value);
+    fioAtual.setAttribute("class","fio");
+    svg.appendChild(fioAtual);
+  }
 });
 
-function atualizar(){
-  // valida circuito
-  const circuitoOk =
-    conexoes.dj_out==="ct_in" &&
-    conexoes.ct_out==="tr_in" &&
-    conexoes.tr_out==="mt_in";
-
-  document.getElementById("c1").classList.toggle("energizado",conexoes.dj_out);
-  document.getElementById("c2").classList.toggle("energizado",conexoes.ct_out);
-  document.getElementById("c3").classList.toggle("energizado",conexoes.tr_out);
-
-  if(circuitoOk && !timerAtivo){
-    timerAtivo = true;
-    document.getElementById("temporizador").classList.add("ligado");
-
-    setTimeout(()=>{
-      document.getElementById("motor").classList.add("ligado");
-    }, document.getElementById("tempo").value*1000);
+svg.addEventListener("mousemove", e => {
+  if(fioAtual){
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX;
+    pt.y = e.clientY;
+    const cursor = pt.matrixTransform(svg.getScreenCTM().inverse());
+    fioAtual.setAttribute("x2", cursor.x);
+    fioAtual.setAttribute("y2", cursor.y);
   }
-}
+});
 
-function resetar(){
-  conexoes = {};
-  timerAtivo = false;
-  document.querySelectorAll(".ligado").forEach(e=>e.classList.remove("ligado"));
-  document.querySelectorAll(".energizado").forEach(e=>e.classList.remove("energizado"));
-}
+svg.addEventListener("mouseup", e => {
+  if(fioAtual){
+    if(e.target.classList.contains("borne") && e.target !== origem){
+      fioAtual.setAttribute("x2", e.target.cx.baseVal.value);
+      fioAtual.setAttribute("y2", e.target.cy.baseVal.value);
+    } else {
+      fioAtual.remove();
+    }
+    fioAtual = null;
+    origem = null;
+  }
+});
 </script>
 
 </body>
