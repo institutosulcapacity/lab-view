@@ -33,6 +33,22 @@ function adicionarComponente(tipo) {
   div.style.top = posY + "px";
 
   const img = document.createElement("img");
+  img.src = "assets/" + componentes[tipo];
+  img.alt = tipo;
+
+  div.appendChild(img);
+  workspace.appendChild(div);
+
+  posY += espacamentoY;
+
+  if (posY > 700) {
+    posY = 100;
+    posX += 220;
+  }
+}
+
+
+  const img = document.createElement("img");
   img.src = "assets/" + componentes[tipo]; // 🔴 ISSO FALTAVA
   img.alt = tipo;
 
