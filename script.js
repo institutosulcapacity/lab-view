@@ -23,17 +23,26 @@ document.querySelectorAll(".tool").forEach(btn => {
 
 function adicionarComponente(tipo) {
   const div = document.createElement("div");
-  div.classList.add("component");
-  div.style.left = "200px";
-  div.style.top = "100px";
+  div.classList.add("componente");
+  div.style.position = "absolute";
+  div.style.left = posX + "px";
+  div.style.top = posY + "px";
 
   const img = document.createElement("img");
+  img.src = "assets/" + componentes[tipo]; // 🔴 ISSO FALTAVA
   img.alt = tipo;
 
   div.appendChild(img);
   workspace.appendChild(div);
 
-  tornarArrastavel(div);
+  posY += espacamentoY; // move para baixo
+
+  if (posY > 700) {     // quebra de coluna
+    posY = 100;
+    posX += 220;
+  }
+}
+
 }
 
 function tornarArrastavel(el) {
