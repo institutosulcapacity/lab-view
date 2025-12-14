@@ -18,28 +18,18 @@ h1 {
   margin: auto;
 }
 
-.motor, .contator {
+.componente {
   padding: 20px;
   margin-bottom: 15px;
   border-radius: 8px;
   font-weight: bold;
   font-size: 18px;
-}
-
-.motor.desligado {
+  cursor: pointer;
   background: #555;
 }
 
-.motor.ligado {
+.componente.ligado {
   background: #2ecc71;
-}
-
-.contator.desligado {
-  background: #555;
-}
-
-.contator.ligado {
-  background: #3498db;
 }
 
 .botoes button {
@@ -50,12 +40,8 @@ h1 {
   border-radius: 8px;
   cursor: pointer;
   color: #fff;
+  background: #3498db;
 }
-
-button.liga { background: #2ecc71; }
-button.desliga { background: #e74c3c; }
-button.emergencia { background: #c0392b; }
-button.reset { background: #f39c12; }
 
 @media (max-width: 500px) {
   .botoes button {
