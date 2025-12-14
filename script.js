@@ -2,10 +2,6 @@ let posX = 200;
 let posY = 100;
 const espacamentoY = 180;
 
-let posX = 200;
-let posY = 100;
-const espacamentoY = 180;
-
 const componentes = {
   disjuntor_motor: "disjuntor_motor.png",
   contator: "contator_weg.png",
@@ -20,8 +16,8 @@ const workspace = document.getElementById("workspace");
 
 document.querySelectorAll(".tool").forEach(btn => {
   btn.addEventListener("click", () => {
-    const type = btn.dataset.type;
-    adicionarComponente(type);
+    const tipo = btn.dataset.type;
+    adicionarComponente(tipo);
   });
 });
 
@@ -39,30 +35,14 @@ function adicionarComponente(tipo) {
   div.appendChild(img);
   workspace.appendChild(div);
 
+  tornarArrastavel(div); // 🔑 ESSENCIAL
+
   posY += espacamentoY;
 
   if (posY > 700) {
     posY = 100;
     posX += 220;
   }
-}
-
-
-  const img = document.createElement("img");
-  img.src = "assets/" + componentes[tipo]; // 🔴 ISSO FALTAVA
-  img.alt = tipo;
-
-  div.appendChild(img);
-  workspace.appendChild(div);
-
-  posY += espacamentoY; // move para baixo
-
-  if (posY > 700) {     // quebra de coluna
-    posY = 100;
-    posX += 220;
-  }
-}
-
 }
 
 function tornarArrastavel(el) {
