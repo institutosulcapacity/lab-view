@@ -1,100 +1,39 @@
 body {
-  background:#1e1e1e;
-  color:#fff;
-  font-family: Arial, sans-serif;
-  text-align:center;
-}
-
-h1 { margin:20px 0; }
-
-.painel {
-  position: relative;
-  width: 300px;
-  height: 460px;
-  margin: auto;
-  background:#2b2b2b;
-  border-radius:12px;
-}
-
-.componente {
-  position: absolute;
-  left: 60px;
-  width: 180px;
-  height: 70px;
-  background:#555;
-  border-radius:8px;
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-  cursor:pointer;
-}
-
-.componente.ligado {
-  background:#2ecc71;
-}
-
-.motor {
-  cursor: default;
-}
-
-.icone {
-  width:40px;
-  height:40px;
-  background:#111;
-  border-radius:6px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-}
-
-.botoes {
-  margin-top:15px;
-}
-
-.botoes button {
-  padding:10px 25px;
-  font-size:16px;
-  border:none;
-  border-radius:6px;
-  background:#3498db;
-  color:#fff;
-}
-
-input {
-  margin-top: 5px;
-  padding: 5px;
-  width: 50px;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-@media (max-width: 500px) {
-  .componente {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .botoes {
-    flex-direction: column;
-  }
-
-  .botoes button {
-    width: 100%;
-  }
- body {
+  margin: 0;
   background: #1e1e1e;
   color: #fff;
   font-family: Arial, sans-serif;
   text-align: center;
 }
 
-.painel {
-  margin-top: 40px;
+h1 {
+  margin: 20px 0;
 }
 
-.componente {
+#painel {
+  width: 420px;
+  margin: 0 auto 40px;
+  padding: 20px;
+  background: #2b2b2b;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.componente-box {
+  background: #3a3a3a;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.componente-box img {
   width: 220px;
-  cursor: pointer;
+  max-width: 100%;
 }
 
+.componente-box span {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+}
