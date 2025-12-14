@@ -1,84 +1,71 @@
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  background: #1b1b1b;
-  font-family: Arial, sans-serif;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #111;
   color: #fff;
 }
 
-#app {
+/* Layout geral */
+.app {
   display: flex;
   height: 100vh;
 }
 
-/* PAINEL LATERAL */
-#toolbox {
-  width: 260px;
-  background: #2c2c2c;
-  padding: 15px;
-  border-right: 2px solid #444;
+/* Barra lateral */
+.sidebar {
+  width: 220px;
+  background: #2b2b2b;
+  padding: 10px;
+  border-right: 2px solid #000;
 }
 
-#toolbox h3 {
+.sidebar h2 {
   text-align: center;
-  margin-bottom: 15px;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
-#toolbox button {
+.tool {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 6px;
+  padding: 10px;
+  margin-bottom: 8px;
   background: #3a3a3a;
-  color: white;
-  border: 1px solid #555;
+  color: #fff;
+  border: none;
   cursor: pointer;
+  text-align: left;
 }
 
-#toolbox button:hover {
+.tool:hover {
   background: #555;
 }
 
-/* ÁREA DE MONTAGEM */
+/* Área do painel */
 #workspace {
   flex: 1;
   position: relative;
-  padding: 20px;
-  background: #111;
-}
-
-/* COMPONENTES */
-.component {
-  position: absolute;
-  cursor: move;
-}
-
-.component img {
-  width: 180px;
-  height: auto;
-}
-/* Área de trabalho */
-#workspace {
-  position: relative;
-  width: 100%;
-  height: 100vh;
+  background: #0f0f0f;
   overflow: hidden;
-  background-color: #111;
 }
 
-/* Container do componente */
+/* Componente no painel */
 .componente {
-  width: 140px;        /* tamanho padrão */
+  position: absolute;
   cursor: grab;
 }
 
-/* Imagens dos componentes */
+.componente:active {
+  cursor: grabbing;
+}
+
+/* Imagem do componente */
 .componente img {
-  width: 100%;
+  width: 110px;     /* 🔥 tamanho ajustado (≈ 80% menor) */
   height: auto;
-  display: block;
-  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
 }
