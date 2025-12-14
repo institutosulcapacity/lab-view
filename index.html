@@ -11,28 +11,26 @@
 <h1>Laboratório Virtual – Comandos Elétricos</h1>
 
 <div class="painel">
-
-  <svg width="300" height="420" class="cabos">
-    <line id="c1" x1="150" y1="70"  x2="150" y2="140"/>
-    <line id="c2" x1="150" y1="190" x2="150" y2="260"/>
-    <line id="c3" x1="150" y1="310" x2="150" y2="380"/>
-  </svg>
-
+  <!-- Disjuntor -->
   <div class="componente" id="disjuntor" onclick="toggle('disjuntor')" style="top:40px">
     <div class="icone">DJ</div>
     <span>DISJUNTOR</span>
   </div>
 
+  <!-- Contator -->
   <div class="componente" id="contator" onclick="toggle('contator')" style="top:160px">
     <div class="icone">CT</div>
     <span>CONTATOR</span>
   </div>
 
+  <!-- Temporizador -->
   <div class="componente" id="temporizador" onclick="toggle('temporizador')" style="top:280px">
     <div class="icone">TR</div>
     <span>TEMPORIZADOR</span>
+    <input type="number" id="tempo" value="5" min="1" max="60"> minutos
   </div>
 
+  <!-- Motor -->
   <div class="componente motor" id="motor" style="top:400px">
     <div class="icone">MT</div>
     <span>MOTOR</span>
@@ -41,6 +39,8 @@
 </div>
 
 <div class="botoes">
+  <button onclick="ligar()">LIGA</button>
+  <button onclick="desligar()">DESLIGA</button>
   <button onclick="resetar()">RESET</button>
 </div>
 
