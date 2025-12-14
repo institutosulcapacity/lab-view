@@ -1,57 +1,46 @@
-let conexoes = {
-  disjuntor: false,
-  contator: false,
-  temporizador: false
-};
+const workspace = document.getElementById("workspace");
 
-let tempoRestante = 0;
-let temporizadorAtivo = false;
+document.querySelectorAll(".tool").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const type = btn.dataset.type;
+    adicionarComponente(type);
+  });
+});
 
-function toggle(nome) {
-  conexoes[nome] = !conexoes[nome];
-  const elem = document.getElementById(nome);
-  elem.classList.toggle("ligado", conexoes[nome]);
-  atualizar();
+function adicionarComponente(tipo) {
+  const div = document.createElement("div");
+  div.classList.add("component");
+  div.style.left = "200px";
+  div.style.top = "100px";
+
+  const img = document.createElement("img");
+  img.src = `assets/${tipo}.png`;
+  img.alt = tipo;
+
+  div.appendChild(img);
+  workspace.appendChild(div);
+
+  tornarArrastavel(div);
 }
 
-function atualizar() {
-  const motor = document.getElementById("motor");
-  const disjuntor = conexoes.disjuntor;
-  const contator = conexoes.contator;
-  const temporizador = conexoes.temporizador;
+function tornarArrastavel(el) {
+  let offsetX = 0;
+  let offsetY = 0;
+  let arrastando = false;
 
-  if (disjuntor && contator && temporizador && tempoRestante <= 0) {
-    motor.classList.add("ligado");
-  } else {
-    motor.classList.remove("ligado");
-  }
-}
+  el.addEventListener("mousedown", e => {
+    arrastando = true;
+    offsetX = e.offsetX;
+    offsetY = e.offsetY;
+  });
 
-function ligar() {
-  if (conexoes.disjuntor && conexoes.contator && conexoes.temporizador) {
-    tempoRestante = parseInt(document.getElementById("tempo").value) * 60;
-    temporizadorAtivo = true;
-    const interval = setInterval(() => {
-      if (tempoRestante > 0) {
-        tempoRestante--;
-        atualizar();  // Atualiza o motor
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000);
-  }
-}
+  document.addEventListener("mousemove", e => {
+    if (!arrastando) return;
+    el.style.left = `${e.pageX - offsetX}px`;
+    el.style.top = `${e.pageY - offsetY}px`;
+  });
 
-function desligar() {
-  temporizadorAtivo = false;
-  tempoRestante = 0;
-  atualizar();
-}
-
-function resetar() {
-  conexoes.disjuntor = false;
-  conexoes.contator = false;
-  conexoes.temporizador = false;
-  document.querySelectorAll(".ligado").forEach(e => e.classList.remove("ligado"));
-  atualizar();
+  document.addEventListener("mouseup", () => {
+    arrastando = false;
+  });
 }
