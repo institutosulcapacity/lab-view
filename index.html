@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Laboratório Virtual – Comandos Elétricos (WEG)</title>
+  <title>Laboratório Virtual – Comandos Elétricos</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="app">
+<div id="container">
 
-  <div class="sidebar">
+  <aside id="sidebar">
     <h2>Componentes</h2>
 
     <button class="tool" data-type="disjuntor_motor">Disjuntor Motor</button>
@@ -19,12 +19,17 @@
     <button class="tool" data-type="botao_liga">Botão Liga</button>
     <button class="tool" data-type="botao_desliga">Botão Desliga</button>
     <button class="tool" data-type="emergencia">Emergência</button>
-  </div>
+  </aside>
 
-  <div id="workspace">
+  <main id="main">
     <h1>Montagem de Comandos Elétricos</h1>
-    <p>Selecione um componente à esquerda e posicione no painel</p>
-  </div>
+    <p>Selecione um componente à esquerda e ele será encaixado no trilho DIN</p>
+
+    <!-- TRILHO DIN -->
+    <div id="workspace">
+      <div id="din-rail"></div>
+    </div>
+  </main>
 
 </div>
 
