@@ -82,4 +82,19 @@ input {
   .botoes button {
     width: 100%;
   }
+ body {
+  background: #1e1e1e;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
 }
+
+.painel {
+  margin-top: 40px;
+}
+
+.componente {
+  width: 220px;
+  cursor: pointer;
+}
+
