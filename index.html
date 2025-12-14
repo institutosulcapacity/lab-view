@@ -11,14 +11,19 @@
 <h1>Laboratório Virtual – Comandos Elétricos</h1>
 
 <div class="painel">
-  <div class="motor desligado" id="motor">MOTOR DESLIGADO</div>
-  <div class="contator" id="contator">CONTATOR DESLIGADO</div>
+  <!-- Disjuntor -->
+  <div class="componente" id="disjuntor" onclick="toggleDisjuntor()">DISJUNTOR DESLIGADO</div>
+
+  <!-- Contator -->
+  <div class="componente" id="contator" onclick="toggleContator()">CONTATOR DESLIGADO</div>
+
+  <!-- Motor -->
+  <div class="componente" id="motor">MOTOR DESLIGADO</div>
 
   <div class="botoes">
-    <button class="liga" onclick="ligar()">LIGA</button>
-    <button class="desliga" onclick="desligar()">DESLIGA</button>
-    <button class="emergencia" onclick="emergencia()">PARADA DE EMERGÊNCIA</button>
-    <button class="reset" onclick="resetar()">RESET</button>
+    <button onclick="ligar()">LIGA</button>
+    <button onclick="desligar()">DESLIGA</button>
+    <button onclick="resetar()">RESET</button>
   </div>
 </div>
 
