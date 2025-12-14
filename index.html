@@ -1,49 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Laboratório Virtual – Comandos Elétricos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Laboratório Virtual – Partida Direta com Temporizador</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  background:#1e1e1e;
+  color:#fff;
+  font-family:Arial, sans-serif;
+  text-align:center;
+}
+h1{margin:20px 0}
+
+svg{
+  background:#2b2b2b;
+  border-radius:12px;
+}
+
+.componente{
+  fill:#555;
+  stroke:#999;
+  stroke-width:2;
+}
+
+.componente.ligado{ fill:#2ecc71 }
+
+.borne{
+  fill:#111;
+  stroke:#aaa;
+  stroke-width:1;
+  cursor:pointer;
+}
+
+.borne.selecionado{ fill:#3498db }
+
+.cabo{
+  stroke:#555;
+  stroke-width:6;
+}
+
+.cabo.energizado{ stroke:#2ecc71 }
+
+button{
+  margin-top:15px;
+  padding:10px 25px;
+  font-size:16px;
+  background:#3498db;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+}
+</style>
 </head>
+
 <body>
 
-<h1>Laboratório Virtual – Comandos Elétricos</h1>
+<h1>Partida Direta com Temporizador (TON)</h1>
 
-<div class="painel">
-  <!-- Disjuntor -->
-  <div class="componente" id="disjuntor" onclick="toggle('disjuntor')" style="top:40px">
-    <div class="icone">DJ</div>
-    <span>DISJUNTOR</span>
-  </div>
+<svg width="360" height="520" id="painel">
 
-  <!-- Contator -->
-  <div class="componente" id="contator" onclick="toggle('contator')" style="top:160px">
-    <div class="icone">CT</div>
-    <span>CONTATOR</span>
-  </div>
+  <!-- CABOS -->
+  <line id="c1" class="cabo" x1="180" y1="110" x2="180" y2="180"/>
+  <line id="c2" class="cabo" x1="180" y1="230" x2="180" y2="300"/>
+  <line id="c3" class="cabo" x1="180" y1="350" x2="180" y2="420"/>
 
-  <!-- Temporizador -->
-  <div class="componente" id="temporizador" onclick="toggle('temporizador')" style="top:280px">
-    <div class="icone">TR</div>
-    <span>TEMPORIZADOR</span>
-    <input type="number" id="tempo" value="5" min="1" max="60"> minutos
-  </div>
+  <!-- DISJUNTOR -->
+  <rect x="90" y="40" width="180" height="70" rx="10"
+        class="componente" id="disjuntor"/>
+  <text x="180" y="80" text-anchor="middle">DISJUNTOR</text>
+  <circle cx="180" cy="110" r="6" class="borne" data-borne="dj_out"/>
 
-  <!-- Motor -->
-  <div class="componente motor" id="motor" style="top:400px">
-    <div class="icone">MT</div>
-    <span>MOTOR</span>
-  </div>
+  <!-- CONTATOR -->
+  <rect x="90" y="180" width="180" height="70" rx="10"
+        class="componente" id="contator"/>
+  <text x="180" y="220" text-anchor="middle">CONTATOR</text>
+  <circle cx="180" cy="180" r="6" class="borne" data-borne="ct_in"/>
+  <circle cx="180" cy="250" r="6" class="borne" data-borne="ct_out"/>
 
-</div>
+  <!-- TEMPORIZADOR -->
+  <rect x="90" y="300" width="180" height="70" rx="10"
+        class="componente" id="temporizador"/>
+  <text x="180" y="340" text-anchor="middle">TEMPORIZADOR</text>
+  <circle cx="180" cy="300" r="6" class="borne" data-borne="tr_in"/>
+  <circle cx="180" cy="370" r="6" class="borne" data-borne="tr_out"/>
 
-<div class="botoes">
-  <button onclick="ligar()">LIGA</button>
-  <button onclick="desligar()">DESLIGA</button>
-  <button onclick="resetar()">RESET</button>
-</div>
+  <!-- MOTOR -->
+  <rect x="90" y="420" width="180" height="70" rx="10"
+        class="componente" id="motor"/>
+  <text x="180" y="460" text-anchor="middle">MOTOR</text>
+  <circle cx="180" cy="420" r="6" class="borne" data-borne="mt_in"/>
 
-<script src="script.js"></script>
+</svg>
+
+<br>
+<label>Tempo (s):</label>
+<input type="number" id="tempo" value="5" min="1" max="30">
+<br>
+<button onclick="resetar()">RESET</button>
+
+<script>
+let selecionado = null;
+let conexoes = {};
+let timerAtivo = false;
+
+document.querySelectorAll(".borne").forEach(b=>{
+  b.addEventListener("click",()=>{
+    if(!selecionado){
+      selecionado = b;
+      b.classList.add("selecionado");
+    }else{
+      conexoes[selecionado.dataset.borne] = b.dataset.borne;
+      selecionado.classList.remove("selecionado");
+      selecionado = null;
+      atualizar();
+    }
+  });
+});
+
+function atualizar(){
+  // valida circuito
+  const circuitoOk =
+    conexoes.dj_out==="ct_in" &&
+    conexoes.ct_out==="tr_in" &&
+    conexoes.tr_out==="mt_in";
+
+  document.getElementById("c1").classList.toggle("energizado",conexoes.dj_out);
+  document.getElementById("c2").classList.toggle("energizado",conexoes.ct_out);
+  document.getElementById("c3").classList.toggle("energizado",conexoes.tr_out);
+
+  if(circuitoOk && !timerAtivo){
+    timerAtivo = true;
+    document.getElementById("temporizador").classList.add("ligado");
+
+    setTimeout(()=>{
+      document.getElementById("motor").classList.add("ligado");
+    }, document.getElementById("tempo").value*1000);
+  }
+}
+
+function resetar(){
+  conexoes = {};
+  timerAtivo = false;
+  document.querySelectorAll(".ligado").forEach(e=>e.classList.remove("ligado"));
+  document.querySelectorAll(".energizado").forEach(e=>e.classList.remove("energizado"));
+}
+</script>
+
 </body>
 </html>
