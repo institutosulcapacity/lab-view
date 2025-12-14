@@ -1,5 +1,6 @@
 let disjuntorLigado = false;
 let contatorLigado = false;
+let temporizadorLigado = false;
 
 function toggleDisjuntor() {
   disjuntorLigado = !disjuntorLigado;
@@ -17,9 +18,17 @@ function toggleContator() {
   atualizarMotor();
 }
 
+function toggleTemporizador() {
+  temporizadorLigado = !temporizadorLigado;
+  const temp = document.getElementById("temporizador");
+  temp.classList.toggle("ligado", temporizadorLigado);
+  temp.innerText = temporizadorLigado ? "TEMPORIZADOR LIGADO" : "TEMPORIZADOR DESLIGADO";
+  atualizarMotor();
+}
+
 function atualizarMotor() {
   const motor = document.getElementById("motor");
-  if(disjuntorLigado && contatorLigado){
+  if(disjuntorLigado && contatorLigado && temporizadorLigado){
     motor.classList.add("ligado");
     motor.innerText = "MOTOR LIGADO";
   } else {
@@ -31,29 +40,37 @@ function atualizarMotor() {
 function ligar() {
   disjuntorLigado = true;
   contatorLigado = true;
+  temporizadorLigado = true;
+
   document.getElementById("disjuntor").classList.add("ligado");
   document.getElementById("disjuntor").innerText = "DISJUNTOR LIGADO";
+
   document.getElementById("contator").classList.add("ligado");
   document.getElementById("contator").innerText = "CONTATOR LIGADO";
+
+  document.getElementById("temporizador").classList.add("ligado");
+  document.getElementById("temporizador").innerText = "TEMPORIZADOR LIGADO";
+
   atualizarMotor();
 }
 
 function desligar() {
   disjuntorLigado = false;
   contatorLigado = false;
+  temporizadorLigado = false;
+
   document.getElementById("disjuntor").classList.remove("ligado");
   document.getElementById("disjuntor").innerText = "DISJUNTOR DESLIGADO";
+
   document.getElementById("contator").classList.remove("ligado");
   document.getElementById("contator").innerText = "CONTATOR DESLIGADO";
+
+  document.getElementById("temporizador").classList.remove("ligado");
+  document.getElementById("temporizador").innerText = "TEMPORIZADOR DESLIGADO";
+
   atualizarMotor();
 }
 
 function resetar() {
-  disjuntorLigado = false;
-  contatorLigado = false;
-  document.getElementById("disjuntor").classList.remove("ligado");
-  document.getElementById("disjuntor").innerText = "DISJUNTOR DESLIGADO";
-  document.getElementById("contator").classList.remove("ligado");
-  document.getElementById("contator").innerText = "CONTATOR DESLIGADO";
-  atualizarMotor();
+  desligar();
 }
