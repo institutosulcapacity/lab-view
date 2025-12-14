@@ -1,82 +1,84 @@
 * {
   box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #111;
+  background: #111;
   color: #fff;
 }
 
-/* Layout geral */
-.app {
+#container {
   display: flex;
   height: 100vh;
 }
 
-/* Barra lateral */
-.sidebar {
-  width: 230px;
-  background: #2c2c2c;
-  padding: 10px;
-  border-right: 2px solid #000;
+/* MENU LATERAL */
+#sidebar {
+  width: 220px;
+  background: #2b2b2b;
+  padding: 15px;
 }
 
-.sidebar h2 {
+#sidebar h2 {
+  margin-top: 0;
   text-align: center;
-  margin-bottom: 10px;
 }
 
 .tool {
   width: 100%;
-  padding: 10px;
   margin-bottom: 8px;
-  background: #3a3a3a;
+  padding: 10px;
+  background: #3c3c3c;
   color: #fff;
   border: none;
   cursor: pointer;
-  text-align: left;
-  font-size: 14px;
 }
 
 .tool:hover {
   background: #555;
 }
 
-/* Área de trabalho */
-#workspace {
+/* ÁREA PRINCIPAL */
+#main {
   flex: 1;
-  position: relative;
-  background: #0f0f0f;
-  overflow: hidden;
   padding: 20px;
 }
 
-#workspace h1 {
-  margin: 0;
-  font-size: 22px;
+/* PAINEL */
+#workspace {
+  position: relative;
+  width: 100%;
+  height: 80%;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  margin-top: 20px;
+  overflow: hidden;
 }
 
-#workspace p {
-  margin: 5px 0 20px 0;
-  color: #bbb;
-}
-
-/* Componente */
-.componente {
+/* TRILHO DIN */
+#din-rail {
   position: absolute;
+  top: 60px;
+  left: 40px;
+  right: 40px;
+  height: 120px;
+  border: 2px dashed #777;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding: 10px;
+}
+
+/* COMPONENTES */
+.component {
+  width: 80px;              /* 🔽 REDUZIDO ~80% */
   cursor: grab;
 }
 
-.componente:active {
-  cursor: grabbing;
-}
-
-/* 🔥 IMAGENS REDUZIDAS (≈ 80%) */
-.componente img {
-  width: 110px;
+.component img {
+  width: 100%;
   height: auto;
-  user-select: none;
-  pointer-events: none;
+  display: block;
 }
