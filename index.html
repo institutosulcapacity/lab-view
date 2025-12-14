@@ -11,17 +11,37 @@
 <h1>Laboratório Virtual – Comandos Elétricos</h1>
 
 <div class="painel">
+
   <!-- Disjuntor -->
-  <div class="componente" id="disjuntor" onclick="toggleDisjuntor()">DISJUNTOR DESLIGADO</div>
+  <div class="componente" id="disjuntor" onclick="toggleConexao('disjuntor')">
+    <img src="https://img.icons8.com/color/48/000000/circuit-breaker.png" alt="Disjuntor">
+    <p>DISJUNTOR</p>
+  </div>
 
   <!-- Contator -->
-  <div class="componente" id="contator" onclick="toggleContator()">CONTATOR DESLIGADO</div>
-
-  <!-- Motor -->
-  <div class="componente" id="motor">MOTOR DESLIGADO</div>
+  <div class="componente" id="contator" onclick="toggleConexao('contator')">
+    <img src="https://img.icons8.com/color/48/000000/contact.png" alt="Contator">
+    <p>CONTATOR</p>
+  </div>
 
   <!-- Temporizador -->
-  <div class="componente" id="temporizador" onclick="toggleTemporizador()">TEMPORIZADOR DESLIGADO</div>
+  <div class="componente" id="temporizador" onclick="toggleConexao('temporizador')">
+    <img src="https://img.icons8.com/color/48/000000/timer.png" alt="Temporizador">
+    <p>TEMPORIZADOR</p>
+  </div>
+
+  <!-- Motor -->
+  <div class="componente" id="motor">
+    <img src="https://img.icons8.com/color/48/000000/electric-motor.png" alt="Motor">
+    <p>MOTOR</p>
+  </div>
+
+  <!-- Cabos -->
+  <div class="cabos">
+    <div id="cabo1" class="cabo"></div>
+    <div id="cabo2" class="cabo"></div>
+    <div id="cabo3" class="cabo"></div>
+  </div>
 
   <div class="botoes">
     <button onclick="ligar()">LIGA</button>
