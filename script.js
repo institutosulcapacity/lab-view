@@ -1,21 +1,30 @@
-let conexoes = {
-  disjuntor: false,
-  contator: false,
-  temporizador: false
+const estado = {
+  disjuntor:false,
+  contator:false,
+  temporizador:false
 };
 
-function toggleConexao(nome) {
-  conexoes[nome] = !conexoes[nome];
-  const elem = document.getElementById(nome);
-  elem.classList.toggle("ligado", conexoes[nome]);
-  atualizarCabos(nome);
-  atualizarMotor();
+function toggle(nome){
+  estado[nome] = !estado[nome];
+  document.getElementById(nome).classList.toggle("ligado", estado[nome]);
+  atualizar();
 }
 
-function atualizarCabos(nome) {
-  const cabo = document.getElementById(`cabo${Object.keys(conexoes).indexOf(nome) + 1}`);
-  cabo.style.background = conexoes[nome] ? '#2ecc71' : '#555'; // verde para ligado
+function atualizar(){
+  document.getElementById("c1").classList.toggle("ativo", estado.disjuntor);
+  document.getElementById("c2").classList.toggle("ativo", estado.disjuntor && estado.contator);
+  document.getElementById("c3").classList.toggle("ativo", estado.disjuntor && estado.contator && estado.temporizador);
+
+  const motor = document.getElementById("motor");
+  if(estado.disjuntor && estado.contator && estado.temporizador){
+    motor.classList.add("ligado");
+  } else {
+    motor.classList.remove("ligado");
+  }
 }
 
-function atualizarMotor() {
-  const motor = document.getElementById
+function resetar(){
+  for(let k in estado){ estado[k]=false; }
+  document.querySelectorAll(".ligado").forEach(e=>e.classList.remove("ligado"));
+  document.querySelectorAll(".ativo").forEach(e=>e.classList.remove("ativo"));
+}
