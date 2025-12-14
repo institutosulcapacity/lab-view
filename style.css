@@ -17,15 +17,14 @@ body {
 
 /* Barra lateral */
 .sidebar {
-  width: 220px;
-  background: #2b2b2b;
+  width: 230px;
+  background: #2c2c2c;
   padding: 10px;
   border-right: 2px solid #000;
 }
 
 .sidebar h2 {
   text-align: center;
-  font-size: 18px;
   margin-bottom: 10px;
 }
 
@@ -38,21 +37,33 @@ body {
   border: none;
   cursor: pointer;
   text-align: left;
+  font-size: 14px;
 }
 
 .tool:hover {
   background: #555;
 }
 
-/* Área do painel */
+/* Área de trabalho */
 #workspace {
   flex: 1;
   position: relative;
   background: #0f0f0f;
   overflow: hidden;
+  padding: 20px;
 }
 
-/* Componente no painel */
+#workspace h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+#workspace p {
+  margin: 5px 0 20px 0;
+  color: #bbb;
+}
+
+/* Componente */
 .componente {
   position: absolute;
   cursor: grab;
@@ -62,9 +73,9 @@ body {
   cursor: grabbing;
 }
 
-/* Imagem do componente */
+/* 🔥 IMAGENS REDUZIDAS (≈ 80%) */
 .componente img {
-  width: 110px;     /* 🔥 tamanho ajustado (≈ 80% menor) */
+  width: 110px;
   height: auto;
   user-select: none;
   pointer-events: none;
