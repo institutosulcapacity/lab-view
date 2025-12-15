@@ -48,12 +48,16 @@ body {
 /* PAINEL */
 #workspace {
   position: relative;
-  width: 100%;
-  height: calc(100vh - 140px);
+  width: calc(100% - 260px); /* sobra espaço para o menu */
+  height: 420px;
+  margin-left: 260px;        /* empurra para a direita */
   margin-top: 10px;
-  background: #181818;
-  border: 2px dashed #444;
+
+  border: 2px dashed #555;
+  background: rgba(255,255,255,0.02);
   overflow: hidden;
+}
+
 }
 
 /* COMPONENTES */
