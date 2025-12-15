@@ -23,9 +23,7 @@ body {
 }
 
 #sidebar h2 {
-    margin-top: 0;
     margin-bottom: 15px;
-    font-size: 18px;
 }
 
 .tool {
@@ -54,10 +52,9 @@ body {
     position: relative;
     margin-top: 15px;
     width: 100%;
-    height: calc(100% - 80px);
+    height: calc(100% - 90px);
     border: 2px dashed #555;
     background: #111;
-    overflow: hidden;
 }
 
 /* COMPONENTES */
@@ -66,25 +63,20 @@ body {
     cursor: grab;
 }
 
-.component:active {
-    cursor: grabbing;
-}
-
 .component img {
     display: block;
-    height: auto;
 }
 
-/* TAMANHOS */
+/* TAMANHOS DEFINITIVOS */
 
 /* Disjuntor */
 .component.disjuntor_motor img {
     width: 180px;
 }
 
-/* Contator */
+/* Contator +100% */
 .component.contator img {
-    width: 180px;
+    width: 200px;
 }
 
 /* Relé térmico */
@@ -94,12 +86,12 @@ body {
 
 /* Motor */
 .component.motor img {
-    width: 220px;
+    width: 240px;
 }
 
 /* Botões */
 .component.botao_liga img,
 .component.botao_desliga img,
 .component.emergencia img {
-    width: 80px;
+    width: 90px;
 }
