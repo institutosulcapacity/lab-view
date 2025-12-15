@@ -12,18 +12,19 @@ const workspace = document.getElementById("workspace");
 
 document.querySelectorAll(".tool").forEach(btn => {
   btn.addEventListener("click", () => {
-    adicionarComponente(btn.dataset.type);
+    criarComponente(btn.dataset.type);
   });
 });
 
-function adicionarComponente(tipo) {
+function criarComponente(tipo) {
   const div = document.createElement("div");
   div.className = "component";
-  div.style.left = "40px";
-  div.style.top = "40px";
+  div.style.left = "50px";
+  div.style.top = "50px";
 
   const img = document.createElement("img");
   img.src = "assets/" + componentes[tipo];
+  img.alt = tipo;
 
   div.appendChild(img);
   workspace.appendChild(div);
@@ -34,25 +35,27 @@ function adicionarComponente(tipo) {
 function tornarArrastavel(el) {
   let offsetX = 0;
   let offsetY = 0;
-  let ativo = false;
+  let dragging = false;
 
   el.addEventListener("mousedown", e => {
-    ativo = true;
+    dragging = true;
     const rect = el.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
     offsetY = e.clientY - rect.top;
+    el.style.cursor = "grabbing";
   });
 
   document.addEventListener("mousemove", e => {
-    if (!ativo) return;
+    if (!dragging) return;
 
-    const area = workspace.getBoundingClientRect();
+    const workspaceRect = workspace.getBoundingClientRect();
 
-    el.style.left = (e.clientX - area.left - offsetX) + "px";
-    el.style.top  = (e.clientY - area.top  - offsetY) + "px";
+    el.style.left = (e.clientX - workspaceRect.left - offsetX) + "px";
+    el.style.top  = (e.clientY - workspaceRect.top  - offsetY) + "px";
   });
 
   document.addEventListener("mouseup", () => {
-    ativo = false;
+    dragging = false;
+    el.style.cursor = "grab";
   });
 }
