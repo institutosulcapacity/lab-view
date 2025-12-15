@@ -1,4 +1,4 @@
-{
+* {
     box-sizing: border-box;
     user-select: none;
 }
@@ -44,7 +44,7 @@ body {
 }
 
 /* ÁREA PRINCIPAL */
-#main {
+main {
     flex: 1;
     padding: 15px;
 }
@@ -70,8 +70,12 @@ body {
 }
 
 .component img {
-    width: 90px;       /* escala padrão (ajustável depois) */
+    width: 90px;
     height: auto;
-    display: block;
-    pointer-events: none;
+}
+
+/* BOTÕES MENORES (−40%) */
+.component.botao img,
+.component.emergencia img {
+    width: 55px;
 }
