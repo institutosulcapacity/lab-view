@@ -43,12 +43,13 @@ body {
     background: #444;
 }
 
-/* ÁREA PRINCIPAL */
+/* MAIN */
 #main {
     flex: 1;
     padding: 15px;
 }
 
+/* WORKSPACE */
 #workspace {
     position: relative;
     margin-top: 15px;
@@ -69,27 +70,36 @@ body {
     cursor: grabbing;
 }
 
-/* TAMANHO BASE */
 .component img {
-    width: 90px;
+    display: block;
     height: auto;
 }
 
-/* +50% */
-.component.disjuntor_motor img,
-.component.contator img,
-.component.rele_termico img {
-    width: 135px;
-}
+/* TAMANHOS */
 
-/* MOTOR +100% */
-.component.motor img {
+/* Disjuntor */
+.component.disjuntor_motor img {
     width: 180px;
 }
 
-/* BOTÕES */
+/* Contator */
+.component.contator img {
+    width: 180px;
+}
+
+/* Relé térmico */
+.component.rele_termico img {
+    width: 180px;
+}
+
+/* Motor */
+.component.motor img {
+    width: 220px;
+}
+
+/* Botões */
 .component.botao_liga img,
 .component.botao_desliga img,
 .component.emergencia img {
-    width: 70px;
+    width: 80px;
 }
