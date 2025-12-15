@@ -10,6 +10,9 @@ const components = {
 
 const workspace = document.getElementById("workspace");
 
+// controle de empilhamento inicial
+let spawnOffset = 0;
+
 document.querySelectorAll(".tool").forEach(btn => {
     btn.addEventListener("click", () => {
         criarComponente(btn.dataset.type);
@@ -18,7 +21,7 @@ document.querySelectorAll(".tool").forEach(btn => {
 
 function criarComponente(tipo) {
     const comp = document.createElement("div");
-    comp.className = "component";
+    comp.className = "component " + tipo;
 
     const img = document.createElement("img");
     img.src = "assets/" + components[tipo];
@@ -27,10 +30,14 @@ function criarComponente(tipo) {
     comp.appendChild(img);
     workspace.appendChild(comp);
 
-    // posição inicial central
-    const rect = workspace.getBoundingClientRect();
-    comp.style.left = (rect.width / 2 - 45) + "px";
-    comp.style.top = (rect.height / 2 - 45) + "px";
+    // posição inicial: TOPO DIREITO
+    const wsRect = workspace.getBoundingClientRect();
+
+    comp.style.left = (wsRect.width - 120) + "px";
+    comp.style.top = (20 + spawnOffset) + "px";
+
+    spawnOffset += 20;
+    if (spawnOffset > 200) spawnOffset = 0;
 
     tornarArrastavel(comp);
 }
@@ -42,9 +49,11 @@ function tornarArrastavel(el) {
 
     el.addEventListener("mousedown", e => {
         arrastando = true;
+
         const rect = el.getBoundingClientRect();
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
+
         el.style.zIndex = 1000;
     });
 
@@ -52,6 +61,7 @@ function tornarArrastavel(el) {
         if (!arrastando) return;
 
         const wsRect = workspace.getBoundingClientRect();
+
         let x = e.clientX - wsRect.left - offsetX;
         let y = e.clientY - wsRect.top - offsetY;
 
