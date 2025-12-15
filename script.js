@@ -10,15 +10,14 @@ const components = {
 
 const workspace = document.getElementById("workspace");
 
-// controle de empilhamento inicial
-let spawnOffset = 0;
-
+/* BOTÕES */
 document.querySelectorAll(".tool").forEach(btn => {
     btn.addEventListener("click", () => {
         criarComponente(btn.dataset.type);
     });
 });
 
+/* CRIA COMPONENTE */
 function criarComponente(tipo) {
     const comp = document.createElement("div");
     comp.className = "component " + tipo;
@@ -30,18 +29,15 @@ function criarComponente(tipo) {
     comp.appendChild(img);
     workspace.appendChild(comp);
 
-    // posição inicial: TOPO DIREITO
+    // posição inicial central
     const wsRect = workspace.getBoundingClientRect();
-
-    comp.style.left = (wsRect.width - 120) + "px";
-    comp.style.top = (20 + spawnOffset) + "px";
-
-    spawnOffset += 20;
-    if (spawnOffset > 200) spawnOffset = 0;
+    comp.style.left = (wsRect.width / 2 - 60) + "px";
+    comp.style.top = (wsRect.height / 2 - 60) + "px";
 
     tornarArrastavel(comp);
 }
 
+/* DRAG */
 function tornarArrastavel(el) {
     let offsetX = 0;
     let offsetY = 0;
@@ -49,11 +45,9 @@ function tornarArrastavel(el) {
 
     el.addEventListener("mousedown", e => {
         arrastando = true;
-
         const rect = el.getBoundingClientRect();
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
-
         el.style.zIndex = 1000;
     });
 
@@ -61,12 +55,8 @@ function tornarArrastavel(el) {
         if (!arrastando) return;
 
         const wsRect = workspace.getBoundingClientRect();
-
-        let x = e.clientX - wsRect.left - offsetX;
-        let y = e.clientY - wsRect.top - offsetY;
-
-        el.style.left = x + "px";
-        el.style.top = y + "px";
+        el.style.left = (e.clientX - wsRect.left - offsetX) + "px";
+        el.style.top = (e.clientY - wsRect.top - offsetY) + "px";
     });
 
     document.addEventListener("mouseup", () => {
