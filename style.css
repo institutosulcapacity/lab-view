@@ -72,3 +72,9 @@ body {
   pointer-events: none;
   user-select: none;
 }
+/* Botões de comando menores */
+.componente.botao_liga img,
+.componente.botao_desliga img,
+.componente.emergencia img {
+  width: 55px;   /* ~40% menor */
+}
