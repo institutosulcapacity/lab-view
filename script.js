@@ -2,13 +2,11 @@ const components = {
     disjuntor_motor: "disjuntor_motor.png",
     contator: "contator_weg.png",
     rele_termico: "rele_termico_weg.png",
-    motor: {
-        off: "motor_off.png",
-        on: "motor_on.png"
-    },
     botao_liga: "botao_liga.png",
     botao_desliga: "botao_desliga.png",
-    emergencia: "emergencia.png"
+    emergencia: "emergencia.png",
+    motor_off: "motor_off.png",
+    motor_on: "motor_on.png"
 };
 
 const workspace = document.getElementById("workspace");
@@ -21,13 +19,17 @@ document.querySelectorAll(".tool").forEach(btn => {
 
 function criarComponente(tipo) {
     const comp = document.createElement("div");
-    comp.className = "component " + tipo;
+    comp.className = `component ${tipo}`;
 
     const img = document.createElement("img");
 
     if (tipo === "motor") {
-        img.src = "assets/" + components.motor.off;
+        img.src = "assets/" + components.motor_off;
         comp.dataset.estado = "off";
+
+        comp.addEventListener("dblclick", () => {
+            alternarMotor(comp);
+        });
     } else {
         img.src = "assets/" + components[tipo];
     }
@@ -35,36 +37,26 @@ function criarComponente(tipo) {
     comp.appendChild(img);
     workspace.appendChild(comp);
 
-    const rect = workspace.getBoundingClientRect();
-    comp.style.left = rect.width / 2 - 50 + "px";
-    comp.style.top = rect.height / 2 - 50 + "px";
+    comp.style.left = "100px";
+    comp.style.top = "100px";
 
     tornarArrastavel(comp);
-
-    // Clique para testar motor ON/OFF
-    if (tipo === "motor") {
-        comp.addEventListener("dblclick", () => {
-            alternarMotor(comp);
-        });
-    }
 }
 
 function alternarMotor(motor) {
     const img = motor.querySelector("img");
 
     if (motor.dataset.estado === "off") {
-        img.src = "assets/" + components.motor.on;
+        img.src = "assets/" + components.motor_on;
         motor.dataset.estado = "on";
     } else {
-        img.src = "assets/" + components.motor.off;
+        img.src = "assets/" + components.motor_off;
         motor.dataset.estado = "off";
     }
 }
 
 function tornarArrastavel(el) {
-    let offsetX = 0;
-    let offsetY = 0;
-    let dragging = false;
+    let offsetX = 0, offsetY = 0, dragging = false;
 
     el.addEventListener("mousedown", e => {
         dragging = true;
@@ -76,10 +68,9 @@ function tornarArrastavel(el) {
 
     document.addEventListener("mousemove", e => {
         if (!dragging) return;
-
-        const wsRect = workspace.getBoundingClientRect();
-        el.style.left = e.clientX - wsRect.left - offsetX + "px";
-        el.style.top = e.clientY - wsRect.top - offsetY + "px";
+        const ws = workspace.getBoundingClientRect();
+        el.style.left = e.clientX - ws.left - offsetX + "px";
+        el.style.top = e.clientY - ws.top - offsetY + "px";
     });
 
     document.addEventListener("mouseup", () => {
