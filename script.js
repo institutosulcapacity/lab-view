@@ -1,80 +1,113 @@
-const components = {
-    disjuntor_motor: "disjuntor_motor.png",
-    contator: "contator_weg.png",
-    rele_termico: "rele_termico_weg.png",
-    botao_liga: "botao_liga.png",
-    botao_desliga: "botao_desliga.png",
-    emergencia: "emergencia.png",
-    motor_off: "motor_off.png",
-    motor_on: "motor_on.png"
+const assets = {
+  disjuntor_motor: "disjuntor_motor.png",
+  contator_aberto: "contator_aberto.png",
+  contator_fechado: "contator_fechado.png",
+  rele_termico: "rele_termico_weg.png",
+  motor_off: "motor_off.png",
+  motor_on: "motor_on.png",
+  botao_liga: "botao_liga.png",
+  botao_desliga: "botao_desliga.png",
+  emergencia: "emergencia.png"
 };
 
 const workspace = document.getElementById("workspace");
+let emergenciaAtiva = false;
 
+/* BOTÕES LATERAIS */
 document.querySelectorAll(".tool").forEach(btn => {
-    btn.addEventListener("click", () => {
-        criarComponente(btn.dataset.type);
-    });
+  btn.addEventListener("click", () => {
+    const tipo = btn.dataset.type;
+    const acao = btn.dataset.action;
+
+    if (acao === "liga") ligarSistema();
+    else if (acao === "desliga") desligarSistema();
+    else if (acao === "emergencia") emergencia();
+    else if (tipo) criarComponente(tipo);
+  });
 });
 
+/* CRIAR COMPONENTES */
 function criarComponente(tipo) {
-    const comp = document.createElement("div");
-    comp.className = `component ${tipo}`;
+  const comp = document.createElement("div");
+  comp.className = `component ${tipo}`;
 
-    const img = document.createElement("img");
+  const img = document.createElement("img");
 
-    if (tipo === "motor") {
-        img.src = "assets/" + components.motor_off;
-        comp.dataset.estado = "off";
+  if (tipo === "contator") {
+    img.src = "assets/" + assets.contator_aberto;
+    comp.dataset.estado = "aberto";
+  }
+  else if (tipo === "motor") {
+    img.src = "assets/" + assets.motor_off;
+    comp.dataset.estado = "off";
+  }
+  else {
+    img.src = "assets/" + assets[tipo];
+  }
 
-        comp.addEventListener("dblclick", () => {
-            alternarMotor(comp);
-        });
-    } else {
-        img.src = "assets/" + components[tipo];
-    }
+  comp.appendChild(img);
+  workspace.appendChild(comp);
 
-    comp.appendChild(img);
-    workspace.appendChild(comp);
+  comp.style.left = "120px";
+  comp.style.top = "120px";
 
-    comp.style.left = "100px";
-    comp.style.top = "100px";
-
-    tornarArrastavel(comp);
+  tornarArrastavel(comp);
 }
 
-function alternarMotor(motor) {
-    const img = motor.querySelector("img");
-
-    if (motor.dataset.estado === "off") {
-        img.src = "assets/" + components.motor_on;
-        motor.dataset.estado = "on";
-    } else {
-        img.src = "assets/" + components.motor_off;
-        motor.dataset.estado = "off";
-    }
-}
-
+/* DRAG */
 function tornarArrastavel(el) {
-    let offsetX = 0, offsetY = 0, dragging = false;
+  let ox = 0, oy = 0, drag = false;
 
-    el.addEventListener("mousedown", e => {
-        dragging = true;
-        const rect = el.getBoundingClientRect();
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
-        el.style.zIndex = 1000;
-    });
+  el.addEventListener("mousedown", e => {
+    drag = true;
+    const r = el.getBoundingClientRect();
+    ox = e.clientX - r.left;
+    oy = e.clientY - r.top;
+    el.style.zIndex = 1000;
+  });
 
-    document.addEventListener("mousemove", e => {
-        if (!dragging) return;
-        const ws = workspace.getBoundingClientRect();
-        el.style.left = e.clientX - ws.left - offsetX + "px";
-        el.style.top = e.clientY - ws.top - offsetY + "px";
-    });
+  document.addEventListener("mousemove", e => {
+    if (!drag) return;
+    const w = workspace.getBoundingClientRect();
+    el.style.left = e.clientX - w.left - ox + "px";
+    el.style.top = e.clientY - w.top - oy + "px";
+  });
 
-    document.addEventListener("mouseup", () => {
-        dragging = false;
-        el.style.zIndex = "";
-    });
+  document.addEventListener("mouseup", () => {
+    drag = false;
+    el.style.zIndex = "";
+  });
+}
+
+/* LÓGICA ELÉTRICA */
+function ligarSistema() {
+  if (emergenciaAtiva) return;
+
+  document.querySelectorAll(".component.contator").forEach(c => {
+    c.dataset.estado = "fechado";
+    c.querySelector("img").src = "assets/" + assets.contator_fechado;
+  });
+
+  document.querySelectorAll(".component.motor").forEach(m => {
+    m.dataset.estado = "on";
+    m.querySelector("img").src = "assets/" + assets.motor_on;
+  });
+}
+
+function desligarSistema() {
+  document.querySelectorAll(".component.contator").forEach(c => {
+    c.dataset.estado = "aberto";
+    c.querySelector("img").src = "assets/" + assets.contator_aberto;
+  });
+
+  document.querySelectorAll(".component.motor").forEach(m => {
+    m.dataset.estado = "off";
+    m.querySelector("img").src = "assets/" + assets.motor_off;
+  });
+}
+
+function emergencia() {
+  emergenciaAtiva = true;
+  desligarSistema();
+  alert("EMERGÊNCIA ATIVADA – RESET NECESSÁRIO");
 }
