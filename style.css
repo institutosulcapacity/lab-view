@@ -71,10 +71,10 @@ body {
 
 /* ESCALAS CORRETAS */
 
-/* Disjuntor e Relé (100%) */
+/* Disjuntor e Relé (75%) */
 .component.disjuntor_motor img,
 .component.rele_termico img{
-    width: 160px;
+    width: 240px;
     height: auto;
 }
 
@@ -86,7 +86,7 @@ body {
 
 /* MOTOR +100% */
 .component.motor img {
-    width: 160px; /* 160px x 2 */
+    width: 200px; /* 160px x 2 */
     height: auto;
 }
 
