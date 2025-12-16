@@ -12,17 +12,16 @@ const assets = {
 
 const workspace = document.getElementById("workspace");
 let emergenciaAtiva = false;
+let botaoLigaArrastado = false;
+let botaoDesligaArrastado = false;
 
 /* BOTÕES LATERAIS */
 document.querySelectorAll(".tool").forEach(btn => {
   btn.addEventListener("click", () => {
     const tipo = btn.dataset.type;
-    const acao = btn.dataset.action;
 
-    if (acao === "liga") ligarSistema();
-    else if (acao === "desliga") desligarSistema();
-    else if (acao === "emergencia") emergencia();
-    else if (tipo) criarComponente(tipo);
+    // Criar o componente
+    if (tipo) criarComponente(tipo);
   });
 });
 
@@ -33,6 +32,7 @@ function criarComponente(tipo) {
 
   const img = document.createElement("img");
 
+  // Verificando os tipos e alterando imagens conforme necessidade
   if (tipo === "contator") {
     img.src = "assets/" + assets.contator_aberto;
     comp.dataset.estado = "aberto";
@@ -40,8 +40,7 @@ function criarComponente(tipo) {
   else if (tipo === "motor") {
     img.src = "assets/" + assets.motor_off;
     comp.dataset.estado = "off";
-  }
-  else {
+  } else {
     img.src = "assets/" + assets[tipo];
   }
 
@@ -83,15 +82,17 @@ function tornarArrastavel(el) {
 function ligarSistema() {
   if (emergenciaAtiva) return;
 
-  document.querySelectorAll(".component.contator").forEach(c => {
-    c.dataset.estado = "fechado";
-    c.querySelector("img").src = "assets/" + assets.contator_fechado;
-  });
+  if (botaoLigaArrastado && botaoDesligaArrastado) {
+    document.querySelectorAll(".component.contator").forEach(c => {
+      c.dataset.estado = "fechado";
+      c.querySelector("img").src = "assets/" + assets.contator_fechado;
+    });
 
-  document.querySelectorAll(".component.motor").forEach(m => {
-    m.dataset.estado = "on";
-    m.querySelector("img").src = "assets/" + assets.motor_on;
-  });
+    document.querySelectorAll(".component.motor").forEach(m => {
+      m.dataset.estado = "on";
+      m.querySelector("img").src = "assets/" + assets.motor_on;
+    });
+  }
 }
 
 function desligarSistema() {
