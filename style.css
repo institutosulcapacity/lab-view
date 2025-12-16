@@ -73,14 +73,15 @@ body {
 
 /* Disjuntor e Relé (100%) */
 .component.disjuntor_motor img,
+.component.motor img,
 .component.rele_termico img{
     width: 160px;
     height: auto;
 }
 
-/* CONTATOR +100% */
+/* CONTATOR +75% */
 .component.contator img {
-    width: 320px; /* 160px x 2 */
+    width: 240px; /* 160px x 2 */
     height: auto;
 }
 
