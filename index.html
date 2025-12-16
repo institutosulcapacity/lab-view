@@ -7,28 +7,27 @@
 </head>
 
 <body>
-  <div id="app">
+<div id="app">
 
-    <aside id="sidebar">
-      <h2>Componentes</h2>
-      <button class="tool" data-type="disjuntor_motor">Disjuntor Motor</button>
-      <button class="tool" data-type="contator">Contator</button>
-      <button class="tool" data-type="rele_termico">Relé Térmico</button>
-      <button class="tool" data-type="motor">Motor</button>
-      <button class="tool" data-type="botao_liga">Botão Liga</button>
-      <button class="tool" data-type="botao_desliga">Botão Desliga</button>
-      <button class="tool" data-type="emergencia">Emergência</button>
-    </aside>
+  <aside id="sidebar">
+    <h2>Componentes</h2>
+    <button class="tool" data-type="disjuntor_motor">Disjuntor Motor</button>
+    <button class="tool" data-type="contator">Contator</button>
+    <button class="tool" data-type="rele_termico">Relé Térmico</button>
+    <button class="tool" data-type="motor">Motor</button>
+    <button class="tool" data-action="liga">Botão Liga</button>
+    <button class="tool" data-action="desliga">Botão Desliga</button>
+    <button class="tool" data-action="emergencia">Emergência</button>
+  </aside>
 
-    <main id="main">
-      <h1>Montagem de Comandos Elétricos</h1>
-      <p>Selecione um componente à esquerda e posicione livremente no painel</p>
+  <main>
+    <h1>Montagem de Comandos Elétricos</h1>
+    <p>Arraste os componentes e utilize os botões de comando</p>
+    <div id="workspace"></div>
+  </main>
 
-      <div id="workspace"></div>
-    </main>
+</div>
 
-  </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
