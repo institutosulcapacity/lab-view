@@ -80,26 +80,26 @@ body {
 
 /* CONTATOR */
 .component.contator_aberto img {
-    width: 240px; /* 240px x 2 */
+    width: 100px; /* 240px x 2 */
     height: auto;
 }
 
 /* CONTATOR */
 .component.contator_fechado img {
-    width: 240px; /* 240px x 2 */
+    width: 100px; /* 240px x 2 */
     height: auto;
 }
 
 /* MOTOR */
 .component.motor_off img {
-    width: 100px; /* 100px x 2 */
+    width: 50px; /* 100px x 2 */
     height: auto;
 
 }
 
 /* MOTOR */
 .component.motor_on img {
-    width: 100px; /* 100px x 2 */
+    width: 50px; /* 100px x 2 */
     height: auto;
 }
 
