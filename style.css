@@ -80,9 +80,14 @@ body {
 
 /* CONTATOR +100% */
 .component.contator img {
-    width: 320px; /* 160px x 2 */
+    width: 2400px; /* 160px x 2 */
     height: auto;
 }
+
+/* CONTATOR +100% */
+.component.motor img {
+    width: 2400px; /* 160px x 2 */
+    height: auto;
 
 }
 
