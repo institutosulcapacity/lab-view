@@ -1,99 +1,84 @@
 * {
-    box-sizing: border-box;
-    user-select: none;
+  box-sizing: border-box;
+  user-select: none;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #0f0f0f;
-    color: #fff;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #0f0f0f;
+  color: #fff;
 }
 
 #app {
-    display: flex;
-    height: 100vh;
+  display: flex;
+  height: 100vh;
 }
 
 /* SIDEBAR */
 #sidebar {
-    width: 220px;
-    background: #1b1b1b;
-    padding: 15px;
-}
-
-#sidebar h2 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 18px;
+  width: 220px;
+  background: #1b1b1b;
+  padding: 15px;
 }
 
 .tool {
-    width: 100%;
-    margin-bottom: 8px;
-    padding: 10px;
-    background: #2d2d2d;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    text-align: left;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 10px;
+  background: #2d2d2d;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-align: left;
 }
 
-.tool:hover {
-    background: #444;
-}
-
-/* ÁREA PRINCIPAL */
+/* MAIN */
 #main {
-    flex: 1;
-    padding: 15px;
+  flex: 1;
+  padding: 15px;
 }
 
+/* WORKSPACE */
 #workspace {
-    position: relative;
-    margin-top: 15px;
-    width: 100%;
-    height: calc(100% - 80px);
-    border: 2px dashed #555;
-    background: #111;
-    overflow: hidden;
+  position: relative;
+  margin-top: 15px;
+  width: 100%;
+  height: calc(100% - 80px);
+  background: #111;
+  border: 2px dashed #555;
+  overflow: hidden;
+}
+
+/* SVG FIOS */
+#wires {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 /* COMPONENTES */
 .component {
-    position: absolute;
-    cursor: grab;
+  position: absolute;
+  cursor: grab;
 }
 
-.component:active {
-    cursor: grabbing;
+.component img {
+  width: 140px;
+  display: block;
 }
 
-/* ESCALAS CORRETAS */
-
-/* Disjuntor Motor e Relé Térmico */
-.component.disjuntor_motor img,
-.component.rele_termico img {
-    width: 160px;
-    height: auto;
+/* BORNES */
+.borne {
+  width: 12px;
+  height: 12px;
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+  cursor: crosshair;
 }
 
-/* CONTATOR +100% */
-.component.contator img {
-    width: 320px; /* 160 x 2 */
-    height: auto;
-}
-
-/* MOTOR */
-.component.motor img {
-    width: 300px;
-    height: auto;
-}
-
-/* BOTÕES */
-.component.botao_liga img,
-.component.botao_desliga img,
-.component.emergencia img {
-    width: 90px;
-    height: auto;
+.borne.selecionado {
+  background: lime;
 }
