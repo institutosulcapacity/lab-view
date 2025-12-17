@@ -1,134 +1,75 @@
-const assets = {
-  botao_liga: "botao_liga.png",
-  botao_desliga: "botao_desliga.png",
-  emergencia: "emergencia.png",
-  contator: "contator_aberto.png",
-  motor: "motor_off.png"
+const components = {
+    disjuntor_motor: ["disjuntor_motor.png"],
+    contator: ["contator_aberto.png", "contator_fechado.png"],
+    rele_termico: ["rele_termico_weg.png"],
+    motor: ["motor_off.png", "motor_on.png"],
+    botao_liga: ["botao_liga.png"],
+    botao_desliga: ["botao_desliga.png"],
+    emergencia: ["emergencia.png"]
 };
 
 const workspace = document.getElementById("workspace");
-const svg = document.getElementById("wires");
 
-let borneSelecionado = null;
-const ligacoes = [];
-
-/* MENU */
+/* Criar componente */
 document.querySelectorAll(".tool").forEach(btn => {
-  btn.addEventListener("click", () => {
-    criarComponente(btn.dataset.type);
-  });
+    btn.addEventListener("click", () => {
+        criarComponente(btn.dataset.type);
+    });
 });
 
-/* CRIA COMPONENTE */
 function criarComponente(tipo) {
-  const comp = document.createElement("div");
-  comp.className = "component " + tipo;
+    const comp = document.createElement("div");
+    comp.className = `component ${tipo}`;
+    comp.dataset.type = tipo;
+    comp.dataset.state = 0;
 
-  const img = document.createElement("img");
-  img.src = "assets/" + assets[tipo];
-  img.draggable = false;
+    const img = document.createElement("img");
+    img.src = "assets/" + components[tipo][0];
+    comp.appendChild(img);
 
-  comp.appendChild(img);
-  workspace.appendChild(comp);
+    workspace.appendChild(comp);
 
-  comp.style.left = "100px";
-  comp.style.top = "100px";
+    // posição inicial
+    comp.style.left = "50px";
+    comp.style.top = "50px";
 
-  criarBornes(comp, tipo);
-  tornarArrastavel(comp);
-}
+    tornarArrastavel(comp);
 
-/* CRIA BORNES SIMPLES */
-function criarBornes(comp, tipo) {
-  const bornesPorTipo = {
-    botao_liga: ["13", "14"],
-    botao_desliga: ["21", "22"],
-    emergencia: ["11", "12"],
-    contator: ["A1", "A2"],
-    motor: ["U", "V", "W"]
-  };
-
-  const lista = bornesPorTipo[tipo];
-  if (!lista) return;
-
-  lista.forEach((id, i) => {
-    const b = document.createElement("div");
-    b.className = "borne";
-    b.dataset.id = `${tipo}:${id}`;
-
-    b.style.left = "10px";
-    b.style.top = 20 + i * 18 + "px";
-
-    b.addEventListener("click", e => {
-      e.stopPropagation();
-      clicarBorne(b);
-    });
-
-    comp.appendChild(b);
-  });
-}
-
-/* CLIQUE EM BORNE */
-function clicarBorne(borne) {
-  if (!borneSelecionado) {
-    borneSelecionado = borne;
-    borne.classList.add("selecionado");
-  } else {
-    criarFio(borneSelecionado, borne);
-    borneSelecionado.classList.remove("selecionado");
-    borneSelecionado = null;
-  }
-}
-
-/* DESENHA FIO */
-function criarFio(b1, b2) {
-  const r1 = b1.getBoundingClientRect();
-  const r2 = b2.getBoundingClientRect();
-  const w = workspace.getBoundingClientRect();
-
-  const x1 = r1.left + r1.width / 2 - w.left;
-  const y1 = r1.top + r1.height / 2 - w.top;
-  const x2 = r2.left + r2.width / 2 - w.left;
-  const y2 = r2.top + r2.height / 2 - w.top;
-
-  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  line.setAttribute("x1", x1);
-  line.setAttribute("y1", y1);
-  line.setAttribute("x2", x2);
-  line.setAttribute("y2", y2);
-  line.setAttribute("stroke", "#ffcc00");
-  line.setAttribute("stroke-width", "3");
-
-  svg.appendChild(line);
-
-  ligacoes.push({
-    de: b1.dataset.id,
-    para: b2.dataset.id
-  });
-
-  console.log("Ligação criada:", ligacoes);
+    // alternar estado APENAS por duplo clique (temporário)
+    if (components[tipo].length > 1) {
+        comp.addEventListener("dblclick", () => {
+            comp.dataset.state =
+                comp.dataset.state === "0" ? "1" : "0";
+            img.src =
+                "assets/" + components[tipo][comp.dataset.state];
+        });
+    }
 }
 
 /* DRAG */
 function tornarArrastavel(el) {
-  let ox = 0, oy = 0, drag = false;
+    let offsetX = 0;
+    let offsetY = 0;
+    let dragging = false;
 
-  el.addEventListener("mousedown", e => {
-    drag = true;
-    ox = e.offsetX;
-    oy = e.offsetY;
-    el.style.zIndex = 1000;
-  });
+    el.addEventListener("mousedown", e => {
+        dragging = true;
+        const rect = el.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+        el.style.zIndex = 1000;
+    });
 
-  document.addEventListener("mousemove", e => {
-    if (!drag) return;
-    const r = workspace.getBoundingClientRect();
-    el.style.left = e.clientX - r.left - ox + "px";
-    el.style.top = e.clientY - r.top - oy + "px";
-  });
+    document.addEventListener("mousemove", e => {
+        if (!dragging) return;
 
-  document.addEventListener("mouseup", () => {
-    drag = false;
-    el.style.zIndex = "";
-  });
+        const wsRect = workspace.getBoundingClientRect();
+        el.style.left = (e.clientX - wsRect.left - offsetX) + "px";
+        el.style.top = (e.clientY - wsRect.top - offsetY) + "px";
+    });
+
+    document.addEventListener("mouseup", () => {
+        dragging = false;
+        el.style.zIndex = "";
+    });
 }
