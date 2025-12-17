@@ -71,35 +71,12 @@ body {
 
 /* ESCALAS CORRETAS */
 
+}
 /* Disjuntor e Relé */
 .component.disjuntor_motor img,
+.component.contator img,
 .component.rele_termico img{
     width: 160px;
-    height: auto;
-}
-
-/* CONTATOR */
-.component.contator_aberto img {
-    width: 100px; /* 240px x 2 */
-    height: auto;
-}
-
-/* CONTATOR */
-.component.contator_fechado img {
-    width: 100px; /* 240px x 2 */
-    height: auto;
-}
-
-/* MOTOR */
-.component.motor_off img {
-    width: 50px; /* 100px x 2 */
-    height: auto;
-
-}
-
-/* MOTOR */
-.component.motor_on img {
-    width: 50px; /* 100px x 2 */
     height: auto;
 }
 
