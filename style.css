@@ -92,14 +92,14 @@ body {
 
 /* MOTOR */
 .component.motor_off img {
-    width: 160px; /* 160px x 2 */
+    width: 100px; /* 100px x 2 */
     height: auto;
 
 }
 
 /* MOTOR */
 .component.motor_on img {
-    width: 160px; /* 160px x 2 */
+    width: 100px; /* 100px x 2 */
     height: auto;
 }
 
