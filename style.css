@@ -15,15 +15,10 @@ body {
     height: 100vh;
 }
 
-/* SIDEBAR */
 #sidebar {
     width: 220px;
     background: #1b1b1b;
     padding: 15px;
-}
-
-#sidebar h2 {
-    margin-top: 0;
 }
 
 .tool {
@@ -34,13 +29,13 @@ body {
     color: #fff;
     border: none;
     cursor: pointer;
+    text-align: left;
 }
 
 .tool:hover {
     background: #444;
 }
 
-/* MAIN */
 #main {
     flex: 1;
     padding: 15px;
@@ -48,53 +43,47 @@ body {
 
 #workspace {
     position: relative;
+    margin-top: 15px;
     width: 100%;
-    height: calc(100% - 90px);
+    height: calc(100% - 60px);
     border: 2px dashed #555;
     background: #111;
+    overflow: hidden;
 }
 
-/* COMPONENTE BASE */
-.component {
+/* ===== DISPOSITIVOS ===== */
+
+.device {
     position: absolute;
-    width: 220px;
-    height: 260px;
+    width: 140px;            /* 50% menor */
     background: #2a2a2a;
-    border: 1px solid #777;
+    border: 1px solid #666;
     border-radius: 6px;
+    padding: 8px;
     cursor: grab;
 }
 
-.component-header {
+.device h3 {
+    margin: 0 0 6px;
+    font-size: 12px;
     text-align: center;
-    padding: 6px;
-    font-weight: bold;
-    border-bottom: 1px solid #555;
+    color: #fff;
 }
 
-/* BORNE */
+/* ===== BORNES ===== */
+
 .borne {
-    width: 14px;
-    height: 14px;
+    position: absolute;
+    width: 10px;
+    height: 10px;
     background: red;
     border-radius: 50%;
-    position: absolute;
 }
 
 .borne span {
     position: absolute;
-    top: -18px;
-    left: -6px;
-    font-size: 11px;
+    left: 14px;
+    top: -3px;
+    font-size: 10px;
+    color: #fff;
 }
-
-/* POSIÇÕES PADRÃO */
-.top-row { top: 35px; }
-.bottom-row { bottom: 20px; }
-
-.left { left: 20px; }
-.center { left: 50%; transform: translateX(-50%); }
-.right { right: 20px; }
-
-.col-right { right: 20px; }
-.col-left { left: 20px; }
