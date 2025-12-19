@@ -1,81 +1,71 @@
-const assets = {
-  botao_liga: "botao_liga.png",
-  botao_desliga: "botao_desliga.png",
-  emergencia: "emergencia.png",
-  contator: "contator_aberto.png",
-  motor: "motor_off.png",
-  disjuntor_motor: "disjuntor_motor.png"
-};
-
-const bornesPorTipo = {
-  botao_liga: ["13", "14"],
-  botao_desliga: ["21", "22"],
-  emergencia: ["11", "12"],
-  contator: ["A1", "A2", "13", "14"],
-  motor: ["U", "V", "W"],
-  disjuntor_motor: ["L1","L2","L3","T1","T2","T3","13","14"]
-};
-
 const workspace = document.getElementById("workspace");
 const svg = document.getElementById("wires");
 
 let borneSelecionado = null;
-const ligacoes = [];
 
-document.querySelectorAll(".tool").forEach(btn => {
-  btn.addEventListener("click", () => criarComponente(btn.dataset.type));
+/* MENU */
+document.querySelector(".tool").addEventListener("click", () => {
+  criarContator();
 });
 
-function criarComponente(tipo) {
+/* CRIAR CONTATOR */
+function criarContator() {
   const comp = document.createElement("div");
-  comp.className = "component " + tipo;
+  comp.className = "component contator";
 
   const img = document.createElement("img");
-  img.src = "assets/" + assets[tipo];
+  img.src = "assets/contator_aberto.png";
   img.draggable = false;
 
   comp.appendChild(img);
+
+  // BORNES
+  criarBorne(comp, "A1", "a1");
+  criarBorne(comp, "A2", "a2");
+  criarBorne(comp, "13", "b13");
+  criarBorne(comp, "14", "b14");
+
   workspace.appendChild(comp);
 
   comp.style.left = "100px";
   comp.style.top = "100px";
 
-  criarBornes(comp, tipo);
   tornarArrastavel(comp);
 }
 
-function criarBornes(comp, tipo) {
-  const lista = bornesPorTipo[tipo];
-  if (!lista) return;
+/* CRIA BORNE */
+function criarBorne(comp, texto, classe) {
+  const b = document.createElement("div");
+  b.className = "borne " + classe;
+  b.dataset.id = "contator:" + texto;
 
-  lista.forEach((id, i) => {
-    const b = document.createElement("div");
-    b.className = "borne";
-    b.dataset.id = `${tipo}:${id}`;
+  const label = document.createElement("div");
+  label.className = "borne-label";
+  label.innerText = texto;
 
-    b.style.left = "5px";
-    b.style.top = 20 + i * 18 + "px";
+  b.appendChild(label);
 
-    b.addEventListener("click", e => {
-      e.stopPropagation();
-      clicarBorne(b);
-    });
-
-    comp.appendChild(b);
+  b.addEventListener("click", e => {
+    e.stopPropagation();
+    clicarBorne(b);
   });
+
+  comp.appendChild(b);
 }
 
+/* CLIQUE EM BORNE */
 function clicarBorne(borne) {
   if (!borneSelecionado) {
     borneSelecionado = borne;
-    borne.classList.add("selecionado");
+    borne.style.background = "lime";
   } else {
     criarFio(borneSelecionado, borne);
-    borneSelecionado.classList.remove("selecionado");
+    borneSelecionado.style.background = "#ff4444";
     borneSelecionado = null;
   }
 }
 
+/* CRIAR FIO */
 function criarFio(b1, b2) {
   const r1 = b1.getBoundingClientRect();
   const r2 = b2.getBoundingClientRect();
@@ -95,15 +85,9 @@ function criarFio(b1, b2) {
   line.setAttribute("stroke-width", "3");
 
   svg.appendChild(line);
-
-  ligacoes.push({
-    de: b1.dataset.id,
-    para: b2.dataset.id
-  });
-
-  console.log("Ligações atuais:", ligacoes);
 }
 
+/* DRAG CONTATOR (BORNES JUNTO) */
 function tornarArrastavel(el) {
   let ox = 0, oy = 0, drag = false;
 
@@ -111,6 +95,7 @@ function tornarArrastavel(el) {
     drag = true;
     ox = e.offsetX;
     oy = e.offsetY;
+    el.style.zIndex = 1000;
   });
 
   document.addEventListener("mousemove", e => {
@@ -120,5 +105,8 @@ function tornarArrastavel(el) {
     el.style.top = e.clientY - r.top - oy + "px";
   });
 
-  document.addEventListener("mouseup", () => drag = false);
+  document.addEventListener("mouseup", () => {
+    drag = false;
+    el.style.zIndex = "";
+  });
 }
