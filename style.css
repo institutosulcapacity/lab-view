@@ -1,13 +1,13 @@
 * {
     box-sizing: border-box;
     user-select: none;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
     margin: 0;
     background: #0f0f0f;
     color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 #app {
@@ -15,6 +15,7 @@ body {
     height: 100vh;
 }
 
+/* Sidebar */
 #sidebar {
     width: 220px;
     background: #1b1b1b;
@@ -28,16 +29,17 @@ body {
 #sidebar button {
     width: 100%;
     padding: 10px;
-    background: #333;
-    border: none;
+    background: #2d2d2d;
     color: #fff;
+    border: none;
     cursor: pointer;
 }
 
 #sidebar button:hover {
-    background: #555;
+    background: #444;
 }
 
+/* Área principal */
 #main {
     flex: 1;
     padding: 15px;
@@ -45,20 +47,20 @@ body {
 
 #workspace {
     position: relative;
+    margin-top: 15px;
     width: 100%;
     height: calc(100% - 60px);
     border: 2px dashed #555;
     background: #111;
 }
 
-/* ===== CONTATOR ===== */
-
+/* Contator */
 .contator {
     position: absolute;
     width: 260px;
     height: 320px;
     background: #2b2b2b;
-    border: 2px solid #888;
+    border: 2px solid #777;
     border-radius: 6px;
     cursor: grab;
 }
@@ -67,37 +69,41 @@ body {
     text-align: center;
     font-weight: bold;
     padding: 6px;
-    border-bottom: 1px solid #666;
+    border-bottom: 1px solid #555;
 }
 
 /* Bornes */
 .borne {
     position: absolute;
-    width: 22px;
-    height: 22px;
+    width: 16px;
+    height: 16px;
     background: red;
     border-radius: 50%;
-    font-size: 11px;
-    text-align: center;
-    line-height: 22px;
-    font-weight: bold;
     cursor: pointer;
 }
 
-/* Potência */
-.l1 { top: 50px; left: 40px; }
-.l2 { top: 50px; left: 115px; }
-.l3 { top: 50px; left: 190px; }
+.borne span {
+    position: absolute;
+    top: -18px;
+    left: -8px;
+    font-size: 11px;
+    color: #fff;
+}
 
-/* Motor */
-.t1 { bottom: 40px; left: 40px; }
-.t2 { bottom: 40px; left: 115px; }
-.t3 { bottom: 40px; left: 190px; }
+/* Potência */
+.borne.L1 { top: 40px; left: 30px; }
+.borne.L2 { top: 40px; left: 120px; }
+.borne.L3 { top: 40px; left: 210px; }
+
+/* Saída motor */
+.borne.T1 { bottom: 40px; left: 30px; }
+.borne.T2 { bottom: 40px; left: 120px; }
+.borne.T3 { bottom: 40px; left: 210px; }
 
 /* Bobina */
-.a1 { top: 70px; right: -35px; }
-.a2 { bottom: 70px; right: -35px; }
+.borne.A1 { top: 80px; right: 20px; }
+.borne.A2 { bottom: 80px; right: 20px; }
 
 /* Selo */
-.b13 { top: 150px; right: -35px; }
-.b14 { top: 190px; right: -35px; }
+.borne.c13 { top: 140px; right: 20px; }
+.borne.c14 { top: 180px; right: 20px; }
