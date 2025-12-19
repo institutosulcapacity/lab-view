@@ -5,9 +5,9 @@
 
 body {
   margin: 0;
-  background: #111;
-  color: #fff;
   font-family: Arial, Helvetica, sans-serif;
+  background: #0f0f0f;
+  color: #fff;
 }
 
 #app {
@@ -25,7 +25,6 @@ body {
 .tool {
   width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
   background: #2d2d2d;
   color: #fff;
   border: none;
@@ -41,9 +40,10 @@ main {
 #workspace {
   position: relative;
   width: 100%;
-  height: calc(100% - 50px);
+  height: calc(100% - 40px);
   border: 2px dashed #555;
-  background: #0f0f0f;
+  background: #111;
+  overflow: hidden;
 }
 
 /* SVG WIRES */
@@ -55,15 +55,21 @@ main {
 }
 
 /* CONTATOR */
-.component.contator {
+.contator {
   position: absolute;
-  width: 260px;
+  width: 220px;
+  height: 260px;
+  background: #2a2a2a;
+  border: 2px solid #888;
+  border-radius: 6px;
   cursor: grab;
 }
 
-.component.contator img {
-  width: 100%;
-  display: block;
+.contator-header {
+  text-align: center;
+  padding: 6px;
+  background: #444;
+  font-weight: bold;
 }
 
 /* BORNES */
@@ -71,27 +77,25 @@ main {
   position: absolute;
   width: 14px;
   height: 14px;
-  background: #ff4444;
+  background: red;
   border-radius: 50%;
   cursor: crosshair;
 }
 
-.borne-label {
+.borne span {
   position: absolute;
-  font-size: 11px;
-  color: #fff;
-  background: rgba(0,0,0,0.7);
-  padding: 1px 4px;
-  border-radius: 3px;
-  transform: translate(-50%, -120%);
+  left: 18px;
+  top: -2px;
+  font-size: 12px;
 }
 
-/* POSIÇÃO DOS BORNES DO CONTATOR */
+/* POSIÇÃO DOS BORNES */
+.borne.a1 { top: 60px; left: 10px; }
+.borne.a2 { top: 100px; left: 10px; }
 
-/* A1 / A2 (bobina) */
-.borne.a1 { top: 210px; left: 60px; }
-.borne.a2 { top: 210px; left: 200px; }
+.borne.b13 { top: 60px; right: 10px; }
+.borne.b14 { top: 100px; right: 10px; }
 
-/* 13 / 14 (selo) */
-.borne.b13 { top: 20px; left: 60px; }
-.borne.b14 { top: 20px; left: 200px; }
+.borne.selecionado {
+  background: lime;
+}
