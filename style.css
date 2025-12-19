@@ -5,9 +5,9 @@
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #0f0f0f;
+  background: #111;
   color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #app {
@@ -15,6 +15,7 @@ body {
   height: 100vh;
 }
 
+/* SIDEBAR */
 #sidebar {
   width: 220px;
   background: #1b1b1b;
@@ -23,15 +24,15 @@ body {
 
 .tool {
   width: 100%;
-  margin-bottom: 8px;
   padding: 10px;
+  margin-bottom: 10px;
   background: #2d2d2d;
   color: #fff;
   border: none;
   cursor: pointer;
-  text-align: left;
 }
 
+/* WORKSPACE */
 main {
   flex: 1;
   padding: 15px;
@@ -40,12 +41,12 @@ main {
 #workspace {
   position: relative;
   width: 100%;
-  height: calc(100% - 80px);
+  height: calc(100% - 50px);
   border: 2px dashed #555;
-  background: #111;
-  overflow: hidden;
+  background: #0f0f0f;
 }
 
+/* SVG WIRES */
 #wires {
   position: absolute;
   width: 100%;
@@ -53,29 +54,44 @@ main {
   pointer-events: none;
 }
 
-.component {
+/* CONTATOR */
+.component.contator {
   position: absolute;
+  width: 260px;
   cursor: grab;
 }
 
-.component img {
+.component.contator img {
+  width: 100%;
   display: block;
-  width: 140px;
 }
 
-.component.motor img {
-  width: 220px;
-}
-
+/* BORNES */
 .borne {
-  width: 12px;
-  height: 12px;
-  background: red;
-  border-radius: 50%;
   position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #ff4444;
+  border-radius: 50%;
   cursor: crosshair;
 }
 
-.borne.selecionado {
-  background: lime;
+.borne-label {
+  position: absolute;
+  font-size: 11px;
+  color: #fff;
+  background: rgba(0,0,0,0.7);
+  padding: 1px 4px;
+  border-radius: 3px;
+  transform: translate(-50%, -120%);
 }
+
+/* POSIÇÃO DOS BORNES DO CONTATOR */
+
+/* A1 / A2 (bobina) */
+.borne.a1 { top: 210px; left: 60px; }
+.borne.a2 { top: 210px; left: 200px; }
+
+/* 13 / 14 (selo) */
+.borne.b13 { top: 20px; left: 60px; }
+.borne.b14 { top: 20px; left: 200px; }
