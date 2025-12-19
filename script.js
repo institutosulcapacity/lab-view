@@ -1,91 +1,60 @@
 const workspace = document.getElementById("workspace");
-const svg = document.getElementById("wires");
+const addContatorBtn = document.getElementById("addContator");
 
-let borneSelecionado = null;
-const fios = [];
+addContatorBtn.addEventListener("click", () => {
+    createContator(100, 100);
+});
 
-document.querySelector(".tool").addEventListener("click", criarContator);
+function createContator(x, y) {
+    const contator = document.createElement("div");
+    contator.className = "contator";
+    contator.style.left = x + "px";
+    contator.style.top = y + "px";
 
-function criarContator() {
-  const contator = document.createElement("div");
-  contator.className = "contator";
-  contator.style.left = "100px";
-  contator.style.top = "100px";
+    contator.innerHTML = `
+        <div class="contator-header">CONTATOR</div>
 
-  contator.innerHTML = `
-    <div class="contator-header">CONTATOR</div>
+        <!-- POTÊNCIA -->
+        <div class="borne L1"></div><div class="borne-label label-L1">L1</div>
+        <div class="borne L2"></div><div class="borne-label label-L2">L2</div>
+        <div class="borne L3"></div><div class="borne-label label-L3">L3</div>
 
-    <div class="borne a1" data-id="A1"><span>A1</span></div>
-    <div class="borne a2" data-id="A2"><span>A2</span></div>
+        <!-- MOTOR -->
+        <div class="borne T1"></div><div class="borne-label label-T1">T1</div>
+        <div class="borne T2"></div><div class="borne-label label-T2">T2</div>
+        <div class="borne T3"></div><div class="borne-label label-T3">T3</div>
 
-    <div class="borne b13" data-id="13"><span>13</span></div>
-    <div class="borne b14" data-id="14"><span>14</span></div>
-  `;
+        <!-- BOBINA -->
+        <div class="borne A1"></div><div class="borne-label label-A1">A1</div>
+        <div class="borne A2"></div><div class="borne-label label-A2">A2</div>
 
-  contator.querySelectorAll(".borne").forEach(b => {
-    b.addEventListener("click", e => {
-      e.stopPropagation();
-      clicarBorne(b);
+        <!-- SELO -->
+        <div class="borne _13"></div><div class="borne-label label-13">13</div>
+        <div class="borne _14"></div><div class="borne-label label-14">14</div>
+    `;
+
+    enableDrag(contator);
+    workspace.appendChild(contator);
+}
+
+function enableDrag(el) {
+    let offsetX = 0;
+    let offsetY = 0;
+    let dragging = false;
+
+    el.addEventListener("mousedown", (e) => {
+        dragging = true;
+        offsetX = e.offsetX;
+        offsetY = e.offsetY;
     });
-  });
 
-  workspace.appendChild(contator);
-  tornarArrastavel(contator);
-}
+    document.addEventListener("mousemove", (e) => {
+        if (!dragging) return;
+        el.style.left = (e.pageX - workspace.offsetLeft - offsetX) + "px";
+        el.style.top = (e.pageY - workspace.offsetTop - offsetY) + "px";
+    });
 
-function clicarBorne(borne) {
-  if (!borneSelecionado) {
-    borneSelecionado = borne;
-    borne.classList.add("selecionado");
-  } else {
-    criarFio(borneSelecionado, borne);
-    borneSelecionado.classList.remove("selecionado");
-    borneSelecionado = null;
-  }
-}
-
-function criarFio(b1, b2) {
-  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  line.setAttribute("stroke", "#ffcc00");
-  line.setAttribute("stroke-width", "3");
-
-  svg.appendChild(line);
-
-  fios.push({ b1, b2, line });
-  atualizarFios();
-}
-
-function atualizarFios() {
-  fios.forEach(f => {
-    const r1 = f.b1.getBoundingClientRect();
-    const r2 = f.b2.getBoundingClientRect();
-    const w = workspace.getBoundingClientRect();
-
-    f.line.setAttribute("x1", r1.left + r1.width / 2 - w.left);
-    f.line.setAttribute("y1", r1.top + r1.height / 2 - w.top);
-    f.line.setAttribute("x2", r2.left + r2.width / 2 - w.left);
-    f.line.setAttribute("y2", r2.top + r2.height / 2 - w.top);
-  });
-}
-
-function tornarArrastavel(el) {
-  let ox = 0, oy = 0, drag = false;
-
-  el.addEventListener("mousedown", e => {
-    drag = true;
-    ox = e.offsetX;
-    oy = e.offsetY;
-  });
-
-  document.addEventListener("mousemove", e => {
-    if (!drag) return;
-    const w = workspace.getBoundingClientRect();
-    el.style.left = e.clientX - w.left - ox + "px";
-    el.style.top = e.clientY - w.top - oy + "px";
-    atualizarFios();
-  });
-
-  document.addEventListener("mouseup", () => {
-    drag = false;
-  });
+    document.addEventListener("mouseup", () => {
+        dragging = false;
+    });
 }
