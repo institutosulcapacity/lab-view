@@ -1,11 +1,11 @@
 * {
     box-sizing: border-box;
     user-select: none;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
     margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
     background: #0f0f0f;
     color: #fff;
 }
@@ -15,7 +15,7 @@ body {
     height: 100vh;
 }
 
-/* Sidebar */
+/* SIDEBAR */
 #sidebar {
     width: 220px;
     background: #1b1b1b;
@@ -26,8 +26,9 @@ body {
     margin-top: 0;
 }
 
-#sidebar button {
+.tool {
     width: 100%;
+    margin-bottom: 8px;
     padding: 10px;
     background: #2d2d2d;
     color: #fff;
@@ -35,11 +36,11 @@ body {
     cursor: pointer;
 }
 
-#sidebar button:hover {
+.tool:hover {
     background: #444;
 }
 
-/* Área principal */
+/* MAIN */
 #main {
     flex: 1;
     padding: 15px;
@@ -47,63 +48,53 @@ body {
 
 #workspace {
     position: relative;
-    margin-top: 15px;
     width: 100%;
-    height: calc(100% - 60px);
+    height: calc(100% - 90px);
     border: 2px dashed #555;
     background: #111;
 }
 
-/* Contator */
-.contator {
+/* COMPONENTE BASE */
+.component {
     position: absolute;
-    width: 260px;
-    height: 320px;
-    background: #2b2b2b;
-    border: 2px solid #777;
+    width: 220px;
+    height: 260px;
+    background: #2a2a2a;
+    border: 1px solid #777;
     border-radius: 6px;
     cursor: grab;
 }
 
-.contator-header {
+.component-header {
     text-align: center;
-    font-weight: bold;
     padding: 6px;
+    font-weight: bold;
     border-bottom: 1px solid #555;
 }
 
-/* Bornes */
+/* BORNE */
 .borne {
-    position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     background: red;
     border-radius: 50%;
-    cursor: pointer;
+    position: absolute;
 }
 
 .borne span {
     position: absolute;
     top: -18px;
-    left: -8px;
+    left: -6px;
     font-size: 11px;
-    color: #fff;
 }
 
-/* Potência */
-.borne.L1 { top: 40px; left: 30px; }
-.borne.L2 { top: 40px; left: 120px; }
-.borne.L3 { top: 40px; left: 210px; }
+/* POSIÇÕES PADRÃO */
+.top-row { top: 35px; }
+.bottom-row { bottom: 20px; }
 
-/* Saída motor */
-.borne.T1 { bottom: 40px; left: 30px; }
-.borne.T2 { bottom: 40px; left: 120px; }
-.borne.T3 { bottom: 40px; left: 210px; }
+.left { left: 20px; }
+.center { left: 50%; transform: translateX(-50%); }
+.right { right: 20px; }
 
-/* Bobina */
-.borne.A1 { top: 80px; right: 20px; }
-.borne.A2 { bottom: 80px; right: 20px; }
-
-/* Selo */
-.borne.c13 { top: 140px; right: 20px; }
-.borne.c14 { top: 180px; right: 20px; }
+.col-right { right: 20px; }
+.col-left { left: 20px; }
