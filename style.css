@@ -1,101 +1,124 @@
 * {
-  box-sizing: border-box;
-  user-select: none;
+    box-sizing: border-box;
+    user-select: none;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #0f0f0f;
-  color: #fff;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f0f0f;
+    color: #fff;
 }
 
 #app {
-  display: flex;
-  height: 100vh;
+    display: flex;
+    height: 100vh;
 }
 
 /* SIDEBAR */
 #sidebar {
-  width: 220px;
-  background: #1b1b1b;
-  padding: 15px;
+    width: 220px;
+    background: #1b1b1b;
+    padding: 15px;
+}
+
+#sidebar h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
 }
 
 .tool {
-  width: 100%;
-  padding: 10px;
-  background: #2d2d2d;
-  color: #fff;
-  border: none;
-  cursor: pointer;
+    width: 100%;
+    padding: 10px;
+    background: #2d2d2d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
 }
 
-/* WORKSPACE */
-main {
-  flex: 1;
-  padding: 15px;
+.tool:hover {
+    background: #444;
+}
+
+/* ÁREA PRINCIPAL */
+#main {
+    flex: 1;
+    padding: 15px;
 }
 
 #workspace {
-  position: relative;
-  width: 100%;
-  height: calc(100% - 40px);
-  border: 2px dashed #555;
-  background: #111;
-  overflow: hidden;
-}
-
-/* SVG WIRES */
-#wires {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+    position: relative;
+    width: 100%;
+    height: calc(100% - 60px);
+    border: 2px dashed #555;
+    background: #111;
+    overflow: hidden;
 }
 
 /* CONTATOR */
 .contator {
-  position: absolute;
-  width: 220px;
-  height: 260px;
-  background: #2a2a2a;
-  border: 2px solid #888;
-  border-radius: 6px;
-  cursor: grab;
+    position: absolute;
+    width: 260px;
+    height: 320px;
+    background: #2b2b2b;
+    border: 2px solid #777;
+    border-radius: 6px;
+    cursor: grab;
 }
 
 .contator-header {
-  text-align: center;
-  padding: 6px;
-  background: #444;
-  font-weight: bold;
+    text-align: center;
+    font-weight: bold;
+    padding: 6px;
+    border-bottom: 1px solid #555;
+    background: #333;
 }
 
 /* BORNES */
 .borne {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  background: red;
-  border-radius: 50%;
-  cursor: crosshair;
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: red;
+    border-radius: 50%;
 }
 
-.borne span {
-  position: absolute;
-  left: 18px;
-  top: -2px;
-  font-size: 12px;
+.borne-label {
+    position: absolute;
+    font-size: 12px;
+    color: #fff;
 }
 
-/* POSIÇÃO DOS BORNES */
-.borne.a1 { top: 60px; left: 10px; }
-.borne.a2 { top: 100px; left: 10px; }
+/* LINHA SUPERIOR – POTÊNCIA */
+.borne.L1 { top: 40px; left: 40px; }
+.borne.L2 { top: 40px; left: 120px; }
+.borne.L3 { top: 40px; left: 200px; }
 
-.borne.b13 { top: 60px; right: 10px; }
-.borne.b14 { top: 100px; right: 10px; }
+/* LINHA INFERIOR – MOTOR */
+.borne.T1 { bottom: 40px; left: 40px; }
+.borne.T2 { bottom: 40px; left: 120px; }
+.borne.T3 { bottom: 40px; left: 200px; }
 
-.borne.selecionado {
-  background: lime;
-}
+/* BOBINA */
+.borne.A1 { top: 120px; left: 10px; }
+.borne.A2 { bottom: 120px; left: 10px; }
+
+/* SELO */
+.borne._13 { top: 120px; right: 10px; }
+.borne._14 { top: 160px; right: 10px; }
+
+/* LABELS */
+.label-L1 { top: 20px; left: 40px; }
+.label-L2 { top: 20px; left: 120px; }
+.label-L3 { top: 20px; left: 200px; }
+
+.label-T1 { bottom: 20px; left: 40px; }
+.label-T2 { bottom: 20px; left: 120px; }
+.label-T3 { bottom: 20px; left: 200px; }
+
+.label-A1 { top: 120px; left: 35px; }
+.label-A2 { bottom: 120px; left: 35px; }
+
+.label-13 { top: 120px; right: 35px; }
+.label-14 { top: 160px; right: 35px; }
