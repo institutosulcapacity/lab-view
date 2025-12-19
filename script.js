@@ -1,7 +1,9 @@
 const workspace = document.getElementById("workspace");
-const btnAdd = document.getElementById("addContator");
+const addContatorBtn = document.getElementById("addContator");
 
-btnAdd.addEventListener("click", () => {
+addContatorBtn.addEventListener("click", criarContator);
+
+function criarContator() {
     const contator = document.createElement("div");
     contator.className = "contator";
     contator.style.left = "100px";
@@ -10,45 +12,43 @@ btnAdd.addEventListener("click", () => {
     contator.innerHTML = `
         <div class="contator-header">CONTATOR</div>
 
-        <div class="borne l1">L1</div>
-        <div class="borne l2">L2</div>
-        <div class="borne l3">L3</div>
+        <div class="borne L1"><span>L1</span></div>
+        <div class="borne L2"><span>L2</span></div>
+        <div class="borne L3"><span>L3</span></div>
 
-        <div class="borne t1">T1</div>
-        <div class="borne t2">T2</div>
-        <div class="borne t3">T3</div>
+        <div class="borne T1"><span>T1</span></div>
+        <div class="borne T2"><span>T2</span></div>
+        <div class="borne T3"><span>T3</span></div>
 
-        <div class="borne a1">A1</div>
-        <div class="borne a2">A2</div>
+        <div class="borne A1"><span>A1</span></div>
+        <div class="borne A2"><span>A2</span></div>
 
-        <div class="borne b13">13</div>
-        <div class="borne b14">14</div>
+        <div class="borne c13"><span>13</span></div>
+        <div class="borne c14"><span>14</span></div>
     `;
 
-    makeDraggable(contator);
+    tornarArrastavel(contator);
     workspace.appendChild(contator);
-});
+}
 
-function makeDraggable(element) {
-    let offsetX = 0;
-    let offsetY = 0;
-    let dragging = false;
+function tornarArrastavel(elemento) {
+    let offsetX = 0, offsetY = 0, dragging = false;
 
-    element.addEventListener("mousedown", e => {
+    elemento.addEventListener("mousedown", e => {
         dragging = true;
         offsetX = e.offsetX;
         offsetY = e.offsetY;
-        element.style.cursor = "grabbing";
+        elemento.style.cursor = "grabbing";
     });
 
     document.addEventListener("mousemove", e => {
         if (!dragging) return;
-        element.style.left = e.pageX - workspace.offsetLeft - offsetX + "px";
-        element.style.top = e.pageY - workspace.offsetTop - offsetY + "px";
+        elemento.style.left = (e.pageX - offsetX) + "px";
+        elemento.style.top = (e.pageY - offsetY) + "px";
     });
 
     document.addEventListener("mouseup", () => {
         dragging = false;
-        element.style.cursor = "grab";
+        elemento.style.cursor = "grab";
     });
 }
