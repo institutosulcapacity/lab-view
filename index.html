@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Laboratório Virtual – Elétrica</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Laboratório de Fiação</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <div id="app">
 
-    <div id="sidebar">
+    <aside id="sidebar">
         <h2>Componentes</h2>
-        <button class="tool" onclick="addContator()">Contator</button>
-        <button class="tool" onclick="addDisjuntor()">Disjuntor Motor</button>
-        <button class="tool" onclick="addReleTermico()">Relé Térmico</button>
-        <button class="tool" onclick="addMotor()">Motor</button>
-        <button class="tool" onclick="addBotao('liga')">Botão Liga</button>
-        <button class="tool" onclick="addBotao('desliga')">Botão Desliga</button>
-        <button class="tool" onclick="addBotao('emergencia')">Emergência</button>
-    </div>
+        <button class="tool" onclick="addDevice('disjuntor')">Disjuntor Motor</button>
+        <button class="tool" onclick="addDevice('contator')">Contator</button>
+        <button class="tool" onclick="addDevice('motor')">Motor</button>
+        <button class="tool" onclick="addDevice('liga')">Botão Liga</button>
+        <button class="tool" onclick="addDevice('desliga')">Botão Desliga</button>
+        <button class="tool" onclick="addDevice('emergencia')">Emergência</button>
+    </aside>
 
-    <div id="main">
+    <main id="main">
         <h1>Laboratório de Fiação</h1>
-        <p>Arraste os componentes – bornes fazem parte do dispositivo</p>
         <div id="workspace"></div>
-    </div>
+    </main>
 
 </div>
 
