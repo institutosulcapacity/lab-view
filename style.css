@@ -5,9 +5,9 @@
 
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
     background: #0f0f0f;
     color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #app {
@@ -15,7 +15,6 @@ body {
     height: 100vh;
 }
 
-/* SIDEBAR */
 #sidebar {
     width: 220px;
     background: #1b1b1b;
@@ -24,24 +23,21 @@ body {
 
 #sidebar h2 {
     margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 18px;
 }
 
-.tool {
+#sidebar button {
     width: 100%;
     padding: 10px;
-    background: #2d2d2d;
-    color: #fff;
+    background: #333;
     border: none;
+    color: #fff;
     cursor: pointer;
 }
 
-.tool:hover {
-    background: #444;
+#sidebar button:hover {
+    background: #555;
 }
 
-/* ÁREA PRINCIPAL */
 #main {
     flex: 1;
     padding: 15px;
@@ -53,16 +49,16 @@ body {
     height: calc(100% - 60px);
     border: 2px dashed #555;
     background: #111;
-    overflow: hidden;
 }
 
-/* CONTATOR */
+/* ===== CONTATOR ===== */
+
 .contator {
     position: absolute;
     width: 260px;
     height: 320px;
     background: #2b2b2b;
-    border: 2px solid #777;
+    border: 2px solid #888;
     border-radius: 6px;
     cursor: grab;
 }
@@ -71,54 +67,37 @@ body {
     text-align: center;
     font-weight: bold;
     padding: 6px;
-    border-bottom: 1px solid #555;
-    background: #333;
+    border-bottom: 1px solid #666;
 }
 
-/* BORNES */
+/* Bornes */
 .borne {
     position: absolute;
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     background: red;
     border-radius: 50%;
+    font-size: 11px;
+    text-align: center;
+    line-height: 22px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.borne-label {
-    position: absolute;
-    font-size: 12px;
-    color: #fff;
-}
+/* Potência */
+.l1 { top: 50px; left: 40px; }
+.l2 { top: 50px; left: 115px; }
+.l3 { top: 50px; left: 190px; }
 
-/* LINHA SUPERIOR – POTÊNCIA */
-.borne.L1 { top: 40px; left: 40px; }
-.borne.L2 { top: 40px; left: 120px; }
-.borne.L3 { top: 40px; left: 200px; }
+/* Motor */
+.t1 { bottom: 40px; left: 40px; }
+.t2 { bottom: 40px; left: 115px; }
+.t3 { bottom: 40px; left: 190px; }
 
-/* LINHA INFERIOR – MOTOR */
-.borne.T1 { bottom: 40px; left: 40px; }
-.borne.T2 { bottom: 40px; left: 120px; }
-.borne.T3 { bottom: 40px; left: 200px; }
+/* Bobina */
+.a1 { top: 70px; right: -35px; }
+.a2 { bottom: 70px; right: -35px; }
 
-/* BOBINA */
-.borne.A1 { top: 120px; left: 10px; }
-.borne.A2 { bottom: 120px; left: 10px; }
-
-/* SELO */
-.borne._13 { top: 120px; right: 10px; }
-.borne._14 { top: 160px; right: 10px; }
-
-/* LABELS */
-.label-L1 { top: 20px; left: 40px; }
-.label-L2 { top: 20px; left: 120px; }
-.label-L3 { top: 20px; left: 200px; }
-
-.label-T1 { bottom: 20px; left: 40px; }
-.label-T2 { bottom: 20px; left: 120px; }
-.label-T3 { bottom: 20px; left: 200px; }
-
-.label-A1 { top: 120px; left: 35px; }
-.label-A2 { bottom: 120px; left: 35px; }
-
-.label-13 { top: 120px; right: 35px; }
-.label-14 { top: 160px; right: 35px; }
+/* Selo */
+.b13 { top: 150px; right: -35px; }
+.b14 { top: 190px; right: -35px; }
