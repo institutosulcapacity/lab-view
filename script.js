@@ -1,111 +1,140 @@
 const workspace = document.getElementById("workspace");
 
-function addDevice(type) {
-    const d = document.createElement("div");
-    d.className = "device";
-    d.style.left = "50px";
-    d.style.top = "50px";
+document.querySelectorAll(".tool").forEach(btn => {
+    btn.addEventListener("click", () => {
+        criarComponente(btn.dataset.type);
+    });
+});
 
-    let html = "";
+function criarComponente(tipo) {
+    const comp = document.createElement("div");
+    comp.classList.add("component", tipo);
 
-    if (type === "contator") {
-        html = `
-        <h3>CONTATOR</h3>
+    const header = document.createElement("div");
+    header.className = "component-header";
+    header.innerText = tipo.toUpperCase();
+    comp.appendChild(header);
 
-        ${borne("L1", 10, 30)}
-        ${borne("L2", 60, 30)}
-        ${borne("L3", 110, 30)}
+    workspace.appendChild(comp);
 
-        ${borne("A1", 110, 55)}
-        ${borne("13", 110, 75)}
-        ${borne("14", 110, 95)}
-        ${borne("A2", 110, 120)}
+    comp.style.left = "100px";
+    comp.style.top = "100px";
 
-        ${borne("T1", 10, 130)}
-        ${borne("T2", 60, 130)}
-        ${borne("T3", 110, 130)}
-        `;
+    switch (tipo) {
+        case "contator":
+            layoutContator(comp);
+            break;
+        case "disjuntor":
+            layoutDisjuntor(comp);
+            break;
+        case "motor":
+            layoutMotor(comp);
+            break;
+        case "liga":
+            layoutBotao(comp, "LIGA", [["13", "14"]]);
+            break;
+        case "desliga":
+            layoutBotao(comp, "DESLIGA", [["21", "22"]]);
+            break;
+        case "emergencia":
+            layoutBotao(comp, "EMERGÊNCIA", [["11", "12"]]);
+            break;
     }
 
-    if (type === "disjuntor") {
-        html = `
-        <h3>DISJUNTOR</h3>
-
-        ${borne("L1", 10, 30)}
-        ${borne("L2", 60, 30)}
-        ${borne("L3", 110, 30)}
-
-        ${borne("13", 110, 70)}
-        ${borne("14", 110, 90)}
-
-        ${borne("T1", 10, 130)}
-        ${borne("T2", 60, 130)}
-        ${borne("T3", 110, 130)}
-        `;
-    }
-
-    if (type === "motor") {
-        html = `
-        <h3>MOTOR</h3>
-        ${borne("U", 20, 80)}
-        ${borne("V", 60, 80)}
-        ${borne("W", 100, 80)}
-        `;
-    }
-
-    if (type === "liga") {
-        html = `
-        <h3>LIGA</h3>
-        ${borne("13", 50, 60)}
-        ${borne("14", 50, 90)}
-        `;
-    }
-
-    if (type === "desliga") {
-        html = `
-        <h3>DESLIGA</h3>
-        ${borne("21", 50, 60)}
-        ${borne("22", 50, 90)}
-        `;
-    }
-
-    if (type === "emergencia") {
-        html = `
-        <h3>EMERGÊNCIA</h3>
-        ${borne("11", 50, 60)}
-        ${borne("12", 50, 90)}
-        `;
-    }
-
-    d.innerHTML = html;
-    makeDraggable(d);
-    workspace.appendChild(d);
+    tornarArrastavel(comp);
 }
 
-/* ===== BORNE ===== */
-function borne(label, x, y) {
-    return `
-    <div class="borne" style="left:${x}px; top:${y}px;">
-        <span>${label}</span>
-    </div>`;
+/* ===== LAYOUTS ===== */
+
+function layoutContator(c) {
+    c.classList.add("contator");
+
+    addTerminal(c, "L1", 20, 30);
+    addTerminal(c, "L2", 70, 30);
+    addTerminal(c, "L3", 120, 30);
+
+    addTerminal(c, "T1", 20, 160);
+    addTerminal(c, "T2", 70, 160);
+    addTerminal(c, "T3", 120, 160);
+
+    addTerminal(c, "A1", 140, 60);
+    addTerminal(c, "13", 140, 90);
+    addTerminal(c, "14", 140, 115);
+    addTerminal(c, "A2", 140, 145);
 }
 
-/* ===== DRAG ===== */
-function makeDraggable(el) {
-    let offsetX, offsetY;
+function layoutDisjuntor(c) {
+    c.classList.add("disjuntor");
 
-    el.onmousedown = e => {
-        offsetX = e.offsetX;
-        offsetY = e.offsetY;
+    addTerminal(c, "L1", 20, 30);
+    addTerminal(c, "L2", 70, 30);
+    addTerminal(c, "L3", 120, 30);
 
-        document.onmousemove = ev => {
-            el.style.left = ev.pageX - offsetX - workspace.offsetLeft + "px";
-            el.style.top = ev.pageY - offsetY - workspace.offsetTop + "px";
-        };
+    addTerminal(c, "T1", 20, 160);
+    addTerminal(c, "T2", 70, 160);
+    addTerminal(c, "T3", 120, 160);
 
-        document.onmouseup = () => {
-            document.onmousemove = null;
-            document.onmouseup = null;
-        };
-    };
+    addTerminal(c, "13", 140, 90);
+    addTerminal(c, "14", 140, 115);
+}
+
+function layoutMotor(c) {
+    c.classList.add("motor");
+
+    addTerminal(c, "U", 40, 160);
+    addTerminal(c, "V", 80, 160);
+    addTerminal(c, "W", 120, 160);
+}
+
+function layoutBotao(c, nome, pares) {
+    c.classList.add("botao");
+    c.querySelector(".component-header").innerText = nome;
+
+    let y = 40;
+    pares[0].forEach(num => {
+        addTerminal(c, num, 45, y);
+        y += 30;
+    });
+}
+
+/* ===== UTIL ===== */
+
+function addTerminal(comp, label, x, y) {
+    const t = document.createElement("div");
+    t.className = "terminal";
+    t.style.left = x + "px";
+    t.style.top = y + "px";
+
+    const l = document.createElement("div");
+    l.className = "label";
+    l.innerText = label;
+    l.style.left = (x + 14) + "px";
+    l.style.top = (y - 2) + "px";
+
+    comp.appendChild(t);
+    comp.appendChild(l);
+}
+
+function tornarArrastavel(el) {
+    let offsetX, offsetY, dragging = false;
+
+    el.addEventListener("mousedown", e => {
+        dragging = true;
+        const r = el.getBoundingClientRect();
+        offsetX = e.clientX - r.left;
+        offsetY = e.clientY - r.top;
+        el.style.zIndex = 1000;
+    });
+
+    document.addEventListener("mousemove", e => {
+        if (!dragging) return;
+        const ws = workspace.getBoundingClientRect();
+        el.style.left = (e.clientX - ws.left - offsetX) + "px";
+        el.style.top = (e.clientY - ws.top - offsetY) + "px";
+    });
+
+    document.addEventListener("mouseup", () => {
+        dragging = false;
+        el.style.zIndex = "";
+    });
 }
