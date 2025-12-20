@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Laboratório de Fiação</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Laboratório Virtual – Fiação Elétrica</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
+<body>
 <div id="app">
 
     <aside id="sidebar">
         <h2>Componentes</h2>
-        <button class="tool" onclick="addDevice('disjuntor')">Disjuntor Motor</button>
-        <button class="tool" onclick="addDevice('contator')">Contator</button>
-        <button class="tool" onclick="addDevice('motor')">Motor</button>
-        <button class="tool" onclick="addDevice('liga')">Botão Liga</button>
-        <button class="tool" onclick="addDevice('desliga')">Botão Desliga</button>
-        <button class="tool" onclick="addDevice('emergencia')">Emergência</button>
+        <button class="tool" data-type="disjuntor">Disjuntor Motor</button>
+        <button class="tool" data-type="contator">Contator</button>
+        <button class="tool" data-type="motor">Motor</button>
+        <button class="tool" data-type="liga">Botão Liga</button>
+        <button class="tool" data-type="desliga">Botão Desliga</button>
+        <button class="tool" data-type="emergencia">Emergência</button>
     </aside>
 
     <main id="main">
         <h1>Laboratório de Fiação</h1>
+        <p>Arraste os componentes — bornes fazem parte do dispositivo</p>
+
         <div id="workspace"></div>
     </main>
 
