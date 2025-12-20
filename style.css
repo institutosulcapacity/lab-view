@@ -15,6 +15,7 @@ body {
     height: 100vh;
 }
 
+/* SIDEBAR */
 #sidebar {
     width: 220px;
     background: #1b1b1b;
@@ -36,6 +37,7 @@ body {
     background: #444;
 }
 
+/* ÁREA PRINCIPAL */
 #main {
     flex: 1;
     padding: 15px;
@@ -43,47 +45,55 @@ body {
 
 #workspace {
     position: relative;
-    margin-top: 15px;
     width: 100%;
-    height: calc(100% - 60px);
+    height: calc(100% - 80px);
     border: 2px dashed #555;
     background: #111;
     overflow: hidden;
 }
 
-/* ===== DISPOSITIVOS ===== */
-
-.device {
+/* COMPONENTE BASE */
+.component {
     position: absolute;
-    width: 140px;            /* 50% menor */
     background: #2a2a2a;
-    border: 1px solid #666;
     border-radius: 6px;
-    padding: 8px;
+    padding: 6px;
+    border: 1px solid #555;
     cursor: grab;
 }
 
-.device h3 {
-    margin: 0 0 6px;
-    font-size: 12px;
+.component-header {
     text-align: center;
-    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 6px;
+    background: #333;
+    padding: 4px;
+    border-radius: 4px;
 }
 
-/* ===== BORNES ===== */
-
-.borne {
-    position: absolute;
+/* BORNES */
+.terminal {
     width: 10px;
     height: 10px;
     background: red;
     border-radius: 50%;
+    position: absolute;
 }
 
-.borne span {
+.label {
     position: absolute;
-    left: 14px;
-    top: -3px;
     font-size: 10px;
     color: #fff;
+}
+
+/* TAMANHOS REDUZIDOS (~50%) */
+.contator, .disjuntor, .motor {
+    width: 160px;
+    height: 200px;
+}
+
+.botao {
+    width: 100px;
+    height: 90px;
 }
