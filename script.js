@@ -1,140 +1,126 @@
-const workspace = document.getElementById("workspace");
+const assets = {
+  botao_liga: "botao_liga.png",
+  botao_desliga: "botao_desliga.png",
+  emergencia: "emergencia.png",
+  contator: "contator_aberto.png",
+  disjuntor_motor: "disjuntor_motor.png",
+  rele_termico: "rele_termico_weg.png",
+  motor: "motor_off.png"
+};
 
+const bornesPorTipo = {
+  botao_liga: ["13", "14"],
+  botao_desliga: ["21", "22"],
+  emergencia: ["11", "12"],
+
+  contator: ["A1", "A2", "13", "14"],
+
+  disjuntor_motor: ["L1", "L2", "L3", "T1", "T2", "T3", "13", "14"],
+
+  rele_termico: ["95", "96"],
+
+  motor: ["U", "V", "W"]
+};
+
+const workspace = document.getElementById("workspace");
+const svg = document.getElementById("wires");
+
+let borneSelecionado = null;
+
+/* MENU */
 document.querySelectorAll(".tool").forEach(btn => {
-    btn.addEventListener("click", () => {
-        criarComponente(btn.dataset.type);
-    });
+  btn.onclick = () => criarComponente(btn.dataset.type);
 });
 
 function criarComponente(tipo) {
-    const comp = document.createElement("div");
-    comp.classList.add("component", tipo);
+  const comp = document.createElement("div");
+  comp.className = "component " + tipo;
 
-    const header = document.createElement("div");
-    header.className = "component-header";
-    header.innerText = tipo.toUpperCase();
-    comp.appendChild(header);
+  const img = document.createElement("img");
+  img.src = "assets/" + assets[tipo];
+  img.draggable = false;
 
-    workspace.appendChild(comp);
+  comp.appendChild(img);
+  workspace.appendChild(comp);
 
-    comp.style.left = "100px";
-    comp.style.top = "100px";
+  comp.style.left = "80px";
+  comp.style.top = "80px";
 
-    switch (tipo) {
-        case "contator":
-            layoutContator(comp);
-            break;
-        case "disjuntor":
-            layoutDisjuntor(comp);
-            break;
-        case "motor":
-            layoutMotor(comp);
-            break;
-        case "liga":
-            layoutBotao(comp, "LIGA", [["13", "14"]]);
-            break;
-        case "desliga":
-            layoutBotao(comp, "DESLIGA", [["21", "22"]]);
-            break;
-        case "emergencia":
-            layoutBotao(comp, "EMERGÊNCIA", [["11", "12"]]);
-            break;
-    }
-
-    tornarArrastavel(comp);
+  criarBornes(comp, tipo);
+  tornarArrastavel(comp);
 }
 
-/* ===== LAYOUTS ===== */
+function criarBornes(comp, tipo) {
+  const bornes = bornesPorTipo[tipo];
+  if (!bornes) return;
 
-function layoutContator(c) {
-    c.classList.add("contator");
+  bornes.forEach((id, i) => {
+    const b = document.createElement("div");
+    b.className = "borne";
+    b.dataset.id = `${tipo}:${id}`;
 
-    addTerminal(c, "L1", 20, 30);
-    addTerminal(c, "L2", 70, 30);
-    addTerminal(c, "L3", 120, 30);
+    b.style.left = "5px";
+    b.style.top = 15 + i * 14 + "px";
 
-    addTerminal(c, "T1", 20, 160);
-    addTerminal(c, "T2", 70, 160);
-    addTerminal(c, "T3", 120, 160);
+    const label = document.createElement("span");
+    label.textContent = id;
 
-    addTerminal(c, "A1", 140, 60);
-    addTerminal(c, "13", 140, 90);
-    addTerminal(c, "14", 140, 115);
-    addTerminal(c, "A2", 140, 145);
+    b.appendChild(label);
+    comp.appendChild(b);
+
+    b.onclick = e => {
+      e.stopPropagation();
+      clicarBorne(b);
+    };
+  });
 }
 
-function layoutDisjuntor(c) {
-    c.classList.add("disjuntor");
-
-    addTerminal(c, "L1", 20, 30);
-    addTerminal(c, "L2", 70, 30);
-    addTerminal(c, "L3", 120, 30);
-
-    addTerminal(c, "T1", 20, 160);
-    addTerminal(c, "T2", 70, 160);
-    addTerminal(c, "T3", 120, 160);
-
-    addTerminal(c, "13", 140, 90);
-    addTerminal(c, "14", 140, 115);
+function clicarBorne(borne) {
+  if (!borneSelecionado) {
+    borneSelecionado = borne;
+    borne.style.background = "lime";
+  } else {
+    criarFio(borneSelecionado, borne);
+    borneSelecionado.style.background = "red";
+    borneSelecionado = null;
+  }
 }
 
-function layoutMotor(c) {
-    c.classList.add("motor");
+function criarFio(b1, b2) {
+  const r1 = b1.getBoundingClientRect();
+  const r2 = b2.getBoundingClientRect();
+  const w = workspace.getBoundingClientRect();
 
-    addTerminal(c, "U", 40, 160);
-    addTerminal(c, "V", 80, 160);
-    addTerminal(c, "W", 120, 160);
-}
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.classList.add("wire");
 
-function layoutBotao(c, nome, pares) {
-    c.classList.add("botao");
-    c.querySelector(".component-header").innerText = nome;
+  line.setAttribute("x1", r1.left + 5 - w.left);
+  line.setAttribute("y1", r1.top + 5 - w.top);
+  line.setAttribute("x2", r2.left + 5 - w.left);
+  line.setAttribute("y2", r2.top + 5 - w.top);
 
-    let y = 40;
-    pares[0].forEach(num => {
-        addTerminal(c, num, 45, y);
-        y += 30;
-    });
-}
-
-/* ===== UTIL ===== */
-
-function addTerminal(comp, label, x, y) {
-    const t = document.createElement("div");
-    t.className = "terminal";
-    t.style.left = x + "px";
-    t.style.top = y + "px";
-
-    const l = document.createElement("div");
-    l.className = "label";
-    l.innerText = label;
-    l.style.left = (x + 14) + "px";
-    l.style.top = (y - 2) + "px";
-
-    comp.appendChild(t);
-    comp.appendChild(l);
+  svg.appendChild(line);
 }
 
 function tornarArrastavel(el) {
-    let offsetX, offsetY, dragging = false;
+  let ox = 0, oy = 0, drag = false;
 
-    el.addEventListener("mousedown", e => {
-        dragging = true;
-        const r = el.getBoundingClientRect();
-        offsetX = e.clientX - r.left;
-        offsetY = e.clientY - r.top;
-        el.style.zIndex = 1000;
-    });
+  el.onmousedown = e => {
+    drag = true;
+    ox = e.offsetX;
+    oy = e.offsetY;
+    el.style.zIndex = 1000;
+  };
 
-    document.addEventListener("mousemove", e => {
-        if (!dragging) return;
-        const ws = workspace.getBoundingClientRect();
-        el.style.left = (e.clientX - ws.left - offsetX) + "px";
-        el.style.top = (e.clientY - ws.top - offsetY) + "px";
-    });
+  document.onmousemove = e => {
+    if (!drag) return;
+    const r = workspace.getBoundingClientRect();
+    el.style.left = e.clientX - r.left - ox + "px";
+    el.style.top = e.clientY - r.top - oy + "px";
+  };
 
-    document.addEventListener("mouseup", () => {
-        dragging = false;
-        el.style.zIndex = "";
-    });
+  document.onmouseup = () => {
+    drag = false;
+    el.style.zIndex = "";
+  };
 }
