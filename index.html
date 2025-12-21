@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Laboratório de Fiação</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<title>Laboratório de Fiação</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="app">
+
   <aside id="sidebar">
     <h2>Componentes</h2>
     <button onclick="addComponent('disjuntor')">Disjuntor Motor</button>
@@ -22,12 +23,13 @@
     <h1>Laboratório de Fiação</h1>
 
     <div id="workspace">
-      <div id="fase">FASE</div>
-      <div id="neutro">NEUTRO</div>
+      <div class="bus fase">FASE</div>
+      <div class="bus neutro">NEUTRO</div>
 
       <svg id="wires"></svg>
     </div>
   </main>
+
 </div>
 
 <script src="script.js"></script>
