@@ -9,15 +9,23 @@
 <div id="app">
 
   <aside id="sidebar">
-    <button onclick="addDevice('disjuntor')">Disjuntor Motor</button>
-    <button onclick="addDevice('contator')">Contator</button>
-    <button onclick="addDevice('motor')">Motor</button>
-    <button onclick="addDevice('liga')">Botão Liga</button>
-    <button onclick="addDevice('desliga')">Botão Desliga</button>
-    <button onclick="addDevice('emergencia')">Emergência</button>
+    <button class="tool" onclick="addDevice('disjuntor')">Disjuntor Motor</button>
+    <button class="tool" onclick="addDevice('contator')">Contator</button>
+    <button class="tool" onclick="addDevice('motor')">Motor</button>
+    <button class="tool" onclick="addDevice('liga')">Botão Liga</button>
+    <button class="tool" onclick="addDevice('desliga')">Botão Desliga</button>
+    <button class="tool" onclick="addDevice('emergencia')">Emergência</button>
   </aside>
 
-  <main id="workspace"></main>
+  <main id="main">
+    <h1>Laboratório de Fiação</h1>
+
+    <!-- BARRAMENTOS -->
+    <div id="fase">FASE</div>
+    <div id="neutro">NEUTRO</div>
+
+    <div id="workspace"></div>
+  </main>
 
 </div>
 
