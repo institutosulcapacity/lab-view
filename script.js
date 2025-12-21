@@ -1,126 +1,108 @@
-const assets = {
-  botao_liga: "botao_liga.png",
-  botao_desliga: "botao_desliga.png",
-  emergencia: "emergencia.png",
-  contator: "contator_aberto.png",
-  disjuntor_motor: "disjuntor_motor.png",
-  rele_termico: "rele_termico_weg.png",
-  motor: "motor_off.png"
-};
+const workspace = document.getElementById('workspace');
 
-const bornesPorTipo = {
-  botao_liga: ["13", "14"],
-  botao_desliga: ["21", "22"],
-  emergencia: ["11", "12"],
+function addComponent(type) {
+  const comp = document.createElement('div');
+  comp.className = 'component';
+  comp.style.left = '50px';
+  comp.style.top = '50px';
 
-  contator: ["A1", "A2", "13", "14"],
+  let html = '';
 
-  disjuntor_motor: ["L1", "L2", "L3", "T1", "T2", "T3", "13", "14"],
+  if (type === 'contator') {
+    html = `
+      <h3>CONTATOR</h3>
 
-  rele_termico: ["95", "96"],
+      <div class="terminal top-row left"></div><span class="label" style="top:22px;left:10px;">L1</span>
+      <div class="terminal top-row center"></div><span class="label" style="top:22px;left:70px;">L2</span>
+      <div class="terminal top-row right"></div><span class="label" style="top:22px;right:5px;">L3</span>
 
-  motor: ["U", "V", "W"]
-};
+      <div class="terminal side-right" style="top:55px;"></div><span class="label" style="top:50px;right:20px;">A1</span>
+      <div class="terminal side-right" style="top:80px;"></div><span class="label" style="top:75px;right:20px;">13</span>
+      <div class="terminal side-right" style="top:105px;"></div><span class="label" style="top:100px;right:20px;">14</span>
+      <div class="terminal side-right" style="top:130px;"></div><span class="label" style="top:125px;right:20px;">A2</span>
 
-const workspace = document.getElementById("workspace");
-const svg = document.getElementById("wires");
-
-let borneSelecionado = null;
-
-/* MENU */
-document.querySelectorAll(".tool").forEach(btn => {
-  btn.onclick = () => criarComponente(btn.dataset.type);
-});
-
-function criarComponente(tipo) {
-  const comp = document.createElement("div");
-  comp.className = "component " + tipo;
-
-  const img = document.createElement("img");
-  img.src = "assets/" + assets[tipo];
-  img.draggable = false;
-
-  comp.appendChild(img);
-  workspace.appendChild(comp);
-
-  comp.style.left = "80px";
-  comp.style.top = "80px";
-
-  criarBornes(comp, tipo);
-  tornarArrastavel(comp);
-}
-
-function criarBornes(comp, tipo) {
-  const bornes = bornesPorTipo[tipo];
-  if (!bornes) return;
-
-  bornes.forEach((id, i) => {
-    const b = document.createElement("div");
-    b.className = "borne";
-    b.dataset.id = `${tipo}:${id}`;
-
-    b.style.left = "5px";
-    b.style.top = 15 + i * 14 + "px";
-
-    const label = document.createElement("span");
-    label.textContent = id;
-
-    b.appendChild(label);
-    comp.appendChild(b);
-
-    b.onclick = e => {
-      e.stopPropagation();
-      clicarBorne(b);
-    };
-  });
-}
-
-function clicarBorne(borne) {
-  if (!borneSelecionado) {
-    borneSelecionado = borne;
-    borne.style.background = "lime";
-  } else {
-    criarFio(borneSelecionado, borne);
-    borneSelecionado.style.background = "red";
-    borneSelecionado = null;
+      <div class="terminal bottom-row left"></div><span class="label" style="bottom:8px;left:10px;">T1</span>
+      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:70px;">T2</span>
+      <div class="terminal bottom-row right"></div><span class="label" style="bottom:8px;right:5px;">T3</span>
+    `;
   }
+
+  if (type === 'disjuntor') {
+    html = `
+      <h3>DISJUNTOR</h3>
+
+      <div class="terminal top-row left"></div><span class="label" style="top:22px;left:10px;">L1</span>
+      <div class="terminal top-row center"></div><span class="label" style="top:22px;left:70px;">L2</span>
+      <div class="terminal top-row right"></div><span class="label" style="top:22px;right:5px;">L3</span>
+
+      <div class="terminal side-right" style="top:80px;"></div><span class="label" style="top:75px;right:20px;">13</span>
+      <div class="terminal side-right" style="top:105px;"></div><span class="label" style="top:100px;right:20px;">14</span>
+
+      <div class="terminal bottom-row left"></div><span class="label" style="bottom:8px;left:10px;">T1</span>
+      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:70px;">T2</span>
+      <div class="terminal bottom-row right"></div><span class="label" style="bottom:8px;right:5px;">T3</span>
+    `;
+  }
+
+  if (type === 'motor') {
+    html = `
+      <h3>MOTOR</h3>
+      <div class="terminal bottom-row left"></div><span class="label" style="bottom:8px;left:15px;">U</span>
+      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:75px;">V</span>
+      <div class="terminal bottom-row right"></div><span class="label" style="bottom:8px;right:10px;">W</span>
+    `;
+  }
+
+  if (type === 'liga') {
+    comp.classList.add('small');
+    html = `
+      <h3>LIGA</h3>
+      <div class="terminal top-row center"></div><span class="label" style="top:22px;left:50px;">13</span>
+      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:50px;">14</span>
+    `;
+  }
+
+  if (type === 'desliga') {
+    comp.classList.add('small');
+    html = `
+      <h3>DESLIGA</h3>
+      <div class="terminal top-row center"></div><span class="label" style="top:22px;left:50px;">21</span>
+      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:50px;">22</span>
+    `;
+  }
+
+  if (type === 'emergencia') {
+    comp.classList.add('small');
+    html = `
+      <h3>EMERGÊNCIA</h3>
+      <div class="terminal top-row center"></div><span class="label" style="top:22px;left:50px;">11</span>
+      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:50px;">12</span>
+    `;
+  }
+
+  comp.innerHTML = html;
+  makeDraggable(comp);
+  workspace.appendChild(comp);
 }
 
-function criarFio(b1, b2) {
-  const r1 = b1.getBoundingClientRect();
-  const r2 = b2.getBoundingClientRect();
-  const w = workspace.getBoundingClientRect();
+function makeDraggable(el) {
+  let offsetX, offsetY, dragging = false;
 
-  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  line.classList.add("wire");
+  el.addEventListener('mousedown', e => {
+    dragging = true;
+    offsetX = e.offsetX;
+    offsetY = e.offsetY;
+    el.style.cursor = 'grabbing';
+  });
 
-  line.setAttribute("x1", r1.left + 5 - w.left);
-  line.setAttribute("y1", r1.top + 5 - w.top);
-  line.setAttribute("x2", r2.left + 5 - w.left);
-  line.setAttribute("y2", r2.top + 5 - w.top);
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    el.style.left = (e.pageX - workspace.offsetLeft - offsetX) + 'px';
+    el.style.top = (e.pageY - workspace.offsetTop - offsetY) + 'px';
+  });
 
-  svg.appendChild(line);
-}
-
-function tornarArrastavel(el) {
-  let ox = 0, oy = 0, drag = false;
-
-  el.onmousedown = e => {
-    drag = true;
-    ox = e.offsetX;
-    oy = e.offsetY;
-    el.style.zIndex = 1000;
-  };
-
-  document.onmousemove = e => {
-    if (!drag) return;
-    const r = workspace.getBoundingClientRect();
-    el.style.left = e.clientX - r.left - ox + "px";
-    el.style.top = e.clientY - r.top - oy + "px";
-  };
-
-  document.onmouseup = () => {
-    drag = false;
-    el.style.zIndex = "";
-  };
+  document.addEventListener('mouseup', () => {
+    dragging = false;
+    el.style.cursor = 'grab';
+  });
 }
