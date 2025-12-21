@@ -1,117 +1,124 @@
-const workspace = document.getElementById('workspace');
-const wiresSVG = document.getElementById('wires');
+const workspace = document.getElementById("workspace");
+const svg = document.getElementById("wires");
 
-let currentWire = null;
-let startBorne = null;
+let dragItem = null;
+let offsetX = 0;
+let offsetY = 0;
 
+let wireStart = null;
+
+/* Criar componentes */
 function addComponent(type) {
-  const c = document.createElement('div');
-  c.className = 'component';
-  c.style.left = '200px';
-  c.style.top = '100px';
+  const c = document.createElement("div");
+  c.className = "component";
+  c.style.left = "200px";
+  c.style.top = "120px";
 
-  const title = document.createElement('div');
-  title.className = 'component-title';
-  title.innerText = type.toUpperCase();
-  c.appendChild(title);
-
-  const bornes = getBornes(type);
-  bornes.forEach(b => {
-    const dot = document.createElement('div');
-    dot.className = 'borne';
-    dot.style.left = b.x + 'px';
-    dot.style.top = b.y + 'px';
-    dot.dataset.name = b.name;
-
-    const label = document.createElement('div');
-    label.className = 'borne-label';
-    label.style.left = (b.x + 14) + 'px';
-    label.style.top = (b.y - 4) + 'px';
-    label.innerText = b.name;
-
-    dot.onclick = e => startOrEndWire(dot);
-    c.appendChild(dot);
-    c.appendChild(label);
-  });
-
-  makeDraggable(c);
+  c.innerHTML = getComponentHTML(type);
   workspace.appendChild(c);
+
+  enableDrag(c);
+  enableBornes(c);
 }
 
-function getBornes(type) {
-  if (type === 'contator') {
-    return [
-      { name:'L1', x:10, y:30 }, { name:'L2', x:40, y:30 }, { name:'L3', x:70, y:30 },
-      { name:'13', x:90, y:55 }, { name:'14', x:90, y:75 },
-      { name:'A1', x:90, y:95 }, { name:'A2', x:90, y:115 },
-      { name:'T1', x:10, y:130 }, { name:'T2', x:40, y:130 }, { name:'T3', x:70, y:130 }
-    ];
+/* HTML de cada componente */
+function getComponentHTML(type) {
+  if (type === "contator") {
+    return `
+      <h3>CONTATOR</h3>
+      ${borne("L1",10,30)}${borne("L2",45,30)}${borne("L3",80,30)}
+      ${borne("13",110,55)}${borne("14",110,80)}
+      ${borne("A1",110,105)}${borne("A2",110,130)}
+      ${borne("T1",10,155)}${borne("T2",45,155)}${borne("T3",80,155)}
+    `;
   }
 
-  if (type === 'disjuntor') {
-    return [
-      { name:'L1', x:10, y:30 }, { name:'L2', x:40, y:30 }, { name:'L3', x:70, y:30 },
-      { name:'13', x:90, y:55 }, { name:'14', x:90, y:75 },
-      { name:'T1', x:10, y:100 }, { name:'T2', x:40, y:100 }, { name:'T3', x:70, y:100 }
-    ];
+  if (type === "disjuntor") {
+    return `
+      <h3>DISJUNTOR</h3>
+      ${borne("L1",10,30)}${borne("L2",45,30)}${borne("L3",80,30)}
+      ${borne("13",110,55)}${borne("14",110,80)}
+      ${borne("T1",10,105)}${borne("T2",45,105)}${borne("T3",80,105)}
+    `;
   }
 
-  if (type === 'motor') {
-    return [
-      { name:'U', x:20, y:40 }, { name:'V', x:50, y:40 }, { name:'W', x:80, y:40 }
-    ];
+  if (type === "motor") {
+    return `
+      <h3>MOTOR</h3>
+      ${borne("U",20,40)}${borne("V",55,40)}${borne("W",90,40)}
+    `;
   }
 
-  if (type === 'liga') return [{ name:'13', x:30, y:40 }, { name:'14', x:60, y:40 }];
-  if (type === 'desliga') return [{ name:'21', x:30, y:40 }, { name:'22', x:60, y:40 }];
-  if (type === 'emergencia') return [{ name:'11', x:30, y:40 }, { name:'12', x:60, y:40 }];
+  if (type === "liga") {
+    return `<h3>LIGA</h3>${borne("13",40,40)}${borne("14",70,40)}`;
+  }
 
-  return [];
+  if (type === "desliga") {
+    return `<h3>DESLIGA</h3>${borne("21",40,40)}${borne("22",70,40)}`;
+  }
+
+  if (type === "emergencia") {
+    return `<h3>EMERGÊNCIA</h3>${borne("11",40,40)}${borne("12",70,40)}`;
+  }
 }
 
-function makeDraggable(el) {
-  let offsetX, offsetY, dragging = false;
-
-  el.onmousedown = e => {
-    dragging = true;
-    offsetX = e.clientX - el.offsetLeft;
-    offsetY = e.clientY - el.offsetTop;
-  };
-
-  document.onmousemove = e => {
-    if (!dragging) return;
-    el.style.left = (e.clientX - offsetX) + 'px';
-    el.style.top = (e.clientY - offsetY) + 'px';
-    updateWires();
-  };
-
-  document.onmouseup = () => dragging = false;
+/* Criar borne */
+function borne(label,x,y) {
+  return `<div class="borne" data-label="${label}" style="left:${x}px;top:${y}px">
+    <span>${label}</span>
+  </div>`;
 }
 
-function startOrEndWire(borne) {
-  const rect = borne.getBoundingClientRect();
+/* Drag correto */
+function enableDrag(el) {
+  el.addEventListener("mousedown", e => {
+    if (e.target.classList.contains("borne")) return;
+
+    dragItem = el;
+    const rect = el.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+  });
+}
+
+document.addEventListener("mousemove", e => {
+  if (!dragItem) return;
+  dragItem.style.left = (e.clientX - offsetX - workspace.offsetLeft) + "px";
+  dragItem.style.top = (e.clientY - offsetY - workspace.offsetTop) + "px";
+});
+
+document.addEventListener("mouseup", () => dragItem = null);
+
+/* Fiação */
+function enableBornes(component) {
+  component.querySelectorAll(".borne").forEach(b => {
+    b.addEventListener("mousedown", e => {
+      e.stopPropagation();
+      wireStart = b;
+    });
+
+    b.addEventListener("mouseup", e => {
+      e.stopPropagation();
+      if (!wireStart || wireStart === b) return;
+      drawWire(wireStart, b);
+      wireStart = null;
+    });
+  });
+}
+
+/* Desenhar fio */
+function drawWire(b1, b2) {
+  const p1 = b1.getBoundingClientRect();
+  const p2 = b2.getBoundingClientRect();
   const ws = workspace.getBoundingClientRect();
-  const x = rect.left - ws.left + 6;
-  const y = rect.top - ws.top + 6;
 
-  if (!startBorne) {
-    startBorne = { x, y };
-    currentWire = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    currentWire.setAttribute('x1', x);
-    currentWire.setAttribute('y1', y);
-    currentWire.setAttribute('x2', x);
-    currentWire.setAttribute('y2', y);
-    currentWire.setAttribute('stroke', 'yellow');
-    currentWire.setAttribute('stroke-width', '2');
-    wiresSVG.appendChild(currentWire);
-  } else {
-    currentWire.setAttribute('x2', x);
-    currentWire.setAttribute('y2', y);
-    startBorne = null;
-    currentWire = null;
-  }
-}
+  const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+  line.setAttribute("x1", p1.left - ws.left + 7);
+  line.setAttribute("y1", p1.top - ws.top + 7);
+  line.setAttribute("x2", p2.left - ws.left + 7);
+  line.setAttribute("y2", p2.top - ws.top + 7);
+  line.setAttribute("stroke","yellow");
+  line.setAttribute("stroke-width","3");
 
-function updateWires() {
-  // expansão futura: recalcular fios conectados
+  svg.appendChild(line);
 }
