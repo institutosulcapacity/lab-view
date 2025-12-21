@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Laboratório de Fiação</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
-    <aside id="sidebar">
-      <h2>Componentes</h2>
-      <button onclick="addDisjuntor()">Disjuntor Motor</button>
-      <button onclick="addContator()">Contator</button>
-      <button onclick="addMotor()">Motor</button>
-      <button onclick="addLiga()">Botão Liga</button>
-      <button onclick="addDesliga()">Botão Desliga</button>
-      <button onclick="addEmergencia()">Emergência</button>
-    </aside>
 
-    <main id="main">
-      <div id="fase">FASE</div>
+<div id="app">
+  <aside id="sidebar">
+    <h2>Componentes</h2>
+    <button class="tool" onclick="addComponent('disjuntor')">Disjuntor Motor</button>
+    <button class="tool" onclick="addComponent('contator')">Contator</button>
+    <button class="tool" onclick="addComponent('motor')">Motor</button>
+    <button class="tool" onclick="addComponent('liga')">Botão Liga</button>
+    <button class="tool" onclick="addComponent('desliga')">Botão Desliga</button>
+    <button class="tool" onclick="addComponent('emergencia')">Emergência</button>
+  </aside>
 
-      <div id="workspace"></div>
+  <main id="main">
+    <h1>Laboratório de Fiação</h1>
 
-      <div id="neutro">NEUTRO</div>
-    </main>
-  </div>
+    <div id="workspace">
+      <div class="bus fase">FASE</div>
+      <div class="bus neutro">NEUTRO</div>
+    </div>
+  </main>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
