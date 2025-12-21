@@ -1,71 +1,112 @@
-const workspace = document.getElementById("workspace");
-
-function makeDraggable(el) {
-  let offsetX, offsetY;
-  el.onmousedown = e => {
-    offsetX = e.offsetX;
-    offsetY = e.offsetY;
-    document.onmousemove = ev => {
-      el.style.left = ev.pageX - workspace.offsetLeft - offsetX + "px";
-      el.style.top = ev.pageY - workspace.offsetTop - offsetY + "px";
-    };
-    document.onmouseup = () => document.onmousemove = null;
-  };
-}
-
-function addTerminal(parent, cls, label) {
-  const t = document.createElement("div");
-  t.className = `terminal ${cls}`;
-  const l = document.createElement("div");
-  l.className = "label";
-  l.innerText = label;
-  t.appendChild(l);
-  parent.appendChild(t);
-}
+const workspace = document.getElementById('workspace');
+let zIndex = 1;
 
 function addDevice(type) {
-  const d = document.createElement("div");
-  d.className = `device ${type}`;
-  d.style.left = "100px";
-  d.style.top = "100px";
+  const d = document.createElement('div');
+  d.className = 'device';
+  d.style.left = '100px';
+  d.style.top = '100px';
+  d.style.zIndex = zIndex++;
 
-  const h = document.createElement("div");
-  h.className = "device-header";
-  h.innerText = type.toUpperCase();
-  d.appendChild(h);
+  let html = '';
 
-  if (type === "contator") {
-    ["L1","L2","L3","T1","T2","T3","A1","A2","c13","c14"]
-      .forEach(t => addTerminal(d, t, t.replace("c","")));
+  if (type === 'disjuntor') {
+    html = `
+      <div class="device-title">DISJUNTOR</div>
+      ${terminal('L1', 10, 25)}
+      ${terminal('L2', 70, 25)}
+      ${terminal('L3', 130, 25)}
+      ${terminal('13', 130, 60)}
+      ${terminal('14', 130, 80)}
+      ${terminal('T1', 10, 100)}
+      ${terminal('T2', 70, 100)}
+      ${terminal('T3', 130, 100)}
+    `;
   }
 
-  if (type === "disjuntor") {
-    ["L1","L2","L3","T1","T2","T3","d13","d14"]
-      .forEach(t => addTerminal(d, t, t.replace("d","")));
+  if (type === 'contator') {
+    html = `
+      <div class="device-title">CONTATOR</div>
+      ${terminal('L1', 10, 25)}
+      ${terminal('L2', 70, 25)}
+      ${terminal('L3', 130, 25)}
+
+      ${terminal('A1', 130, 50)}
+      ${terminal('13', 130, 70)}
+      ${terminal('14', 130, 90)}
+      ${terminal('A2', 130, 110)}
+
+      ${terminal('T1', 10, 120)}
+      ${terminal('T2', 70, 120)}
+      ${terminal('T3', 130, 120)}
+    `;
   }
 
-  if (type === "motor") {
-    ["U","V","W"].forEach(t => addTerminal(d, t, t));
+  if (type === 'motor') {
+    html = `
+      <div class="device-title">MOTOR</div>
+      ${terminal('U', 20, 40)}
+      ${terminal('V', 70, 40)}
+      ${terminal('W', 120, 40)}
+    `;
   }
 
-  if (type === "liga") {
-    d.classList.add("botao");
-    addTerminal(d,"t1","13");
-    addTerminal(d,"t2","14");
+  if (type === 'liga') {
+    html = `
+      <div class="device-title">LIGA</div>
+      ${terminal('13', 40, 40)}
+      ${terminal('14', 90, 40)}
+    `;
   }
 
-  if (type === "desliga") {
-    d.classList.add("botao");
-    addTerminal(d,"t1","21");
-    addTerminal(d,"t2","22");
+  if (type === 'desliga') {
+    html = `
+      <div class="device-title">DESLIGA</div>
+      ${terminal('21', 40, 40)}
+      ${terminal('22', 90, 40)}
+    `;
   }
 
-  if (type === "emergencia") {
-    d.classList.add("botao");
-    addTerminal(d,"t1","11");
-    addTerminal(d,"t2","12");
+  if (type === 'emergencia') {
+    html = `
+      <div class="device-title">EMERGÊNCIA</div>
+      ${terminal('11', 40, 40)}
+      ${terminal('12', 90, 40)}
+    `;
   }
 
-  makeDraggable(d);
+  d.innerHTML = html;
   workspace.appendChild(d);
+  makeDraggable(d);
+}
+
+function terminal(label, x, y) {
+  return `
+    <div class="terminal" style="left:${x}px; top:${y}px;">
+      <span>${label}</span>
+    </div>
+  `;
+}
+
+/* DRAG SEM OFFSET */
+function makeDraggable(el) {
+  let offsetX = 0, offsetY = 0, dragging = false;
+
+  el.addEventListener('mousedown', e => {
+    dragging = true;
+    offsetX = e.clientX - el.offsetLeft;
+    offsetY = e.clientY - el.offsetTop;
+    el.style.cursor = 'grabbing';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    el.style.left = (e.clientX - offsetX) + 'px';
+    el.style.top = (e.clientY - offsetY) + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    dragging = false;
+    el.style.cursor = 'grab';
+  });
 }
