@@ -2,33 +2,26 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Laboratório Virtual – Comandos Elétricos</title>
+  <title>Laboratório de Fiação</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="app">
-
   <aside id="sidebar">
     <h2>Componentes</h2>
-
-    <button class="tool" data-type="botao_liga">Botão Liga</button>
-    <button class="tool" data-type="botao_desliga">Botão Desliga</button>
-    <button class="tool" data-type="emergencia">Emergência</button>
-
-    <button class="tool" data-type="contator">Contator</button>
-    <button class="tool" data-type="disjuntor_motor">Disjuntor Motor</button>
-    <button class="tool" data-type="rele_termico">Relé Térmico</button>
-    <button class="tool" data-type="motor">Motor</button>
+    <button onclick="addComponent('disjuntor')">Disjuntor Motor</button>
+    <button onclick="addComponent('contator')">Contator</button>
+    <button onclick="addComponent('motor')">Motor</button>
+    <button onclick="addComponent('liga')">Botão Liga</button>
+    <button onclick="addComponent('desliga')">Botão Desliga</button>
+    <button onclick="addComponent('emergencia')">Emergência</button>
   </aside>
 
-  <main>
+  <main id="main">
     <h1>Laboratório de Fiação</h1>
-    <div id="workspace">
-      <svg id="wires"></svg>
-    </div>
+    <div id="workspace"></div>
   </main>
-
 </div>
 
 <script src="script.js"></script>
