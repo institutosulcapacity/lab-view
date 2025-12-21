@@ -1,112 +1,113 @@
-const workspace = document.getElementById('workspace');
-let zIndex = 1;
+const workspace = document.getElementById("workspace");
 
-function addDevice(type) {
-  const d = document.createElement('div');
-  d.className = 'device';
-  d.style.left = '100px';
-  d.style.top = '100px';
-  d.style.zIndex = zIndex++;
+function makeDraggable(el) {
+  let offsetX, offsetY;
 
-  let html = '';
+  el.onmousedown = e => {
+    offsetX = e.offsetX;
+    offsetY = e.offsetY;
 
-  if (type === 'disjuntor') {
-    html = `
-      <div class="device-title">DISJUNTOR</div>
-      ${terminal('L1', 10, 25)}
-      ${terminal('L2', 70, 25)}
-      ${terminal('L3', 130, 25)}
-      ${terminal('13', 130, 60)}
-      ${terminal('14', 130, 80)}
-      ${terminal('T1', 10, 100)}
-      ${terminal('T2', 70, 100)}
-      ${terminal('T3', 130, 100)}
-    `;
-  }
+    document.onmousemove = ev => {
+      el.style.left = ev.pageX - offsetX + "px";
+      el.style.top = ev.pageY - offsetY + "px";
+    };
 
-  if (type === 'contator') {
-    html = `
-      <div class="device-title">CONTATOR</div>
-      ${terminal('L1', 10, 25)}
-      ${terminal('L2', 70, 25)}
-      ${terminal('L3', 130, 25)}
+    document.onmouseup = () => {
+      document.onmousemove = null;
+    };
+  };
+}
 
-      ${terminal('A1', 130, 50)}
-      ${terminal('13', 130, 70)}
-      ${terminal('14', 130, 90)}
-      ${terminal('A2', 130, 110)}
+function borne(el, x, y, label) {
+  const b = document.createElement("div");
+  b.className = "borne";
+  b.style.left = x + "px";
+  b.style.top = y + "px";
 
-      ${terminal('T1', 10, 120)}
-      ${terminal('T2', 70, 120)}
-      ${terminal('T3', 130, 120)}
-    `;
-  }
+  const l = document.createElement("div");
+  l.className = "label";
+  l.style.left = x + "px";
+  l.style.top = y + "px";
+  l.innerText = label;
 
-  if (type === 'motor') {
-    html = `
-      <div class="device-title">MOTOR</div>
-      ${terminal('U', 20, 40)}
-      ${terminal('V', 70, 40)}
-      ${terminal('W', 120, 40)}
-    `;
-  }
+  el.appendChild(b);
+  el.appendChild(l);
+}
 
-  if (type === 'liga') {
-    html = `
-      <div class="device-title">LIGA</div>
-      ${terminal('13', 40, 40)}
-      ${terminal('14', 90, 40)}
-    `;
-  }
+/* DISPOSITIVOS */
 
-  if (type === 'desliga') {
-    html = `
-      <div class="device-title">DESLIGA</div>
-      ${terminal('21', 40, 40)}
-      ${terminal('22', 90, 40)}
-    `;
-  }
+function addContator() {
+  const c = document.createElement("div");
+  c.className = "component";
+  c.style.left = "300px";
+  c.style.top = "100px";
+  c.innerHTML = "<h3>CONTATOR</h3>";
 
-  if (type === 'emergencia') {
-    html = `
-      <div class="device-title">EMERGÊNCIA</div>
-      ${terminal('11', 40, 40)}
-      ${terminal('12', 90, 40)}
-    `;
-  }
+  ["L1","L2","L3"].forEach((t,i)=>borne(c,30+i*50,30,t));
+  ["T1","T2","T3"].forEach((t,i)=>borne(c,30+i*50,120,t));
 
-  d.innerHTML = html;
+  borne(c,140,60,"13");
+  borne(c,140,85,"14");
+
+  borne(c,165,30,"A1");
+  borne(c,165,120,"A2");
+
+  workspace.appendChild(c);
+  makeDraggable(c);
+}
+
+function addDisjuntor() {
+  const d = document.createElement("div");
+  d.className = "component";
+  d.style.left = "300px";
+  d.style.top = "30px";
+  d.innerHTML = "<h3>DISJUNTOR</h3>";
+
+  ["L1","L2","L3"].forEach((t,i)=>borne(d,30+i*50,30,t));
+  ["T1","T2","T3"].forEach((t,i)=>borne(d,30+i*50,120,t));
+
+  borne(d,140,60,"13");
+  borne(d,140,85,"14");
+
   workspace.appendChild(d);
   makeDraggable(d);
 }
 
-function terminal(label, x, y) {
-  return `
-    <div class="terminal" style="left:${x}px; top:${y}px;">
-      <span>${label}</span>
-    </div>
-  `;
+function addMotor() {
+  const m = document.createElement("div");
+  m.className = "component";
+  m.style.left = "300px";
+  m.style.top = "250px";
+  m.innerHTML = "<h3>MOTOR</h3>";
+
+  ["U","V","W"].forEach((t,i)=>borne(m,40+i*45,80,t));
+
+  workspace.appendChild(m);
+  makeDraggable(m);
 }
 
-/* DRAG SEM OFFSET */
-function makeDraggable(el) {
-  let offsetX = 0, offsetY = 0, dragging = false;
+function addLiga() {
+  addBotao("LIGA", ["13","14"], 550, 100);
+}
 
-  el.addEventListener('mousedown', e => {
-    dragging = true;
-    offsetX = e.clientX - el.offsetLeft;
-    offsetY = e.clientY - el.offsetTop;
-    el.style.cursor = 'grabbing';
-  });
+function addDesliga() {
+  addBotao("DESLIGA", ["21","22"], 550, 170);
+}
 
-  document.addEventListener('mousemove', e => {
-    if (!dragging) return;
-    el.style.left = (e.clientX - offsetX) + 'px';
-    el.style.top = (e.clientY - offsetY) + 'px';
-  });
+function addEmergencia() {
+  addBotao("EMERGÊNCIA", ["11","12"], 550, 240);
+}
 
-  document.addEventListener('mouseup', () => {
-    dragging = false;
-    el.style.cursor = 'grab';
-  });
+function addBotao(nome, bornes, x, y) {
+  const b = document.createElement("div");
+  b.className = "component";
+  b.style.width = "120px";
+  b.style.left = x + "px";
+  b.style.top = y + "px";
+  b.innerHTML = `<h3>${nome}</h3>`;
+
+  bornes.forEach((t,i)=>borne(b,30+i*50,60,t));
+
+  workspace.appendChild(b);
+  makeDraggable(b);
 }
