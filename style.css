@@ -1,8 +1,13 @@
+* {
+  box-sizing: border-box;
+  user-select: none;
+  font-family: Arial, sans-serif;
+}
+
 body {
   margin: 0;
   background: #0f0f0f;
   color: #fff;
-  font-family: Arial, sans-serif;
 }
 
 #app {
@@ -18,10 +23,10 @@ body {
 
 #sidebar button {
   width: 100%;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   padding: 10px;
   background: #333;
-  color: white;
+  color: #fff;
   border: none;
   cursor: pointer;
 }
@@ -29,38 +34,77 @@ body {
 #workspace {
   flex: 1;
   position: relative;
-  background: #111;
+  border: 2px dashed #444;
+  margin: 10px;
 }
 
+/* ===== COMPONENTE ===== */
 .device {
   position: absolute;
-  background: #2b2b2b;
+  width: 200px;
+  background: #2a2a2a;
   border: 1px solid #666;
   border-radius: 6px;
   padding: 8px;
-  width: 180px;
   cursor: grab;
 }
 
-.device h4 {
-  margin: 0 0 6px;
+.device-header {
   text-align: center;
-  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 6px;
 }
 
+/* ===== BORNES ===== */
 .terminal {
-  display: inline-block;
   width: 14px;
   height: 14px;
   background: red;
   border-radius: 50%;
-  margin: 6px;
-  position: relative;
+  position: absolute;
 }
 
-.terminal span {
+.label {
   position: absolute;
-  top: -16px;
-  left: -4px;
-  font-size: 10px;
+  font-size: 11px;
+  transform: translate(-50%, -130%);
 }
+
+/* PADRÃO CONTATOR */
+.contator { height: 230px; }
+.contator .L1 { top: 35px; left: 30px; }
+.contator .L2 { top: 35px; left: 90px; }
+.contator .L3 { top: 35px; left: 150px; }
+
+.contator .T1 { bottom: 25px; left: 30px; }
+.contator .T2 { bottom: 25px; left: 90px; }
+.contator .T3 { bottom: 25px; left: 150px; }
+
+.contator .A1 { top: 90px; right: 10px; }
+.contator .A2 { bottom: 60px; right: 10px; }
+
+.contator .c13 { top: 110px; right: 45px; }
+.contator .c14 { top: 140px; right: 45px; }
+
+/* BOTÕES */
+.botao { width: 120px; height: 90px; }
+
+.botao .t1 { top: 45px; left: 20px; }
+.botao .t2 { top: 45px; right: 20px; }
+
+/* MOTOR */
+.motor { height: 120px; }
+.motor .U { bottom: 25px; left: 40px; }
+.motor .V { bottom: 25px; left: 90px; }
+.motor .W { bottom: 25px; left: 140px; }
+
+/* DISJUNTOR */
+.disjuntor { height: 200px; }
+.disjuntor .L1 { top: 35px; left: 30px; }
+.disjuntor .L2 { top: 35px; left: 90px; }
+.disjuntor .L3 { top: 35px; left: 150px; }
+.disjuntor .T1 { bottom: 30px; left: 30px; }
+.disjuntor .T2 { bottom: 30px; left: 90px; }
+.disjuntor .T3 { bottom: 30px; left: 150px; }
+.disjuntor .d13 { top: 90px; right: 20px; }
+.disjuntor .d14 { top: 120px; right: 20px; }
