@@ -1,108 +1,56 @@
-const workspace = document.getElementById('workspace');
+const workspace = document.getElementById("workspace");
 
-function addComponent(type) {
-  const comp = document.createElement('div');
-  comp.className = 'component';
-  comp.style.left = '50px';
-  comp.style.top = '50px';
+function addDevice(type) {
+  const d = document.createElement("div");
+  d.className = "device";
+  d.style.left = "100px";
+  d.style.top = "100px";
 
-  let html = '';
+  let html = "";
 
-  if (type === 'contator') {
+  if (type === "contator") {
     html = `
-      <h3>CONTATOR</h3>
-
-      <div class="terminal top-row left"></div><span class="label" style="top:22px;left:10px;">L1</span>
-      <div class="terminal top-row center"></div><span class="label" style="top:22px;left:70px;">L2</span>
-      <div class="terminal top-row right"></div><span class="label" style="top:22px;right:5px;">L3</span>
-
-      <div class="terminal side-right" style="top:55px;"></div><span class="label" style="top:50px;right:20px;">A1</span>
-      <div class="terminal side-right" style="top:80px;"></div><span class="label" style="top:75px;right:20px;">13</span>
-      <div class="terminal side-right" style="top:105px;"></div><span class="label" style="top:100px;right:20px;">14</span>
-      <div class="terminal side-right" style="top:130px;"></div><span class="label" style="top:125px;right:20px;">A2</span>
-
-      <div class="terminal bottom-row left"></div><span class="label" style="bottom:8px;left:10px;">T1</span>
-      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:70px;">T2</span>
-      <div class="terminal bottom-row right"></div><span class="label" style="bottom:8px;right:5px;">T3</span>
+      <h4>CONTATOR</h4>
+      ${t("L1")} ${t("L2")} ${t("L3")} ${t("A1")}
+      <br>${t("13")} ${t("14")}
+      <br>${t("T1")} ${t("T2")} ${t("T3")} ${t("A2")}
     `;
   }
 
-  if (type === 'disjuntor') {
-    html = `
-      <h3>DISJUNTOR</h3>
-
-      <div class="terminal top-row left"></div><span class="label" style="top:22px;left:10px;">L1</span>
-      <div class="terminal top-row center"></div><span class="label" style="top:22px;left:70px;">L2</span>
-      <div class="terminal top-row right"></div><span class="label" style="top:22px;right:5px;">L3</span>
-
-      <div class="terminal side-right" style="top:80px;"></div><span class="label" style="top:75px;right:20px;">13</span>
-      <div class="terminal side-right" style="top:105px;"></div><span class="label" style="top:100px;right:20px;">14</span>
-
-      <div class="terminal bottom-row left"></div><span class="label" style="bottom:8px;left:10px;">T1</span>
-      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:70px;">T2</span>
-      <div class="terminal bottom-row right"></div><span class="label" style="bottom:8px;right:5px;">T3</span>
-    `;
+  if (type === "motor") {
+    html = `<h4>MOTOR</h4>${t("U")} ${t("V")} ${t("W")}`;
   }
 
-  if (type === 'motor') {
-    html = `
-      <h3>MOTOR</h3>
-      <div class="terminal bottom-row left"></div><span class="label" style="bottom:8px;left:15px;">U</span>
-      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:75px;">V</span>
-      <div class="terminal bottom-row right"></div><span class="label" style="bottom:8px;right:10px;">W</span>
-    `;
+  if (type === "liga") {
+    html = `<h4>LIGA</h4>${t("13")} ${t("14")}`;
   }
 
-  if (type === 'liga') {
-    comp.classList.add('small');
-    html = `
-      <h3>LIGA</h3>
-      <div class="terminal top-row center"></div><span class="label" style="top:22px;left:50px;">13</span>
-      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:50px;">14</span>
-    `;
+  if (type === "desliga") {
+    html = `<h4>DESLIGA</h4>${t("21")} ${t("22")}`;
   }
 
-  if (type === 'desliga') {
-    comp.classList.add('small');
-    html = `
-      <h3>DESLIGA</h3>
-      <div class="terminal top-row center"></div><span class="label" style="top:22px;left:50px;">21</span>
-      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:50px;">22</span>
-    `;
+  if (type === "emergencia") {
+    html = `<h4>EMERGÊNCIA</h4>${t("11")} ${t("12")}`;
   }
 
-  if (type === 'emergencia') {
-    comp.classList.add('small');
-    html = `
-      <h3>EMERGÊNCIA</h3>
-      <div class="terminal top-row center"></div><span class="label" style="top:22px;left:50px;">11</span>
-      <div class="terminal bottom-row center"></div><span class="label" style="bottom:8px;left:50px;">12</span>
-    `;
-  }
-
-  comp.innerHTML = html;
-  makeDraggable(comp);
-  workspace.appendChild(comp);
+  d.innerHTML = html;
+  drag(d);
+  workspace.appendChild(d);
 }
 
-function makeDraggable(el) {
-  let offsetX, offsetY, dragging = false;
+function t(label) {
+  return `<div class="terminal"><span>${label}</span></div>`;
+}
 
-  el.addEventListener('mousedown', e => {
-    dragging = true;
-    offsetX = e.offsetX;
-    offsetY = e.offsetY;
-    el.style.cursor = 'grabbing';
-  });
-
-  document.addEventListener('mousemove', e => {
-    if (!dragging) return;
-    el.style.left = (e.pageX - workspace.offsetLeft - offsetX) + 'px';
-    el.style.top = (e.pageY - workspace.offsetTop - offsetY) + 'px';
-  });
-
-  document.addEventListener('mouseup', () => {
-    dragging = false;
-    el.style.cursor = 'grab';
-  });
+function drag(el) {
+  let x, y;
+  el.onmousedown = e => {
+    x = e.offsetX;
+    y = e.offsetY;
+    document.onmousemove = m => {
+      el.style.left = m.pageX - x + "px";
+      el.style.top = m.pageY - y + "px";
+    };
+    document.onmouseup = () => document.onmousemove = null;
+  };
 }
