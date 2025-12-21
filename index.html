@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Laboratório de Fiação</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<title>Laboratório de Fiação</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="app">
-  <aside id="sidebar">
-    <h2>Componentes</h2>
-    <button class="tool" onclick="addComponent('disjuntor')">Disjuntor Motor</button>
-    <button class="tool" onclick="addComponent('contator')">Contator</button>
-    <button class="tool" onclick="addComponent('motor')">Motor</button>
-    <button class="tool" onclick="addComponent('liga')">Botão Liga</button>
-    <button class="tool" onclick="addComponent('desliga')">Botão Desliga</button>
-    <button class="tool" onclick="addComponent('emergencia')">Emergência</button>
-  </aside>
-
-  <main id="main">
-    <h1>Laboratório de Fiação</h1>
-
-    <div id="workspace">
-      <div class="bus fase">FASE</div>
-      <div class="bus neutro">NEUTRO</div>
+    <div id="sidebar">
+        <h2>Componentes</h2>
+        <button onclick="addComponent('disjuntor')">Disjuntor Motor</button>
+        <button onclick="addComponent('contator')">Contator</button>
+        <button onclick="addComponent('motor')">Motor</button>
+        <button onclick="addComponent('liga')">Botão Liga</button>
+        <button onclick="addComponent('desliga')">Botão Desliga</button>
+        <button onclick="addComponent('emergencia')">Emergência</button>
     </div>
-  </main>
+
+    <div id="main">
+        <h1>Laboratório de Fiação</h1>
+
+        <div id="workspace">
+            <div class="bus fase">FASE</div>
+            <div class="bus neutro">NEUTRO</div>
+
+            <svg id="wires"></svg>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>
