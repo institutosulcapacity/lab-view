@@ -1,159 +1,117 @@
-const workspace = document.getElementById("workspace");
-const svg = document.getElementById("wires");
+const workspace = document.getElementById('workspace');
+const wiresSVG = document.getElementById('wires');
 
 let currentWire = null;
-let offsetX = 0;
-let offsetY = 0;
+let startBorne = null;
 
-/* ===== COMPONENTES ===== */
-const templates = {
-    disjuntor: {
-        name: "DISJUNTOR",
-        terminals: [
-            ["L1",10,30],["L2",80,30],["L3",150,30],
-            ["13",150,70],["14",150,95],
-            ["T1",10,130],["T2",80,130],["T3",150,130]
-        ]
-    },
-    contator: {
-        name: "CONTATOR",
-        terminals: [
-            ["L1",10,30],["L2",80,30],["L3",150,30],
-            ["13",150,60],["14",150,85],
-            ["A1",150,110],["A2",150,135],
-            ["T1",10,160],["T2",80,160],["T3",150,160]
-        ]
-    },
-    motor: {
-        name: "MOTOR",
-        terminals: [
-            ["U",30,60],["V",80,60],["W",130,60]
-        ]
-    },
-    liga: {
-        name: "LIGA",
-        terminals: [["13",40,50],["14",100,50]]
-    },
-    desliga: {
-        name: "DESLIGA",
-        terminals: [["21",40,50],["22",100,50]]
-    },
-    emergencia: {
-        name: "EMERGÊNCIA",
-        terminals: [["11",40,50],["12",100,50]]
-    }
-};
-
-/* ===== CRIAR COMPONENTE ===== */
 function addComponent(type) {
-    const data = templates[type];
-    const comp = document.createElement("div");
-    comp.className = "component";
-    comp.style.left = "200px";
-    comp.style.top = "100px";
+  const c = document.createElement('div');
+  c.className = 'component';
+  c.style.left = '200px';
+  c.style.top = '100px';
 
-    const header = document.createElement("div");
-    header.className = "component-header";
-    header.textContent = data.name;
-    comp.appendChild(header);
+  const title = document.createElement('div');
+  title.className = 'component-title';
+  title.innerText = type.toUpperCase();
+  c.appendChild(title);
 
-    data.terminals.forEach(t => {
-        const dot = document.createElement("div");
-        dot.className = "terminal";
-        dot.style.left = t[1] + "px";
-        dot.style.top = t[2] + "px";
-        dot.dataset.name = t[0];
+  const bornes = getBornes(type);
+  bornes.forEach(b => {
+    const dot = document.createElement('div');
+    dot.className = 'borne';
+    dot.style.left = b.x + 'px';
+    dot.style.top = b.y + 'px';
+    dot.dataset.name = b.name;
 
-        const label = document.createElement("div");
-        label.className = "label";
-        label.textContent = t[0];
-        dot.appendChild(label);
+    const label = document.createElement('div');
+    label.className = 'borne-label';
+    label.style.left = (b.x + 14) + 'px';
+    label.style.top = (b.y - 4) + 'px';
+    label.innerText = b.name;
 
-        dot.addEventListener("mousedown", e => startWire(e, dot));
-        comp.appendChild(dot);
-    });
+    dot.onclick = e => startOrEndWire(dot);
+    c.appendChild(dot);
+    c.appendChild(label);
+  });
 
-    enableDrag(comp);
-    workspace.appendChild(comp);
+  makeDraggable(c);
+  workspace.appendChild(c);
 }
 
-/* ===== ARRASTE CORRIGIDO ===== */
-function enableDrag(el) {
-    el.addEventListener("mousedown", e => {
-        if (e.target.classList.contains("terminal")) return;
+function getBornes(type) {
+  if (type === 'contator') {
+    return [
+      { name:'L1', x:10, y:30 }, { name:'L2', x:40, y:30 }, { name:'L3', x:70, y:30 },
+      { name:'13', x:90, y:55 }, { name:'14', x:90, y:75 },
+      { name:'A1', x:90, y:95 }, { name:'A2', x:90, y:115 },
+      { name:'T1', x:10, y:130 }, { name:'T2', x:40, y:130 }, { name:'T3', x:70, y:130 }
+    ];
+  }
 
-        offsetX = e.offsetX;
-        offsetY = e.offsetY;
+  if (type === 'disjuntor') {
+    return [
+      { name:'L1', x:10, y:30 }, { name:'L2', x:40, y:30 }, { name:'L3', x:70, y:30 },
+      { name:'13', x:90, y:55 }, { name:'14', x:90, y:75 },
+      { name:'T1', x:10, y:100 }, { name:'T2', x:40, y:100 }, { name:'T3', x:70, y:100 }
+    ];
+  }
 
-        function move(ev) {
-            el.style.left = ev.pageX - workspace.offsetLeft - offsetX + "px";
-            el.style.top  = ev.pageY - workspace.offsetTop - offsetY + "px";
-            redrawWires();
-        }
+  if (type === 'motor') {
+    return [
+      { name:'U', x:20, y:40 }, { name:'V', x:50, y:40 }, { name:'W', x:80, y:40 }
+    ];
+  }
 
-        document.addEventListener("mousemove", move);
-        document.addEventListener("mouseup", () => {
-            document.removeEventListener("mousemove", move);
-        }, { once:true });
-    });
+  if (type === 'liga') return [{ name:'13', x:30, y:40 }, { name:'14', x:60, y:40 }];
+  if (type === 'desliga') return [{ name:'21', x:30, y:40 }, { name:'22', x:60, y:40 }];
+  if (type === 'emergencia') return [{ name:'11', x:30, y:40 }, { name:'12', x:60, y:40 }];
+
+  return [];
 }
 
-/* ===== FIOS ===== */
-function startWire(e, terminal) {
-    e.stopPropagation();
+function makeDraggable(el) {
+  let offsetX, offsetY, dragging = false;
 
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute("stroke", "yellow");
-    line.setAttribute("stroke-width", "2");
+  el.onmousedown = e => {
+    dragging = true;
+    offsetX = e.clientX - el.offsetLeft;
+    offsetY = e.clientY - el.offsetTop;
+  };
 
-    const pos = getTerminalPos(terminal);
-    line.setAttribute("x1", pos.x);
-    line.setAttribute("y1", pos.y);
-    line.setAttribute("x2", pos.x);
-    line.setAttribute("y2", pos.y);
+  document.onmousemove = e => {
+    if (!dragging) return;
+    el.style.left = (e.clientX - offsetX) + 'px';
+    el.style.top = (e.clientY - offsetY) + 'px';
+    updateWires();
+  };
 
-    svg.appendChild(line);
-    currentWire = { line, from: terminal };
-
-    function move(ev) {
-        line.setAttribute("x2", ev.pageX - workspace.offsetLeft);
-        line.setAttribute("y2", ev.pageY - workspace.offsetTop);
-    }
-
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", ev => {
-        document.removeEventListener("mousemove", move);
-
-        if (ev.target.classList.contains("terminal")) {
-            const to = getTerminalPos(ev.target);
-            line.setAttribute("x2", to.x);
-            line.setAttribute("y2", to.y);
-            line.from = terminal;
-            line.to = ev.target;
-        } else {
-            svg.removeChild(line);
-        }
-        currentWire = null;
-    }, { once:true });
+  document.onmouseup = () => dragging = false;
 }
 
-function getTerminalPos(t) {
-    const rect = t.getBoundingClientRect();
-    const w = workspace.getBoundingClientRect();
-    return {
-        x: rect.left - w.left + 6,
-        y: rect.top - w.top + 6
-    };
+function startOrEndWire(borne) {
+  const rect = borne.getBoundingClientRect();
+  const ws = workspace.getBoundingClientRect();
+  const x = rect.left - ws.left + 6;
+  const y = rect.top - ws.top + 6;
+
+  if (!startBorne) {
+    startBorne = { x, y };
+    currentWire = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    currentWire.setAttribute('x1', x);
+    currentWire.setAttribute('y1', y);
+    currentWire.setAttribute('x2', x);
+    currentWire.setAttribute('y2', y);
+    currentWire.setAttribute('stroke', 'yellow');
+    currentWire.setAttribute('stroke-width', '2');
+    wiresSVG.appendChild(currentWire);
+  } else {
+    currentWire.setAttribute('x2', x);
+    currentWire.setAttribute('y2', y);
+    startBorne = null;
+    currentWire = null;
+  }
 }
 
-function redrawWires() {
-    [...svg.children].forEach(line => {
-        if (!line.from || !line.to) return;
-        const a = getTerminalPos(line.from);
-        const b = getTerminalPos(line.to);
-        line.setAttribute("x1", a.x);
-        line.setAttribute("y1", a.y);
-        line.setAttribute("x2", b.x);
-        line.setAttribute("y2", b.y);
-    });
+function updateWires() {
+  // expansão futura: recalcular fios conectados
 }
