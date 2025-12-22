@@ -1,146 +1,103 @@
 const workspace = document.getElementById("workspace");
 const svg = document.getElementById("wires");
 
-let dragging = null;
-let offsetX = 0;
-let offsetY = 0;
-
-let wireStart = null;
-let tempLine = null;
-const wires = [];
+let currentWire = null;
 
 function addComponent(type) {
   const c = document.createElement("div");
   c.className = "component";
-  c.style.left = "100px";
-  c.style.top = "100px";
+  c.style.left = "300px";
+  c.style.top = "120px";
 
-  const header = document.createElement("div");
-  header.className = "component-header";
-  header.innerText = type.toUpperCase();
-  c.appendChild(header);
+  c.innerHTML = `<h4>${type.toUpperCase()}</h4>`;
+  workspace.appendChild(c);
 
-  const terminals = getTerminals(type);
-  terminals.forEach(t => {
-    const el = document.createElement("div");
-    el.className = "terminal";
-    el.style.left = t.x + "px";
-    el.style.top = t.y + "px";
+  createTerminals(c, type);
+  makeDraggable(c);
+}
 
-    const label = document.createElement("span");
-    label.innerText = t.name;
-    el.appendChild(label);
+function createTerminals(c, type) {
+  const layouts = {
+    disjuntor: [
+      ["L1", 10, 30], ["L2", 40, 30], ["L3", 70, 30],
+      ["13", 110, 50], ["14", 110, 70],
+      ["T1", 10, 90], ["T2", 40, 90], ["T3", 70, 90]
+    ],
+    contator: [
+      ["L1", 10, 30], ["L2", 40, 30], ["L3", 70, 30],
+      ["13", 110, 50], ["14", 110, 70],
+      ["A1", 110, 90], ["A2", 110, 110],
+      ["T1", 10, 110], ["T2", 40, 110], ["T3", 70, 110]
+    ],
+    motor: [["U", 20, 40], ["V", 50, 40], ["W", 80, 40]],
+    liga: [["13", 20, 40], ["14", 60, 40]],
+    desliga: [["21", 20, 40], ["22", 60, 40]],
+    emergencia: [["11", 20, 40], ["12", 60, 40]]
+  };
 
-    el.addEventListener("mousedown", e => {
+  layouts[type].forEach(t => {
+    const term = document.createElement("div");
+    term.className = "terminal";
+    term.style.left = t[1] + "px";
+    term.style.top = t[2] + "px";
+    term.title = t[0];
+
+    term.addEventListener("mousedown", e => {
       e.stopPropagation();
-      startWire(el);
+      startWire(e, term);
     });
 
-    c.appendChild(el);
+    c.appendChild(term);
   });
-
-  c.addEventListener("mousedown", e => {
-    dragging = c;
-    const rect = c.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-  });
-
-  workspace.appendChild(c);
 }
 
-document.addEventListener("mousemove", e => {
-  if (dragging) {
-    dragging.style.left = e.clientX - offsetX - workspace.offsetLeft + "px";
-    dragging.style.top = e.clientY - offsetY - workspace.offsetTop + "px";
-    updateWires();
-  }
-  if (tempLine) updateTempLine(e);
-});
+function startWire(e, terminal) {
+  const pos = getCenter(terminal);
 
-document.addEventListener("mouseup", () => {
-  dragging = null;
-});
+  currentWire = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  currentWire.setAttribute("x1", pos.x);
+  currentWire.setAttribute("y1", pos.y);
+  currentWire.setAttribute("x2", pos.x);
+  currentWire.setAttribute("y2", pos.y);
+  currentWire.setAttribute("stroke", "yellow");
+  currentWire.setAttribute("stroke-width", "2");
 
-function startWire(terminal) {
-  wireStart = terminal;
-  tempLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  tempLine.setAttribute("stroke", "yellow");
-  tempLine.setAttribute("stroke-width", "2");
-  svg.appendChild(tempLine);
-}
+  svg.appendChild(currentWire);
 
-workspace.addEventListener("mouseup", e => {
-  if (!wireStart || !tempLine) return;
+  document.onmousemove = ev => {
+    currentWire.setAttribute("x2", ev.clientX);
+    currentWire.setAttribute("y2", ev.clientY);
+  };
 
-  const target = e.target.closest(".terminal");
-  if (target && target !== wireStart) {
-    wires.push({ a: wireStart, b: target, line: tempLine });
-  } else {
-    svg.removeChild(tempLine);
-  }
-
-  wireStart = null;
-  tempLine = null;
-});
-
-function updateTempLine(e) {
-  const a = getCenter(wireStart);
-  tempLine.setAttribute("x1", a.x);
-  tempLine.setAttribute("y1", a.y);
-  tempLine.setAttribute("x2", e.clientX - workspace.offsetLeft);
-  tempLine.setAttribute("y2", e.clientY - workspace.offsetTop);
-}
-
-function updateWires() {
-  wires.forEach(w => {
-    const a = getCenter(w.a);
-    const b = getCenter(w.b);
-    w.line.setAttribute("x1", a.x);
-    w.line.setAttribute("y1", a.y);
-    w.line.setAttribute("x2", b.x);
-    w.line.setAttribute("y2", b.y);
-  });
+  document.onmouseup = () => {
+    document.onmousemove = null;
+    document.onmouseup = null;
+    currentWire = null;
+  };
 }
 
 function getCenter(el) {
   const r = el.getBoundingClientRect();
-  const wr = workspace.getBoundingClientRect();
-  return {
-    x: r.left - wr.left + r.width / 2,
-    y: r.top - wr.top + r.height / 2
-  };
+  return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
 }
 
-function getTerminals(type) {
-  if (type === "contator") return [
-    { name: "L1", x: 10, y: 30 }, { name: "L2", x: 40, y: 30 }, { name: "L3", x: 70, y: 30 },
-    { name: "13", x: 90, y: 50 }, { name: "14", x: 90, y: 70 },
-    { name: "A1", x: 90, y: 90 }, { name: "A2", x: 90, y: 110 },
-    { name: "T1", x: 10, y: 130 }, { name: "T2", x: 40, y: 130 }, { name: "T3", x: 70, y: 130 }
-  ];
+function makeDraggable(el) {
+  let offsetX, offsetY;
 
-  if (type === "disjuntor") return [
-    { name: "L1", x: 10, y: 30 }, { name: "L2", x: 40, y: 30 }, { name: "L3", x: 70, y: 30 },
-    { name: "13", x: 90, y: 60 }, { name: "14", x: 90, y: 80 },
-    { name: "T1", x: 10, y: 110 }, { name: "T2", x: 40, y: 110 }, { name: "T3", x: 70, y: 110 }
-  ];
+  el.addEventListener("mousedown", e => {
+    if (e.target.classList.contains("terminal")) return;
 
-  if (type === "motor") return [
-    { name: "U", x: 10, y: 40 }, { name: "V", x: 40, y: 40 }, { name: "W", x: 70, y: 40 }
-  ];
+    offsetX = e.offsetX;
+    offsetY = e.offsetY;
 
-  if (type === "liga") return [
-    { name: "13", x: 20, y: 40 }, { name: "14", x: 60, y: 40 }
-  ];
+    document.onmousemove = ev => {
+      el.style.left = ev.pageX - offsetX + "px";
+      el.style.top = ev.pageY - offsetY + "px";
+    };
 
-  if (type === "desliga") return [
-    { name: "21", x: 20, y: 40 }, { name: "22", x: 60, y: 40 }
-  ];
-
-  if (type === "emergencia") return [
-    { name: "11", x: 20, y: 40 }, { name: "12", x: 60, y: 40 }
-  ];
-
-  return [];
+    document.onmouseup = () => {
+      document.onmousemove = null;
+      document.onmouseup = null;
+    };
+  });
 }
