@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <title>Laboratório de Fiação</title>
@@ -7,28 +7,19 @@
 </head>
 <body>
 
-<div id="app">
+<div id="sidebar">
+  <button onclick="addComponent('disjuntor')">Disjuntor Motor</button>
+  <button onclick="addComponent('contator')">Contator</button>
+  <button onclick="addComponent('motor')">Motor</button>
+  <button onclick="addComponent('liga')">Botão Liga</button>
+  <button onclick="addComponent('desliga')">Botão Desliga</button>
+  <button onclick="addComponent('emergencia')">Emergência</button>
+</div>
 
-  <aside id="sidebar">
-    <h2>Componentes</h2>
-    <button onclick="addComponent('disjuntor')">Disjuntor Motor</button>
-    <button onclick="addComponent('contator')">Contator</button>
-    <button onclick="addComponent('motor')">Motor</button>
-    <button onclick="addComponent('liga')">Botão Liga</button>
-    <button onclick="addComponent('desliga')">Botão Desliga</button>
-    <button onclick="addComponent('emergencia')">Emergência</button>
-  </aside>
-
-  <main id="main">
-    <h1>Laboratório de Fiação</h1>
-
-    <div id="workspace">
-      <div id="fase-bar">FASE</div>
-      <svg id="wires"></svg>
-      <div id="neutro-bar">NEUTRO</div>
-    </div>
-  </main>
-
+<div id="workspace">
+  <div class="barramento fase">FASE</div>
+  <div class="barramento neutro">NEUTRO</div>
+  <svg id="wires"></svg>
 </div>
 
 <script src="script.js"></script>
