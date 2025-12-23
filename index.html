@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Laboratório de Fiação</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="sidebar">
+  <h3>Componentes</h3>
   <button onclick="addComponent('disjuntor')">Disjuntor Motor</button>
   <button onclick="addComponent('contator')">Contator</button>
   <button onclick="addComponent('motor')">Motor</button>
@@ -17,8 +18,9 @@
 </div>
 
 <div id="workspace">
-  <div class="barramento fase">FASE</div>
-  <div class="barramento neutro">NEUTRO</div>
+  <div id="fase" class="barramento">FASE</div>
+  <div id="neutro" class="barramento neutro">NEUTRO</div>
+
   <svg id="wires"></svg>
 </div>
 
