@@ -1,88 +1,65 @@
 const workspace = document.getElementById("workspace");
 const svg = document.getElementById("wires");
 
-let currentWire = null;
+let currentLine = null;
+let startTerminal = null;
 
 function addComponent(type) {
-  const c = document.createElement("div");
-  c.className = "component";
-  c.style.left = "300px";
-  c.style.top = "120px";
+  const comp = document.createElement("div");
+  comp.className = "component";
+  comp.style.left = "300px";
+  comp.style.top = "150px";
 
-  c.innerHTML = `<h4>${type.toUpperCase()}</h4>`;
-  workspace.appendChild(c);
+  comp.innerHTML = `<h4>${type.toUpperCase()}</h4>`;
+  workspace.appendChild(comp);
 
-  createTerminals(c, type);
-  makeDraggable(c);
+  createTerminals(comp, type);
+  makeDraggable(comp);
 }
 
-function createTerminals(c, type) {
+function createTerminals(comp, type) {
   const layouts = {
     disjuntor: [
       ["L1", 10, 30], ["L2", 40, 30], ["L3", 70, 30],
-      ["13", 110, 50], ["14", 110, 70],
-      ["T1", 10, 90], ["T2", 40, 90], ["T3", 70, 90]
+      ["13", 100, 55], ["14", 100, 75],
+      ["T1", 10, 100], ["T2", 40, 100], ["T3", 70, 100]
     ],
     contator: [
       ["L1", 10, 30], ["L2", 40, 30], ["L3", 70, 30],
-      ["13", 110, 50], ["14", 110, 70],
-      ["A1", 110, 90], ["A2", 110, 110],
-      ["T1", 10, 110], ["T2", 40, 110], ["T3", 70, 110]
+      ["13", 100, 50], ["14", 100, 70],
+      ["A1", 100, 90], ["A2", 100, 110],
+      ["T1", 10, 120], ["T2", 40, 120], ["T3", 70, 120]
     ],
-    motor: [["U", 20, 40], ["V", 50, 40], ["W", 80, 40]],
-    liga: [["13", 20, 40], ["14", 60, 40]],
-    desliga: [["21", 20, 40], ["22", 60, 40]],
-    emergencia: [["11", 20, 40], ["12", 60, 40]]
+    motor: [
+      ["U", 20, 40], ["V", 50, 40], ["W", 80, 40]
+    ],
+    liga: [
+      ["13", 20, 40], ["14", 60, 40]
+    ],
+    desliga: [
+      ["21", 20, 40], ["22", 60, 40]
+    ],
+    emergencia: [
+      ["11", 20, 40], ["12", 60, 40]
+    ]
   };
 
-  layouts[type].forEach(t => {
-    const term = document.createElement("div");
-    term.className = "terminal";
-    term.style.left = t[1] + "px";
-    term.style.top = t[2] + "px";
-    term.title = t[0];
+  layouts[type].forEach(([label, x, y]) => {
+    const t = document.createElement("div");
+    t.className = "terminal";
+    t.style.left = x + "px";
+    t.style.top = y + "px";
+    t.title = label;
 
-    term.addEventListener("mousedown", e => {
-      e.stopPropagation();
-      startWire(e, term);
-    });
+    t.addEventListener("mousedown", e => startWire(e, t));
+    t.addEventListener("mouseup", e => endWire(e, t));
 
-    c.appendChild(term);
+    comp.appendChild(t);
   });
 }
 
-function startWire(e, terminal) {
-  const pos = getCenter(terminal);
-
-  currentWire = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  currentWire.setAttribute("x1", pos.x);
-  currentWire.setAttribute("y1", pos.y);
-  currentWire.setAttribute("x2", pos.x);
-  currentWire.setAttribute("y2", pos.y);
-  currentWire.setAttribute("stroke", "yellow");
-  currentWire.setAttribute("stroke-width", "2");
-
-  svg.appendChild(currentWire);
-
-  document.onmousemove = ev => {
-    currentWire.setAttribute("x2", ev.clientX);
-    currentWire.setAttribute("y2", ev.clientY);
-  };
-
-  document.onmouseup = () => {
-    document.onmousemove = null;
-    document.onmouseup = null;
-    currentWire = null;
-  };
-}
-
-function getCenter(el) {
-  const r = el.getBoundingClientRect();
-  return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-}
-
 function makeDraggable(el) {
-  let offsetX, offsetY;
+  let offsetX = 0, offsetY = 0;
 
   el.addEventListener("mousedown", e => {
     if (e.target.classList.contains("terminal")) return;
@@ -93,6 +70,7 @@ function makeDraggable(el) {
     document.onmousemove = ev => {
       el.style.left = ev.pageX - offsetX + "px";
       el.style.top = ev.pageY - offsetY + "px";
+      updateLines();
     };
 
     document.onmouseup = () => {
@@ -100,4 +78,48 @@ function makeDraggable(el) {
       document.onmouseup = null;
     };
   });
+}
+
+function startWire(e, terminal) {
+  e.stopPropagation();
+
+  const p = getCenter(terminal);
+  startTerminal = terminal;
+
+  currentLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  currentLine.setAttribute("x1", p.x);
+  currentLine.setAttribute("y1", p.y);
+  currentLine.setAttribute("x2", p.x);
+  currentLine.setAttribute("y2", p.y);
+
+  svg.appendChild(currentLine);
+
+  document.onmousemove = ev => {
+    currentLine.setAttribute("x2", ev.pageX);
+    currentLine.setAttribute("y2", ev.pageY);
+  };
+}
+
+function endWire(e, terminal) {
+  if (!currentLine) return;
+
+  const p = getCenter(terminal);
+  currentLine.setAttribute("x2", p.x);
+  currentLine.setAttribute("y2", p.y);
+
+  currentLine = null;
+  startTerminal = null;
+  document.onmousemove = null;
+}
+
+function getCenter(el) {
+  const r = el.getBoundingClientRect();
+  return {
+    x: r.left + r.width / 2,
+    y: r.top + r.height / 2
+  };
+}
+
+function updateLines() {
+  // base estável para evolução futura
 }
