@@ -2,25 +2,34 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Laboratório de Fiação</title>
+  <title>Contator – Laboratório Virtual</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="sidebar">
-  <h3>Componentes</h3>
-  <button onclick="addComponent('disjuntor')">Disjuntor Motor</button>
-  <button onclick="addComponent('contator')">Contator</button>
-  <button onclick="addComponent('motor')">Motor</button>
-  <button onclick="addComponent('liga')">Botão Liga</button>
-  <button onclick="addComponent('desliga')">Botão Desliga</button>
-  <button onclick="addComponent('emergencia')">Emergência</button>
-</div>
+<div id="canvas">
 
-<div id="workspace">
-  <div id="fase" class="bus">FASE</div>
-  <div id="neutro" class="bus">NEUTRO</div>
+  <!-- CONTATOR -->
+  <div id="contator">
+    <img src="contator.png" alt="Contator">
+
+    <!-- Bornes -->
+    <div class="borne" data-id="L1" style="top:40px; left:40px;"></div>
+    <div class="borne" data-id="L2" style="top:40px; left:120px;"></div>
+    <div class="borne" data-id="L3" style="top:40px; left:200px;"></div>
+
+    <div class="borne" data-id="A1" style="top:40px; left:280px;"></div>
+
+    <div class="borne" data-id="T1" style="top:360px; left:40px;"></div>
+    <div class="borne" data-id="T2" style="top:360px; left:120px;"></div>
+    <div class="borne" data-id="T3" style="top:360px; left:200px;"></div>
+
+    <div class="borne" data-id="A2" style="top:360px; left:280px;"></div>
+  </div>
+
+  <!-- SVG DOS FIOS -->
   <svg id="wires"></svg>
+
 </div>
 
 <script src="script.js"></script>
