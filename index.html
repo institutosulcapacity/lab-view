@@ -2,35 +2,57 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+
+  <!-- Título da página -->
   <title>Contator – Laboratório Virtual</title>
+
+  <!-- Importa o CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
+<!--
+  CANVAS PRINCIPAL
+  Tudo fica dentro dele:
+  - imagem
+  - bornes
+  - fios (SVG)
+-->
 <div id="canvas">
 
-  <!-- CONTATOR -->
+  <!-- ================= CONTATOR ================= -->
   <div id="contator">
-    <div class="label">VALMIR/</div>
 
-    <!-- BORNES SUPERIORES -->
-    <div class="borne" data-id="L1" style="left:50px; top:60px;">
-    <span class="borne-label">L1</span>
-    </div>
+    <!-- IMAGEM DO CONTATOR
+         pointer-events é desativado no CSS
+         para NÃO bloquear cliques nos bornes -->
+    <img src="./assets/contator.png" alt="Contator">
 
-    <div class="borne" data-id="L2" style="left:130px; top:60px;">
-    <span class="borne-label">L2</span>
-    </div>
+    <!-- ========= BORNES SUPERIORES ========= -->
+    <!-- Ajuste APENAS left/top se quiser alinhar -->
+    <div class="borne" data-id="L1" style="left: 40px;  top: 35px;"></div>
+    <div class="borne" data-id="L2" style="left: 120px; top: 35px;"></div>
+    <div class="borne" data-id="L3" style="left: 200px; top: 35px;"></div>
 
-    <div class="borne" data-id="L3" style="left:210px; top:60px;">
-    <span class="borne-label">L3</span>
-    </div>
+    <div class="borne" data-id="A1" style="left: 280px; top: 35px;"></div>
 
-  <!-- SVG DOS FIOS -->
+    <!-- ========= BORNES INFERIORES ========= -->
+    <div class="borne" data-id="T1" style="left: 40px;  top: 360px;"></div>
+    <div class="borne" data-id="T2" style="left: 120px; top: 360px;"></div>
+    <div class="borne" data-id="T3" style="left: 200px; top: 360px;"></div>
+
+    <div class="borne" data-id="A2" style="left: 280px; top: 360px;"></div>
+
+  </div>
+
+  <!-- SVG ONDE OS FIOS SÃO DESENHADOS -->
   <svg id="wires"></svg>
 
 </div>
 
+<!-- Importa o JavaScript -->
 <script src="script.js"></script>
+
 </body>
 </html>
