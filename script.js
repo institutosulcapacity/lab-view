@@ -1,34 +1,32 @@
 const svg = document.getElementById("wires");
-let startBorne = null;
-let currentLine = null;
+let wire = null;
+let startX = 0;
+let startY = 0;
 
 document.querySelectorAll(".borne").forEach(borne => {
   borne.addEventListener("mousedown", e => {
-    e.stopPropagation();
-    startBorne = borne;
-
     const rect = borne.getBoundingClientRect();
+    startX = rect.left + rect.width / 2;
+    startY = rect.top + rect.height / 2;
 
-    currentLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    currentLine.setAttribute("x1", rect.left + rect.width / 2);
-    currentLine.setAttribute("y1", rect.top + rect.height / 2);
-    currentLine.setAttribute("x2", rect.left + rect.width / 2);
-    currentLine.setAttribute("y2", rect.top + rect.height / 2);
-    currentLine.setAttribute("stroke", "yellow");
-    currentLine.setAttribute("stroke-width", "3");
+    wire = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    wire.setAttribute("x1", startX);
+    wire.setAttribute("y1", startY);
+    wire.setAttribute("x2", startX);
+    wire.setAttribute("y2", startY);
+    wire.setAttribute("stroke", "yellow");
+    wire.setAttribute("stroke-width", "2");
 
-    svg.appendChild(currentLine);
+    svg.appendChild(wire);
   });
 });
 
 document.addEventListener("mousemove", e => {
-  if (!currentLine) return;
-
-  currentLine.setAttribute("x2", e.clientX);
-  currentLine.setAttribute("y2", e.clientY);
+  if (!wire) return;
+  wire.setAttribute("x2", e.clientX);
+  wire.setAttribute("y2", e.clientY);
 });
 
 document.addEventListener("mouseup", () => {
-  startBorne = null;
-  currentLine = null;
+  wire = null;
 });
