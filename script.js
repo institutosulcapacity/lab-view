@@ -5,6 +5,8 @@ let startY = 0;
 
 document.querySelectorAll(".borne").forEach(borne => {
   borne.addEventListener("mousedown", e => {
+    e.stopPropagation();
+
     const rect = borne.getBoundingClientRect();
     startX = rect.left + rect.width / 2;
     startY = rect.top + rect.height / 2;
