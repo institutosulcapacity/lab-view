@@ -1,34 +1,72 @@
+// ===================== VARIÁVEIS GLOBAIS =====================
+
+// SVG onde os fios são desenhados
 const svg = document.getElementById("wires");
-let wire = null;
-let startX = 0;
-let startY = 0;
 
-document.querySelectorAll(".borne").forEach(borne => {
-  borne.addEventListener("mousedown", e => {
-    e.stopPropagation();
+// Todos os bornes
+const bornes = document.querySelectorAll(".borne");
 
-    const rect = borne.getBoundingClientRect();
-    startX = rect.left + rect.width / 2;
-    startY = rect.top + rect.height / 2;
+// Linha atual em criação
+let linhaAtual = null;
 
-    wire = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    wire.setAttribute("x1", startX);
-    wire.setAttribute("y1", startY);
-    wire.setAttribute("x2", startX);
-    wire.setAttribute("y2", startY);
-    wire.setAttribute("stroke", "yellow");
-    wire.setAttribute("stroke-width", "2");
+// ===================== FUNÇÕES =====================
 
-    svg.appendChild(wire);
+// Retorna o centro exato de um borne
+// convertendo de HTML → SVG
+function getCentroBorne(borne) {
+  const b = borne.getBoundingClientRect();
+  const s = svg.getBoundingClientRect();
+
+  return {
+    x: b.left + b.width / 2 - s.left,
+    y: b.top + b.height / 2 - s.top
+  };
+}
+
+// ===================== EVENTOS DOS BORNES =====================
+
+bornes.forEach(borne => {
+
+  // Quando clica no borne
+  borne.addEventListener("mousedown", (e) => {
+
+    const pos = getCentroBorne(borne);
+
+    // Cria uma nova linha SVG
+    linhaAtual = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+    // Linha começa e termina no mesmo ponto
+    linhaAtual.setAttribute("x1", pos.x);
+    linhaAtual.setAttribute("y1", pos.y);
+    linhaAtual.setAttribute("x2", pos.x);
+    linhaAtual.setAttribute("y2", pos.y);
+
+    // Estilo do fio
+    linhaAtual.setAttribute("stroke", "yellow");
+    linhaAtual.setAttribute("stroke-width", "3");
+
+    // Adiciona ao SVG
+    svg.appendChild(linhaAtual);
   });
 });
 
-document.addEventListener("mousemove", e => {
-  if (!wire) return;
-  wire.setAttribute("x2", e.clientX);
-  wire.setAttribute("y2", e.clientY);
+// ===================== MOVIMENTO DO MOUSE =====================
+
+document.addEventListener("mousemove", (e) => {
+  if (!linhaAtual) return;
+
+  const rect = svg.getBoundingClientRect();
+
+  // CONVERSÃO CORRETA DO MOUSE PARA SVG
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  linhaAtual.setAttribute("x2", x);
+  linhaAtual.setAttribute("y2", y);
 });
 
+// ===================== SOLTA O MOUSE =====================
+
 document.addEventListener("mouseup", () => {
-  wire = null;
+  linhaAtual = null;
 });
