@@ -30,14 +30,14 @@ body {
 }
 
 /* BORNES */
-.borne {
+.borne-label {
   position: absolute;
-  width: 16px;
-  height: 16px;
-  background: red;
-  border-radius: 50%;
-  cursor: crosshair;
-  transform: translate(-50%, -50%);
+  top: -18px;          /* texto acima do borne */
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 12px;
+  pointer-events: none; /* 🔴 ESSENCIAL */
 }
 
 /* SVG DOS FIOS */
